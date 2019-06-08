@@ -13,7 +13,7 @@
 
 
 Route::group([
-    'prefix' => '{locale}',
+    'prefix' => '{locale?}',
     'where' => ['locale' => 'en|ar'],
     'middleware' => 'LocalizationMiddleware'], function() {
 
