@@ -1,7 +1,7 @@
 @extends('admin.layouts.guestapp')
 
 @section('title')
-    {{ __('Admin Login Page') }}
+    {{ __('Admin Send Password Reset Mail') }}
 @endsection
 
 @section('css')
@@ -18,10 +18,20 @@
           </div>
 
           <div class="card card-primary">
-            <div class="card-header"><h4>{{ __('Login') }}</h4></div>
+            <div class="card-header"><h4>{{ __('Forgot Password') }}</h4></div>
 
             <div class="card-body">
-              <form action="{{ route('admin.login') }}" method="post" class="needs-validation" novalidate="">
+                @if (session('status'))
+                  <div class="alert alert-success alert-dismissible show fade">
+                    <div class="alert-body">
+                      <button class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                      </button>
+                      {{ __(session('status')) }}
+                    </div>
+                  </div>
+                @endif
+              <form action="{{ route('admin.password.email') }}" method="post" class="needs-validation" novalidate="">
                 @csrf
                 <div class="form-group">
                   <label for="email">{{ __('Email') }}</label>
@@ -35,34 +45,12 @@
                 </div>
 
                 <div class="form-group">
-                  <div class="d-block">
-                    <label for="password" class="control-label">{{ __('Password') }}</label>
-                    <div class="float-right">
-                    </div>
-                  </div>
-                  <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="{{ __('Password') }}">
-
-                  @error('password')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-                </div>
-                
-                <div class="form-group">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" tabindex="3" name="remember" {{ old('remember') ? 'checked' : '' }} id="remember-me">
-                    <label class="custom-control-label" for="remember-me">{{ __('Remember Me') }}</label>
-                  </div>
-                </div>
-
-                <div class="form-group">
                   <button type="submit" class="btn btn-warning btn-lg btn-block">
-                    {{ __('Login') }}
+                    {{ __('Forgot Password') }}
                   </button>
                 </div>
               </form>
-              <a href="{{ route('admin.password.request') }}">{{ __('I forgot my password') }}</a>
+              <a href="{{ route('admin.login') }}">{{ __('Login') }}</a>
 
             </div>
           </div>

@@ -382,5 +382,8 @@
     "Notifications": "الإشعارات",
     "Hi": "أهلا",
     "Settings": "الاعدادات",
-    "Home": "الصفحة الرئيسية"
+    "Home": "الصفحة الرئيسية",
+    "Admin Send Password Reset Mail": "ارسال بريد الكتروني لاعادة ضبط الرقم السري",
+    "Forgot Password": "نسيت كلمة المرور",
+    "Admin Reset Password": "استعادة كلمة مرور المشرف"
 }
