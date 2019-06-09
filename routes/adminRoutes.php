@@ -15,6 +15,11 @@ Route::group([
      * All Admin Controllers will be in Admin Folder
      */
     Route::group(['namespace' => 'Admin'],function(){
+
+
+        // admin home page
+        Route::get('/admin/home', 'HomeController@index')->name('admin.home');
+
         /**
          * All Admin Auth Controllers will be in Admin\Auth Folder
          */

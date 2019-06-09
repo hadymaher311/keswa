@@ -5,75 +5,76 @@
 @endsection
 
 @section('css')
-    <!-- iCheck -->
-    <link rel="stylesheet" href="{{ asset('/admin_styles/css/square/orange.css') }}">
+    
 @endsection
 
 @section('body')
-<div class="login-box">
-    <div class="login-logo">
-      <a href="{{ url('/') }}"><b>{{ config('app.name') }}</b></a>
-    </div>
-    <!-- /.login-logo -->
-    <div class="login-box-body">
-      <p class="login-box-msg">{{ __('Signin to start your session') }}</p>
-  
-      <form action="{{ route('admin.login') }}" method="post">
-        @csrf
-        <div class="form-group has-feedback">
-            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{ __('Email') }}">
+  <section class="section text-auto">
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-12 col-sm-8 col-md-6 col-lg-6 col-xl-4 mr-auto ml-auto">
+          <div class="login-brand">
+            {{ config('app.name') }}
+          </div>
 
-            @error('email')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
-        <div class="form-group has-feedback">
-            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="{{ __('Password') }}">
+          <div class="card card-primary">
+            <div class="card-header"><h4>{{ __('Login') }}</h4></div>
 
-            @error('password')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
-        <div class="row text-center">
-          <div class="col-sm-6">
-            <div class="checkbox icheck">
-              <label>
-                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}> {{ __('Remember Me') }}
-              </label>
+            <div class="card-body">
+              <form action="{{ route('admin.login') }}" method="post" class="needs-validation" novalidate="">
+                @csrf
+                <div class="form-group">
+                  <label for="email">{{ __('Email') }}</label>
+                  <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{ __('Email') }}">
+
+                  @error('email')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+
+                <div class="form-group">
+                  <div class="d-block">
+                    <label for="password" class="control-label">{{ __('Password') }}</label>
+                    <div class="float-right">
+                    </div>
+                  </div>
+                  <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="{{ __('Password') }}">
+
+                  @error('password')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+                
+                <div class="form-group">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" tabindex="3" name="remember" {{ old('remember') ? 'checked' : '' }} id="remember-me">
+                    <label class="custom-control-label" for="remember-me">{{ __('Remember Me') }}</label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <button type="submit" class="btn btn-warning btn-lg btn-block" tabindex="4">
+                    {{ __('Login') }}
+                  </button>
+                </div>
+              </form>
+              <a href="{{ route('admin.password.request') }}">{{ __('I forgot my password') }}</a>
+
             </div>
           </div>
-          <!-- /.col -->
-          <div class="col-sm-6">
-            <button type="submit" class="btn bg-orange btn-block btn-flat">{{ __('Login') }}</button>
+          <div class="simple-footer">
+            <strong>{{ __('Copyright') }} &copy; 2019-{{ Carbon\Carbon::now()->year }} <a href="/">{{ config('app.name') }}</a>.</strong> {{ __('All rights reserved') }}.
           </div>
-          <!-- /.col -->
         </div>
-      </form>
-      <!-- /.social-auth-links -->
-  
-      <a href="{{ route('admin.password.request') }}">{{ __('I forgot my password') }}</a>
-  
+      </div>
     </div>
-    <!-- /.login-box-body -->
-  </div>
-  <!-- /.login-box -->
-  
+  </section>
 @endsection
 
 @section('js')
-    <!-- iCheck -->
-    <script src="{{ asset('/admin_styles/js/icheck.min.js') }}"></script>
-    <script>
-    $(function () {
-        $('input').iCheck({
-        checkboxClass: 'icheckbox_square-orange',
-        radioClass: 'iradio_square-orange',
-        increaseArea: '20%' // optional
-        });
-    });
-    </script>
+  
 @endsection

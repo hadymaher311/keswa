@@ -1,16 +1,26 @@
-<script src="{{ asset('/admin_styles/js/jquery.min.js') }}"></script>
-<script src="{{ asset('/admin_styles/js/popper.min.js') }}"></script>
-<!-- Bootstrap 4 -->
-{{-- <script src="{{ asset('/admin_styles/js/bootstrap.min.js') }}"></script> --}}
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- General JS Scripts -->
+<script src="{{ asset('/admin_styles/modules/jquery.min.js') }}"></script>
+<script src="{{ asset('/admin_styles/modules/popper.js') }}"></script>
+<script src="{{ asset('/admin_styles/modules/tooltip.js') }}"></script>
+<script src="{{ asset('/admin_styles/modules/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('/admin_styles/modules/nicescroll/jquery.nicescroll.min.js') }}"></script>
+<script src="{{ asset('/admin_styles/modules/moment.min.js') }}"></script>
+<script src="{{ asset('/admin_styles/js/stisla.js') }}"></script>
 
-<!-- SlimScroll -->
-<script src="{{ asset('/admin_styles/js/jquery.slimscroll.min.js') }}"></script>
-<!-- FastClick -->
-<script src="{{ asset('/admin_styles/js/fastclick.min.js') }}"></script>
-<!-- AdminLTE App -->
-<script src="{{ asset('/admin_styles/js/app.min.js') }}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset('/admin_styles/js/demo.js') }}"></script>
+<!-- Template JS File -->
+<script src="{{ asset('/admin_styles/js/scripts.js') }}"></script>
+
+<script>
+    $(function(){
+        $('a').each(function(){
+            var $this = $(this);
+            // if the current path is like this link, make it active
+            if($this.attr('href') == window.location){
+                $this.addClass('active');
+                $this.parents('li').addClass('active');
+            }
+        })
+    })
+</script>
 
 @yield('js')

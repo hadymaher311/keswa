@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" @if (app()->isLocale('ar')) dir="rtl" @endif>
 	@include('admin.layouts.head')
-<body class="hold-transition login-page">
-	<!-- Site wrapper -->
-        @section('body')
-            @show
-		</div>
-		@include('admin.layouts.js')
+<body>
+	<div id="app">
+		@section('body')
+			@show
+	</div>
+	@include('admin.layouts.js')
 </body>
 </html>

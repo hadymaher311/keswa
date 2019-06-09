@@ -1,21 +1,19 @@
-<!-- Left side column. contains the sidebar -->
-  <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- Sidebar user panel -->
-      <div class="user-panel">
-        <div class="pull-left image">
-          <img src="{{ (Auth::user()->image) ? Storage::disk('local')->url(Auth::user()->image) : asset('/admin_styles/images/avatar04.png') }}" class="img-circle" alt="User Image">
-          
-        </div>
-        <div class="pull-left info">
-          <p>{{ Auth::user()->name }}</p>  
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-        </div>
+<div class="main-sidebar sidebar-style-2">
+    <aside id="sidebar-wrapper">
+      <div class="sidebar-brand">
+        <a href="{{ url('/') }}">{{ config('app.name') }}</a>
+      </div>
+      <div class="sidebar-brand sidebar-brand-sm">
+          <a href="{{ url('/') }}">{{ config('app.name') }}</a>
       </div>
       <ul class="sidebar-menu">
-        
+        <li class="menu-header">{{ __('Dashboard') }}</li>
+        <li class="dropdown">
+          <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>{{ __('Dashboard') }}</span></a>
+          <ul class="dropdown-menu">
+            <li><a class="nav-link" href="{{ route('admin.home') }}">{{ __('Home') }}</a></li>
+          </ul>
+        </li>
       </ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
+    </aside>
+  </div>

@@ -1,4 +1,3 @@
 <footer class="main-footer">
-    <strong>Copyright &copy; 2018-{{ Carbon\Carbon::now()->year }} <a href="/">{{ config('app.name') }}</a>.</strong> All rights
-    reserved.
+    <strong>{{ __('Copyright') }} &copy; 2019-{{ Carbon\Carbon::now()->year }} <a href="/">{{ config('app.name') }}</a>.</strong> {{ __('All rights reserved') }}.
 </footer>
