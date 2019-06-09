@@ -11,18 +11,8 @@
 |
 */
 
+// admin routes
+include 'adminRoutes.php';
 
-Route::group([
-    'prefix' => '{locale?}',
-    'where' => ['locale' => 'en|ar'],
-    'middleware' => 'LocalizationMiddleware'], function() {
-
-    Route::get('/', function () {
-        return view('welcome');
-    });
-
-    Auth::routes(['verify' => true]);
-
-    Route::get('/home', 'HomeController@index')->name('home');
-
-});
+// User routes
+include 'userRoutes.php';

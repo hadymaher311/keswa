@@ -32,6 +32,7 @@ class CreateProductsTable extends Migration
             $table->integer('lenght')->unsigned()->nullable();
             $table->integer('width')->unsigned()->nullable();
             $table->integer('depth')->unsigned()->nullable();
+            $table->timestamp('expiry_date')->nullable();
             $table->bigInteger('brand_id')->unsigned();
             $table->boolean('active')->default(1);
             $table->boolean('free_shipping')->default(0);

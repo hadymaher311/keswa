@@ -1,0 +1,83 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FAFAFA;
+    font: 12pt "Tahoma";
+}
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.page {
+    width: 21cm;
+    min-height: 29.7cm;
+    /* padding: 1.5cm; */
+    margin: 1cm auto;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.print-button:hover{
+    background-color: #333;
+}
+
+.print-button{
+    background-color: #273036;
+}
+
+.file-button{
+    position: fixed;
+    left: 95%;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    padding-top: 30px;
+}
+
+.file-button a{
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
+
+.head{
+    height: 2.5cm;
+}
+
+.content{
+    height: 24cm;
+}
+
+.foot{
+    height: 2.5cm
+}
+
+.subpage {
+    padding: 0cm 1cm;
+    /* border: 5px red solid; */
+    /* height: 256mm; */
+    /* outline: 2cm #FFEAEA solid; */
+}
+
+.subpage img{
+    width: 100%;
+}
+
+@page {
+    size: A4;
+    margin: 0;
+}
+@media print {
+    .page {
+        margin: 0;
+        border: initial;
+        border-radius: initial;
+        width: initial;
+        min-height: initial;
+        box-shadow: initial;
+        background: initial;
+        page-break-after: always;
+    }
+}
