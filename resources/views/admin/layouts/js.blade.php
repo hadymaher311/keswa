@@ -6,6 +6,7 @@
 <script src="{{ asset('/admin_styles/modules/nicescroll/jquery.nicescroll.min.js') }}"></script>
 <script src="{{ asset('/admin_styles/modules/moment.min.js') }}"></script>
 <script src="{{ asset('/admin_styles/js/stisla.js') }}"></script>
+@yield('js')
 
 <!-- Template JS File -->
 <script src="{{ asset('/admin_styles/js/scripts.js') }}"></script>
@@ -23,4 +24,3 @@
     })
 </script>
 
-@yield('js')

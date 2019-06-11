@@ -5,7 +5,7 @@
 	<div id="app">
 		<div class="text-auto main-wrapper main-wrapper-1">
 			@include('admin.layouts.navbar')
-			@include('admin.layouts.sidenavbar')
+			@include('admin.layouts.sidenavbar.sidenavbar')
 			<div class="main-content">
 				<section class="section">
 					@section('body')

@@ -20,6 +20,9 @@ Route::group([
         // admin home page
         Route::get('/admin/home', 'HomeController@index')->name('admin.home');
 
+        // Permissions CRUD routes
+        Route::resource('/admin/permissions', 'PermissionsController');
+
         /**
          * All Admin Auth Controllers will be in Admin\Auth Folder
          */

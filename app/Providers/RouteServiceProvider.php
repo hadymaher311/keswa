@@ -24,7 +24,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \URL::defaults(['locale' => app()->getLocale()]);
+        // \URL::defaults(['locale' => app()->getLocale()]);
         parent::boot();
     }
 

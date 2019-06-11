@@ -2,14 +2,22 @@
 
 namespace App\Models;
 
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\AdminResetPasswordNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Admin extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
+
+    /**
+     * The attribute that auth guard.
+     *
+     * @var string
+     */
+    protected $guard_name = 'admin';
 
     /**
      * The attributes that are mass assignable.

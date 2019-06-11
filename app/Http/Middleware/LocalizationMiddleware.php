@@ -15,10 +15,10 @@ class LocalizationMiddleware
      */
     public function handle($request, Closure $next)
     {
-        \URL::defaults(['locale' => app()->getLocale()]);
         if (in_array($request->locale, ['en', 'ar'])) {
             app()->setLocale($request->locale);
         }
+        \URL::defaults(['locale' => app()->getLocale()]);
         return $next($request);
     }
 }
