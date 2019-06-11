@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('title')
-{{ __('Permissions') }}
+{{ __('Roles') }}
 @endsection
 
 @section('css')
@@ -10,7 +10,7 @@
 
 @section('body')
     <div class="section-header">
-        <h1>{{ __('Permissions') }}</h1>
+        <h1>{{ __('Roles') }}</h1>
     </div>
 
     <div class="section-body">
@@ -18,8 +18,8 @@
             <div class="col-12">
                 <div class="card">
                 <div class="card-header">
-                    <h4>{{ __('Permissions Table') }}</h4> <br>
-                    <a href="{{ route('permissions.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new permission') }}</a>
+                    <h4>{{ __('Roles Table') }}</h4> <br>
+                    <a href="{{ route('roles.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new role') }}</a>
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -32,7 +32,7 @@
                           </div>
                         </div>
                     @endif
-                    <form action="{{ route('permissions.destroy') }}" method="POST" id="deleteForm">
+                    <form action="{{ route('roles.destroy') }}" method="POST" id="deleteForm">
                         @csrf
                         {{ method_field('DELETE') }}
                         <button type="submit" onclick="
@@ -47,7 +47,7 @@
                         <tr>
                             <th class="text-center">
                             <div class="custom-checkbox custom-control">
-                                <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input" id="checkbox-all">
+                                <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input minimal" id="checkbox-all">
                                 <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
                             </div>
                             </th>
@@ -58,20 +58,24 @@
                         </tr>
                         </thead>
                         <tbody>
-                            @foreach ($permissions as $permission)
+                            @foreach ($roles as $role)
                                 <tr>
                                     <td>
                                         <div class="custom-checkbox custom-control">
-                                            <input name="permissions[]" form="deleteForm" type="checkbox" data-checkboxes="mygroup" class="custom-control-input" value="{{ $permission->id }}" id="checkbox-{{ $loop->index+1 }}">
+                                            <input name="roles[]" form="deleteForm" type="checkbox" data-checkboxes="mygroup" class="custom-control-input" value="{{ $role->id }}" id="checkbox-{{ $loop->index+1 }}">
                                             <label for="checkbox-{{ $loop->index+1 }}" class="custom-control-label">&nbsp;</label>
                                         </div>
                                     </td>
                                     <td>{{ $loop->index+1 }}</td>
-                                    <td>{{ $permission->name }}</td>
-                                    <td>{{ $permission->created_at->diffForHumans() }}</td>
+                                    <td>{{ $role->name }}</td>
+                                    <td>{{ $role->created_at->diffForHumans() }}</td>
                                     <td>
-                                        <a href="{{ route('permissions.edit', $permission->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
+                                        <a href="{{ route('roles.edit', $role->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                             <i class="fa fa-edit"></i>
+                                        </a>
+
+                                        <a href="{{ route('roles.show', $role->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('View') }}" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-file"></i>
                                         </a>
 
                                         <a 
@@ -83,11 +87,12 @@
                                                         $(this).siblings('form').submit();
                                                     }" data-toggle="tooltip" data-placement="top" title="{{ __('Delete') }}"
                                         ><i class="fa fa-times"></i></a>
-                                        <form action="{{ route('permissions.destroy') }}" method="POST">
+                                        <form action="{{ route('roles.destroy') }}" method="POST">
                                             @csrf
                                             {{ method_field('DELETE') }}
-                                            <input type="hidden" name="permissions[]" value="{{ $permission->id }}">
+                                            <input type="hidden" name="roles[]" value="{{ $role->id }}">
                                         </form>
+
                                     </td>
                                 </tr>
                             @endforeach
