@@ -39,7 +39,7 @@
                         event.preventDefault();
                         if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
                             $(this).parent('form').submit();
-                        }" class="btn btn-danger btn-lg" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i></button>
+                        }" class="btn btn-danger btn-lg" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
                     </form>
                     <div class="table-responsive">
                     <table class="table table-striped" id="table-2">
@@ -70,7 +70,7 @@
                                     <td>{{ $permission->name }}</td>
                                     <td>{{ $permission->created_at->diffForHumans() }}</td>
                                     <td>
-                                        <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-sm btn-warning">
+                                        <a href="{{ route('permissions.edit', $permission->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                             <i class="fa fa-edit"></i>
                                         </a>
 
@@ -81,7 +81,7 @@
                                                     event.preventDefault();
                                                     if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
                                                         $(this).siblings('form').submit();
-                                                    }"
+                                                    }" data-toggle="tooltip" data-placement="top" title="{{ __('Delete') }}"
                                         ><i class="fa fa-times"></i></a>
                                         <form action="{{ route('permissions.destroy') }}" method="POST">
                                             @csrf
