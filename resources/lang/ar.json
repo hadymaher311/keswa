@@ -26,6 +26,9 @@
     "If you did not request a password reset, no further action is required.": "إذا لم تقم بطلب استعادة كلمة المرور، لا تحتاج القيام بأي إجراء.",
     "Logout": "تسجيل الخروج",
     "Name": "الاسم",
+    "First Name": "الاسم الأول",
+    "Last Name": "الاسم الأخير",
+    "Choose admin role": "اختر وظيفة المشرف",
     "Oh no": "انتبه",
     "Page Expired": "الصفحة منتهية الصلاحية",
     "Page Not Found": "الصفحة غير موجودة",
@@ -400,6 +403,7 @@
     "Brands Table": "جدول العلامات التجارية",
     "Categories Table": "جدول الأقسام",
     "View role": "عرض الوظيفة",
+    "View admin": "عرض المشرف",
     "Add new permission": "أضف تصريح جديد",
     "Edit permission": "تعديل التصريح",
     "Delete permission": "حذف التصريح",
@@ -421,8 +425,14 @@
     "Delete selected": "حذف المختار",
     "Submit": "ادخال",
     "Roles": "الوظائف",
+    "Role": "الوظيفة",
     "Added Successfully": "تمت الاضافة بنجاح",
     "Updated Successfully": "تم التعديل بنجاح",
     "Deleted Successfully": "تم الحذف بنجاح",
-    "Back to all": "العودة للكل"
+    "Back to all": "العودة للكل",
+    "Image": "صورة",
+    "Images": "صور",
+    "Choose Image": "اختر صورة",
+    "Change Image": "تغيير صورة",
+    "Edit password": "تغيير كلمة السر"
 }

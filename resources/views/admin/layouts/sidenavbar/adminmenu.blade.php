@@ -2,6 +2,13 @@
     <a href="#" class="nav-link has-dropdown"><i class="fas fa-user"></i><span>{{ __('Admin') }}</span></a>
     <ul class="dropdown-menu">
         <li class="dropdown">
+            <a class="nav-link has-dropdown" href="#"><i class="fa fa-users"></i>{{ __('Admins') }}</a>
+            <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{{ route('admins.index') }}">{{ __('Home') }}</a></li>
+                <li><a class="nav-link" href="{{ route('admins.create') }}">{{ __('Create') }}</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
             <a class="nav-link has-dropdown" href="#"><i class="fa fa-lock"></i>{{ __('Permissions') }}</a>
             <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('permissions.index') }}">{{ __('Home') }}</a></li>
