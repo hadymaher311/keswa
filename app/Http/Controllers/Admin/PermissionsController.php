@@ -71,9 +71,9 @@ class PermissionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Permission $permission)
     {
-        //
+        return view('admin.permissions.edit', compact('permission'));
     }
 
     /**
@@ -83,9 +83,14 @@ class PermissionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Permission $permission)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string|min:2'
+        ]);
+        $permission->name = $request->name;
+        $permission->save();
+        return redirect()->route('permissions.index')->with('status', trans('Updated Successfully'));
     }
 
     /**
@@ -94,8 +99,15 @@ class PermissionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        if (!$request->permissions) {
+            return back();
+        }
+        $this->validate($request, [
+            'permissions.*' => 'required|exists:permissions,id',
+        ]);
+        Permission::destroy($request->permissions);
+        return back()->with('status', trans('Deleted Successfully'));
     }
 }

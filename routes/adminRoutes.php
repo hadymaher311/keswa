@@ -22,6 +22,7 @@ Route::group([
 
         // Permissions CRUD routes
         Route::resource('/admin/permissions', 'PermissionsController');
+        Route::delete('/admin/permissions', 'PermissionsController@destroy')->name('permissions.destroy');
 
         /**
          * All Admin Auth Controllers will be in Admin\Auth Folder
