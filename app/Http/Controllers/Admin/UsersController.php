@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\Admin\Users\CreateRequest;
 
 class UsersController extends Controller
 {
@@ -52,6 +56,7 @@ class UsersController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'verified_at' => Carbon::now()
         ]);
         if ($request->has('image')) {
             $user
@@ -69,7 +74,7 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin.users.show', compact('admin'));
+        return view('admin.users.show', compact('user'));
     }
     
     /**
@@ -80,8 +85,7 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::all();
-        return view('admin.users.edit', compact('admin', 'roles'));
+        return view('admin.users.edit', compact('user'));
     }
     
     /**
@@ -91,13 +95,13 @@ class UsersController extends Controller
      * @param  Admin  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, Admin $user)
+    public function update(Request $request, User $user)
     {
+        $this->ValidateUpdateRequest($request, $user);
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->save();
-        $user->assignRole($request->role);
         if ($request->has('image')) {
             $user
                 ->addMediaFromUrl($request->image)
@@ -105,26 +109,45 @@ class UsersController extends Controller
         }
         return redirect()->route('users.index')->with('status', trans('Updated Successfully'));
     }
-    
+
     /**
-     * Show the form for editing admin password.
+     * Valudate Update Registe.
      *
-     * @param  Admin  $user
+     * @param  \Illuminate\Http\Request  $request
+     * @param  User  $User
      * @return \Illuminate\Http\Response
      */
-    public function editPassword(Admin $user)
+    protected function validateUpdateRequest(Request $request, User $user)
     {
-        return view('admin.users.editpassword', compact('admin'));
+        $this->validate($request, [
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 
+                        Rule::unique('users')->ignore($user->id)
+                        ],
+            'image' => ['sometimes', 'image']
+        ]);
+    }
+    
+    /**
+     * Show the form for editing User password.
+     *
+     * @param  User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function editPassword(User $user)
+    {
+        return view('admin.users.editpassword', compact('user'));
     }
     
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Admin  $user
+     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
-    public function updatePassword(Request $request, Admin $user)
+    public function updatePassword(Request $request, User $user)
     {
         $this->validate($request, [
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -138,10 +161,10 @@ class UsersController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Admin  $user
+     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
-    public function active(Request $request, Admin $user)
+    public function active(Request $request, User $user)
     {
         $user->active = !($user->active);
         $user->save();
@@ -151,7 +174,7 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Admin  $user
+     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)

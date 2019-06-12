@@ -2,11 +2,12 @@
 
 namespace App;
 
+use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
@@ -56,7 +57,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
      */
     public function getImageAttribute()
     {
-        return $this->getFirstMedia('user.avatar');
+        return $this->getMedia('user.avatar')->last();
     }
 
     public function registerMediaConversions(Media $media = null)

@@ -66,7 +66,7 @@ class Admin extends Authenticatable implements HasMedia
      */
     public function getImageAttribute()
     {
-        return $this->getFirstMedia('admin.avatar');
+        return $this->getMedia('admin.avatar')->last();
     }
 
     //Send password reset notification
