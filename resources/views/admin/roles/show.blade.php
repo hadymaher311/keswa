@@ -43,14 +43,6 @@
                         <div class="col-sm-3"><b>{{ __('Name') }}:</b></div>
                         <div class="col-sm-9">{{ $role->name }}</div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-3"><b>{{ __('Permissions') }}:</b></div>
-                        <div class="col-sm-9">
-                            @foreach ($role->permissions as $permission)
-                                <div>{{ $permission->name }}</div>
-                            @endforeach
-                        </div>
-                    </div>
 
                 </div>
             </div>

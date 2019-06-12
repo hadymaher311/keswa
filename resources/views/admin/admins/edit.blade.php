@@ -103,7 +103,7 @@
                                 <select name="role" id="role" required class="form-control @error('role') is-invalid @enderror">
                                     <option value="">{{ __('Choose admin role') }}</option>
                                     @foreach ($roles as $role)
-                                        <option @if ($role->id == $admin->role)
+                                        <option @if ($role->id == $admin->roles->first()->id)
                                             selected
                                         @endif value="{{ $role->id }}">{{ $role->name }}</option>
                                     @endforeach

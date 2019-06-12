@@ -46,47 +46,6 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail" class="col-sm-3 control-label">{{ __('Permissions') }}</label>
-        
-                            <div class="col-sm-9">
-                                @php
-                                    $permissionsArray = array();
-                                @endphp
-                                @foreach ($permissions as $permission)
-            
-                                    @if (!in_array(explode(' ', $permission->name)[1], $permissionsArray))
-                                        
-                                        <div class="check-all-container">
-                                        <div style="clear: both;"></div>
-                                        <b>{{ ucfirst(explode(' ', $permission->name)[1]) }}:</b> <br>
-                                        <div class="row">
-                                            @foreach ($permissions as $permission2)
-                
-                                                @if (explode(' ', $permission->name)[1] === explode(' ', $permission2->name)[1])
-                
-                                                <div class="col-sm-4">
-                                                    <div class="custom-checkbox custom-control">
-                                                        <input type="checkbox" id="permission-{{ $loop->index+1 }}" class="custom-control-input minimal" name="permissions[]" value="{{ $permission2->id }}"
-                                                        > 
-                                                        <label for="permission-{{ $loop->index+1 }}" class="custom-control-label">{{ $permission2->name }}</label>
-                                                    </div>
-                                                </div>
-                
-                                                @endif
-                
-                                            @endforeach
-                                        </div>
-                                        </div>
-                                        
-                                        @php
-                                            $permissionsArray[] = explode(' ', $permission->name)[1];
-                                        @endphp
-            
-                                    @endif
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <div class="col-sm-3"></div>
                             <div class="col-sm-9">
                                 <button type="submit" class="btn btn-warning btn-block">{{ __('Submit') }}</button>

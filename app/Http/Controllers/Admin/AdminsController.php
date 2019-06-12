@@ -58,7 +58,7 @@ class AdminsController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        $admin->assignRole($request->role);
+        $admin->syncRoles($request->role);
         if ($request->has('image')) {
             $admin
                 ->addMediaFromUrl($request->image)
@@ -97,19 +97,40 @@ class AdminsController extends Controller
      * @param  Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, Admin $admin)
+    public function update(Request $request, Admin $admin)
     {
+        $this->validateUpdateRequest($request, $admin);
         $admin->first_name = $request->first_name;
         $admin->last_name = $request->last_name;
         $admin->email = $request->email;
         $admin->save();
-        $admin->assignRole($request->role);
+        $admin->syncRoles($request->role);
         if ($request->has('image')) {
             $admin
                 ->addMediaFromUrl($request->image)
                 ->toMediaCollection('admin.avatar');
         }
         return redirect()->route('admins.index')->with('status', trans('Updated Successfully'));
+    }
+
+    /**
+     * Valudate Update Registe.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Admin  $admin
+     * @return \Illuminate\Http\Response
+     */
+    protected function validateUpdateRequest(Request $request, Admin $admin)
+    {
+        $this->validate($request, [
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 
+                        Rule::unique('admins')->ignore($admin->id)
+                        ],
+            'role' => ['required', 'exists:roles,id'],
+            'image' => ['sometimes', 'image']
+        ]);
     }
     
     /**
