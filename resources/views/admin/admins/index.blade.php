@@ -19,9 +19,7 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Admins Table') }}</h4> <br>
-                    @can('create admins')
                         <a href="{{ route('admins.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new admin') }}</a>
-                    @endcan
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -34,7 +32,6 @@
                           </div>
                         </div>
                     @endif
-                    @can('delete admins')
                         <form action="{{ route('admins.destroy') }}" method="POST" id="deleteForm">
                             @csrf
                             {{ method_field('DELETE') }}
@@ -44,7 +41,6 @@
                                 $(this).parent('form').submit();
                             }" class="btn btn-danger btn-lg" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
                         </form>
-                    @endcan
                     <div class="table-responsive">
                     <table class="table table-striped" id="table-2">
                         <thead>
@@ -85,7 +81,6 @@
                                     <td>{{ $admin->created_at->diffForHumans() }}</td>
                                     
                                     <td>
-                                        @can('update admins', Model::class)
                                             <form action="{{ route('admins.active', $admin->id) }}" method="post">
                                                 @csrf
                                                 @method('PUT')
@@ -101,16 +96,13 @@
                                                     ">
                                                     <span class="custom-switch-indicator"></span>
                                                 </label>
-                                        @endcan
                                         </form>
                                     </td>
 
                                     <td>
-                                        @can('update admins')
                                             <a href="{{ route('admins.edit', $admin->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                        @endcan
                                         
                                         <a href="{{ route('admins.edit.password', $admin->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit password') }}" class="btn btn-sm btn-dark">
                                             <i class="fa fa-lock"></i>
@@ -121,7 +113,6 @@
                                         </a>
                                                 
                                                 
-                                        @can('delete admins')
                                             <a 
                                                 href="#" 
                                                 class="btn btn-danger btn-sm"
@@ -136,7 +127,6 @@
                                                 {{ method_field('DELETE') }}
                                                 <input type="hidden" name="admins[]" value="{{ $admin->id }}">
                                             </form>
-                                        @endcan
 
                                     </td>
                                 </tr>

@@ -19,9 +19,7 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Edit role') }}</h4> <br>
-                    @can('create roles')
                         <a href="{{ route('roles.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new role') }}</a>
-                    @endcan
                     <a href="{{ route('roles.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
                 </div>
                 <div class="card-body">
