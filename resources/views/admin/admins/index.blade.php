@@ -56,6 +56,7 @@
                             <th>{{ __('Email') }}</th>
                             <th>{{ __('Role') }}</th>
                             <th>{{ __('Added from') }}</th>
+                            <th>{{ __('Active') }}</th>
                             <th>{{ __('Controls') }}</th>
                         </tr>
                         </thead>
@@ -78,6 +79,26 @@
                                     <td>{{ $admin->email }}</td>
                                     <td>{{ ($admin->roles->first()) ? $admin->roles->first()->name : '' }}</td>
                                     <td>{{ $admin->created_at->diffForHumans() }}</td>
+                                    
+                                    <td>
+                                        <form action="{{ route('admins.active', $admin->id) }}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                                            <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if ($admin->active)
+                                                {{ __('Active') }}
+                                                @else
+                                                {{ __('Not Active') }}
+                                                @endif">
+                                                <input name="active" value="{{ $admin->id }}" type="checkbox" @if ($admin->active)
+                                                checked
+                                                @endif class="custom-switch-input" onchange="
+                                                    $(this).parent('form'),submit();
+                                                ">
+                                                <span class="custom-switch-indicator"></span>
+                                            </label>
+                                        </form>
+                                    </td>
+
                                     <td>
                                         <a href="{{ route('admins.edit', $admin->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                             <i class="fa fa-edit"></i>

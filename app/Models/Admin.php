@@ -48,6 +48,7 @@ class Admin extends Authenticatable implements HasMedia
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'active' => 'boolean'
     ];
     
     /**

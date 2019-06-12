@@ -140,6 +140,20 @@ class AdminsController extends Controller
         $admin->save();
         return redirect()->route('admins.index')->with('status', trans('Updated Successfully'));
     }
+    
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Admin  $admin
+     * @return \Illuminate\Http\Response
+     */
+    public function active(Request $request, Admin $admin)
+    {
+        $admin->active = !($admin->active);
+        $admin->save();
+        return redirect()->route('admins.index')->with('status', trans('Updated Successfully'));
+    }
 
     /**
      * Remove the specified resource from storage.

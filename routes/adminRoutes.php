@@ -33,6 +33,7 @@ Route::group([
         Route::delete('/admin/admins', 'AdminsController@destroy')->name('admins.destroy');
         Route::get('/admin/admins/{admin}/edit/password', 'AdminsController@editPassword')->name('admins.edit.password');
         Route::PUT('/admin/admins/{admin}/edit/password', 'AdminsController@updatePassword')->name('admins.edit.password');
+        Route::PUT('/admin/admins/{admin}/active', 'AdminsController@active')->name('admins.active');
 
         /**
          * All Admin Auth Controllers will be in Admin\Auth Folder
