@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Admin;
+use App\User;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\Admin\Admins\CreateRequest;
-use App\Http\Requests\Admin\Admins\UpdateRequest;
 
-class AdminsController extends Controller
+class UsersController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -29,8 +25,8 @@ class AdminsController extends Controller
      */
     public function index()
     {
-        $admins = Admin::all();
-        return view('admin.admins.index', compact('admins'));
+        $users = User::all();
+        return view('admin.users.index', compact('users'));
     }
     
     /**
@@ -40,8 +36,7 @@ class AdminsController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
-        return view('admin.admins.create', compact('roles'));
+        return view('admin.users.create');
     }
     
     /**
@@ -52,17 +47,16 @@ class AdminsController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $admin = admin::create([
+        $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        $admin->assignRole($request->role);
         if ($request->has('image')) {
-            $admin
+            $user
                 ->addMediaFromUrl($request->image)
-                ->toMediaCollection('admin.avatar');
+                ->toMediaCollection('user.avatar');
         }
         return back()->with(['status' => trans('Added Successfully')]);
     }
@@ -73,102 +67,102 @@ class AdminsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Admin $admin)
+    public function show(User $user)
     {
-        return view('admin.admins.show', compact('admin'));
+        return view('admin.users.show', compact('admin'));
     }
     
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Admin  $admin
+     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Admin $admin)
+    public function edit(User $user)
     {
         $roles = Role::all();
-        return view('admin.admins.edit', compact('admin', 'roles'));
+        return view('admin.users.edit', compact('admin', 'roles'));
     }
     
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Admin  $admin
+     * @param  Admin  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, Admin $admin)
+    public function update(UpdateRequest $request, Admin $user)
     {
-        $admin->first_name = $request->first_name;
-        $admin->last_name = $request->last_name;
-        $admin->email = $request->email;
-        $admin->save();
-        $admin->assignRole($request->role);
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->email = $request->email;
+        $user->save();
+        $user->assignRole($request->role);
         if ($request->has('image')) {
-            $admin
+            $user
                 ->addMediaFromUrl($request->image)
-                ->toMediaCollection('admin.avatar');
+                ->toMediaCollection('user.avatar');
         }
-        return redirect()->route('admins.index')->with('status', trans('Updated Successfully'));
+        return redirect()->route('users.index')->with('status', trans('Updated Successfully'));
     }
     
     /**
      * Show the form for editing admin password.
      *
-     * @param  Admin  $admin
+     * @param  Admin  $user
      * @return \Illuminate\Http\Response
      */
-    public function editPassword(Admin $admin)
+    public function editPassword(Admin $user)
     {
-        return view('admin.admins.editpassword', compact('admin'));
+        return view('admin.users.editpassword', compact('admin'));
     }
     
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Admin  $admin
+     * @param  Admin  $user
      * @return \Illuminate\Http\Response
      */
-    public function updatePassword(Request $request, Admin $admin)
+    public function updatePassword(Request $request, Admin $user)
     {
         $this->validate($request, [
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-        $admin->password = Hash::make($request->password);
-        $admin->save();
-        return redirect()->route('admins.index')->with('status', trans('Updated Successfully'));
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return redirect()->route('users.index')->with('status', trans('Updated Successfully'));
     }
     
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Admin  $admin
+     * @param  Admin  $user
      * @return \Illuminate\Http\Response
      */
-    public function active(Request $request, Admin $admin)
+    public function active(Request $request, Admin $user)
     {
-        $admin->active = !($admin->active);
-        $admin->save();
-        return redirect()->route('admins.index')->with('status', trans('Updated Successfully'));
+        $user->active = !($user->active);
+        $user->save();
+        return redirect()->route('users.index')->with('status', trans('Updated Successfully'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Admin  $admin
+     * @param  Admin  $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
     {
-        if (!$request->admins) {
+        if (!$request->users) {
             return back();
         }
         $this->validate($request, [
-            'admins.*' => 'required|exists:admins,id',
+            'users.*' => 'required|exists:users,id',
         ]);
-        Admin::destroy($request->admins);
+        User::destroy($request->users);
         return back()->with('status', trans('Deleted Successfully'));
     }
 }

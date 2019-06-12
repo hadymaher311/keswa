@@ -3,12 +3,15 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
     use Notifiable;
+    use HasMediaTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -35,6 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'active' => 'boolean'
     ];
     
     /**
@@ -44,5 +48,24 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getNameAttribute()
     {
         return ucfirst($this->first_name) . ' ' . ucfirst($this->last_name);
+    }
+
+    /**
+     * The function to return Image url.
+     *
+     */
+    public function getImageAttribute()
+    {
+        return $this->getFirstMedia('user.avatar');
+    }
+
+    public function registerMediaConversions(Media $media = null)
+    {
+        $this->addMediaConversion('card')
+              ->width(368)
+              ->height(232);
+        $this->addMediaConversion('thumb')
+              ->width(100)
+              ->height(100);
     }
 }
