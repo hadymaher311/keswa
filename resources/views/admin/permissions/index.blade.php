@@ -19,7 +19,9 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Permissions Table') }}</h4> <br>
-                    <a href="{{ route('permissions.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new permission') }}</a>
+                    @can('create permissions')
+                        <a href="{{ route('permissions.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new permission') }}</a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -70,24 +72,28 @@
                                     <td>{{ $permission->name }}</td>
                                     <td>{{ $permission->created_at->diffForHumans() }}</td>
                                     <td>
-                                        <a href="{{ route('permissions.edit', $permission->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
+                                        @can('update permissions')
+                                            <a href="{{ route('permissions.edit', $permission->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        @endcan
 
-                                        <a 
-                                            href="#" 
-                                            class="btn btn-danger btn-sm"
-                                            onclick="
-                                                    event.preventDefault();
-                                                    if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
-                                                        $(this).siblings('form').submit();
-                                                    }" data-toggle="tooltip" data-placement="top" title="{{ __('Delete') }}"
-                                        ><i class="fa fa-times"></i></a>
-                                        <form action="{{ route('permissions.destroy') }}" method="POST">
-                                            @csrf
-                                            {{ method_field('DELETE') }}
-                                            <input type="hidden" name="permissions[]" value="{{ $permission->id }}">
-                                        </form>
+                                        @can('delete permissions')
+                                            <a 
+                                                href="#" 
+                                                class="btn btn-danger btn-sm"
+                                                onclick="
+                                                        event.preventDefault();
+                                                        if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
+                                                            $(this).siblings('form').submit();
+                                                        }" data-toggle="tooltip" data-placement="top" title="{{ __('Delete') }}"
+                                            ><i class="fa fa-times"></i></a>
+                                            <form action="{{ route('permissions.destroy') }}" method="POST">
+                                                @csrf
+                                                {{ method_field('DELETE') }}
+                                                <input type="hidden" name="permissions[]" value="{{ $permission->id }}">
+                                            </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

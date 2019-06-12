@@ -19,8 +19,12 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('View role') }}</h4> <br>
-                    <a href="{{ route('roles.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new role') }}</a>
-                    <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning m-3"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
+                    @can('create roles')
+                        <a href="{{ route('roles.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new role') }}</a>
+                    @endcan
+                    @can('update roles')
+                        <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning m-3"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
+                    @endcan
                     <a href="{{ route('roles.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
                 </div>
                 <div class="card-body">
@@ -43,7 +47,7 @@
                         <div class="col-sm-3"><b>{{ __('Permissions') }}:</b></div>
                         <div class="col-sm-9">
                             @foreach ($role->permissions as $permission)
-                                {{ $permission->name }}
+                                <div>{{ $permission->name }}</div>
                             @endforeach
                         </div>
                     </div>

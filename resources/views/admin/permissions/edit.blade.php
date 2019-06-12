@@ -19,7 +19,9 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Edit permission') }}</h4> <br>
-                    <a href="{{ route('permissions.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new permission') }}</a>
+                    @can('create permisisons')
+                        <a href="{{ route('permissions.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new permission') }}</a>
+                    @endcan
                     <a href="{{ route('permissions.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
                 </div>
                 <div class="card-body">

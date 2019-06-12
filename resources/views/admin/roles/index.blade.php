@@ -19,7 +19,9 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Roles Table') }}</h4> <br>
-                    <a href="{{ route('roles.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new role') }}</a>
+                    @can('create roles')
+                        <a href="{{ route('roles.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new role') }}</a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -70,28 +72,32 @@
                                     <td>{{ $role->name }}</td>
                                     <td>{{ $role->created_at->diffForHumans() }}</td>
                                     <td>
-                                        <a href="{{ route('roles.edit', $role->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
+                                        @can('update roles')
+                                            <a href="{{ route('roles.edit', $role->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        @endcan
 
                                         <a href="{{ route('roles.show', $role->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('View') }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-file"></i>
                                         </a>
-
-                                        <a 
-                                            href="#" 
-                                            class="btn btn-danger btn-sm"
-                                            onclick="
-                                                    event.preventDefault();
-                                                    if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
-                                                        $(this).siblings('form').submit();
-                                                    }" data-toggle="tooltip" data-placement="top" title="{{ __('Delete') }}"
-                                        ><i class="fa fa-times"></i></a>
-                                        <form action="{{ route('roles.destroy') }}" method="POST">
-                                            @csrf
-                                            {{ method_field('DELETE') }}
-                                            <input type="hidden" name="roles[]" value="{{ $role->id }}">
-                                        </form>
+                                            
+                                        @can('delete roles')
+                                            <a 
+                                                href="#" 
+                                                class="btn btn-danger btn-sm"
+                                                onclick="
+                                                        event.preventDefault();
+                                                        if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
+                                                            $(this).siblings('form').submit();
+                                                        }" data-toggle="tooltip" data-placement="top" title="{{ __('Delete') }}"
+                                            ><i class="fa fa-times"></i></a>
+                                            <form action="{{ route('roles.destroy') }}" method="POST">
+                                                @csrf
+                                                {{ method_field('DELETE') }}
+                                                <input type="hidden" name="roles[]" value="{{ $role->id }}">
+                                            </form>
+                                        @endcan
 
                                     </td>
                                 </tr>

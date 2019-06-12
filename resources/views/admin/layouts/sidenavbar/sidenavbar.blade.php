@@ -13,7 +13,9 @@
             <li><a class="nav-link" href="{{ route('admin.home') }}">{{ __('Home') }}</a></li>
           </ul>
         </li>
-        @include('admin.layouts.sidenavbar.adminmenu')
+        @if (auth()->user()->can('view admins') || auth()->user()->can('view permissions') || auth()->user()->can('view roles'))
+          @include('admin.layouts.sidenavbar.adminmenu')
+        @endif
       </ul>
     </aside>
   </div>
