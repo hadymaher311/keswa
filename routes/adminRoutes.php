@@ -19,10 +19,6 @@ Route::group([
 
         // admin home page
         Route::get('/admin/home', 'HomeController@index')->name('admin.home');
-
-        // Permissions CRUD routes
-        Route::resource('/admin/permissions', 'PermissionsController');
-        Route::delete('/admin/permissions', 'PermissionsController@destroy')->name('permissions.destroy');
         
         // Roles CRUD routes
         Route::resource('/admin/roles', 'RolesController');

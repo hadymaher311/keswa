@@ -10,13 +10,6 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a class="nav-link has-dropdown" href="#"><i class="fa fa-lock"></i>{{ __('Permissions') }}</a>
-                <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{ route('permissions.index') }}">{{ __('Home') }}</a></li>
-                        <li><a class="nav-link" href="{{ route('permissions.create') }}">{{ __('Create') }}</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
                 <a class="nav-link has-dropdown" href="#"><i class="fa fa-briefcase"></i>{{ __('Roles') }}</a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{ route('roles.index') }}">{{ __('Home') }}</a></li>
