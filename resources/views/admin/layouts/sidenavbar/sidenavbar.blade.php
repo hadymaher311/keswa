@@ -14,6 +14,7 @@
           </ul>
         </li>
         @role ('super')
+          @include('admin.layouts.sidenavbar.catalogmenu')
           @include('admin.layouts.sidenavbar.adminmenu')
           @include('admin.layouts.sidenavbar.usermenu')
         @endrole

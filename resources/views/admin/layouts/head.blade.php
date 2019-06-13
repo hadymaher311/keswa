@@ -21,6 +21,14 @@
     <link rel="stylesheet" href="{{ asset('/admin_styles/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('/admin_styles/css/components.css') }}">
 
+    @if (app()->isLocale('ar'))
+      <link href="https://fonts.googleapis.com/css?family=Cairo&display=swap" rel="stylesheet">
+      <style>
+        *{
+          font-family: 'Cairo', sans-serif;
+        }
+      </style>
+    @endif
 
     @yield('css')
 

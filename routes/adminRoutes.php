@@ -17,33 +17,63 @@ Route::group([
     Route::group(['namespace' => 'Admin'],function(){
 
 
-        // admin home page
+        /*********************************************** admin home page *******************************************/
         Route::get('/admin/home', 'HomeController@index')->name('admin.home');
+        /*********************************************** admin home page *******************************************/
         
-        // Roles CRUD routes
+        /*********************************************** Roles CRUD routes *******************************************/
         Route::resource('/admin/roles', 'RolesController');
         Route::delete('/admin/roles', 'RolesController@destroy')->name('roles.destroy');
+        /*********************************************** Roles CRUD routes *******************************************/
         
-        // Admins CRUD routes
+        /*********************************************** Admins CRUD routes *******************************************/
         Route::resource('/admin/admins', 'AdminsController');
         Route::delete('/admin/admins', 'AdminsController@destroy')->name('admins.destroy');
         Route::get('/admin/admins/{admin}/edit/password', 'AdminsController@editPassword')->name('admins.edit.password');
         Route::PUT('/admin/admins/{admin}/edit/password', 'AdminsController@updatePassword')->name('admins.edit.password');
         Route::PUT('/admin/admins/{admin}/active', 'AdminsController@active')->name('admins.active');
+        /*********************************************** Admins CRUD routes *******************************************/
         
-        // Admin profile pages
+        /*********************************************** products CRUD routes *******************************************/
+        Route::resource('/admin/products', 'ProductsController');
+        Route::delete('/admin/products', 'ProductsController@destroy')->name('products.destroy');
+        /*********************************************** products CRUD routes *******************************************/
+        
+        /*********************************************** orders CRUD routes *******************************************/
+        Route::resource('/admin/orders', 'OrdersController');
+        Route::delete('/admin/orders', 'OrdersController@destroy')->name('orders.destroy');
+        /*********************************************** orders CRUD routes *******************************************/
+        
+        /*********************************************** categories CRUD routes *******************************************/
+        Route::resource('/admin/categories', 'CategoriesController');
+        Route::delete('/admin/categories', 'CategoriesController@destroy')->name('categories.destroy');
+        /*********************************************** categories CRUD routes *******************************************/
+        
+        /*********************************************** brands CRUD routes *******************************************/
+        Route::resource('/admin/brands', 'BrandsController');
+        Route::delete('/admin/brands', 'BrandsController@destroy')->name('brands.destroy');
+        /*********************************************** brands CRUD routes *******************************************/
+        
+        /*********************************************** warehouses CRUD routes *******************************************/
+        Route::resource('/admin/warehouses', 'WarehousesController');
+        Route::delete('/admin/warehouses', 'WarehousesController@destroy')->name('warehouses.destroy');
+        /*********************************************** warehouses CRUD routes *******************************************/
+        
+        /*********************************************** Admin profile pages *******************************************/
         Route::get('/admin/profile', 'ProfileController@index')->name('admin.profile');
         Route::get('/admin/profile/edit', 'ProfileController@edit')->name('admin.profile.edit');
         Route::put('/admin/profile/edit', 'ProfileController@update')->name('admin.profile.edit');
         Route::get('/admin/profile/edit/password', 'ProfileController@editPassword')->name('admin.profile.edit.password');
         Route::PUT('/admin/profile/edit/password', 'ProfileController@updatePassword')->name('admin.profile.edit.password');
+        /*********************************************** Admin profile pages *******************************************/
 
-        // Users CRUD routes
+        /*********************************************** Users CRUD routes *******************************************/
         Route::resource('/admin/users', 'UsersController');
         Route::delete('/admin/users', 'UsersController@destroy')->name('users.destroy');
         Route::get('/admin/users/{user}/edit/password', 'UsersController@editPassword')->name('users.edit.password');
         Route::PUT('/admin/users/{user}/edit/password', 'UsersController@updatePassword')->name('users.edit.password');
         Route::PUT('/admin/users/{user}/active', 'UsersController@active')->name('users.active');
+        /*********************************************** Users CRUD routes *******************************************/
 
         /**
          * All Admin Auth Controllers will be in Admin\Auth Folder

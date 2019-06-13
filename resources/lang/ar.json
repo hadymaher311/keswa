@@ -449,5 +449,11 @@
     "Orders": "الطلبات",
     "Cart": "العربة",
     "Wishlist": "المفضلة",
-    "Edit info": "تعديل المعلومات"
+    "Edit info": "تعديل المعلومات",
+    "Catalog": "الكتالوج",
+    "Warehouses": "المخازن",
+    "Brands": "العلامات التجارية",
+    "Categories": "الأصناف",
+    "Sub categories": "الأصناف الفرعية",
+    "Products": "المنتجات"
 }
