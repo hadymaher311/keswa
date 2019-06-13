@@ -31,6 +31,13 @@ Route::group([
         Route::PUT('/admin/admins/{admin}/edit/password', 'AdminsController@updatePassword')->name('admins.edit.password');
         Route::PUT('/admin/admins/{admin}/active', 'AdminsController@active')->name('admins.active');
         
+        // Admin profile pages
+        Route::get('/admin/profile', 'ProfileController@index')->name('admin.profile');
+        Route::get('/admin/profile/edit', 'ProfileController@edit')->name('admin.profile.edit');
+        Route::put('/admin/profile/edit', 'ProfileController@update')->name('admin.profile.edit');
+        Route::get('/admin/profile/edit/password', 'ProfileController@editPassword')->name('admin.profile.edit.password');
+        Route::PUT('/admin/profile/edit/password', 'ProfileController@updatePassword')->name('admin.profile.edit.password');
+
         // Users CRUD routes
         Route::resource('/admin/users', 'UsersController');
         Route::delete('/admin/users', 'UsersController@destroy')->name('users.destroy');
