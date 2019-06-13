@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\SubCategory;
 use App\Helpers\LocalizableModel;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -18,6 +19,8 @@ class Brand  extends LocalizableModel implements HasMedia
      */
     protected $fillable = [
         'name_en', 'name_ar',
+        'description_en', 'description_ar',
+        'category_id'
     ];
  
     /**
@@ -27,6 +30,7 @@ class Brand  extends LocalizableModel implements HasMedia
      */
     protected $localizable = [
         'name',
+        'description'
     ];
 
     /**
@@ -46,5 +50,10 @@ class Brand  extends LocalizableModel implements HasMedia
         $this->addMediaConversion('thumb')
               ->width(100)
               ->height(100);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(SubCategory::class);
     }
 }
