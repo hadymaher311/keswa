@@ -39,7 +39,7 @@
                         event.preventDefault();
                         if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
                             $(this).parent('form').submit();
-                        }" class="btn btn-danger btn-lg" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
+                        }" class="btn btn-danger mb-3" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
                     </form>
                     <div class="table-responsive">
                     <table class="table table-striped" id="table-2">
@@ -73,7 +73,7 @@
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>{{ $brand->name }}</td>
                                     <td>{!! $brand->description !!}</td>
-                                    <td><a href="{{ route('categories.show', $brand->category_id) }}" class="badge badge-primary">{{ $brand->category->name }}</a></td>
+                                    <td><a href="{{ route('sub_categories.show', $brand->category_id) }}" class="badge badge-primary">{{ $brand->category->name }}</a></td>
                                     <td>{{ $brand->created_at->diffForHumans() }}</td>
                                     <td>
                                         <form action="{{ route('brands.active', $brand->id) }}" method="post">
@@ -102,7 +102,7 @@
                                                 @else
                                                 {{ __('Not Visible') }}
                                                 @endif">
-                                                <input name="active" value="{{ $brand->id }}" type="checkbox" @if ($brand->navbar_visibility)
+                                                <input name="visibility" value="{{ $brand->id }}" type="checkbox" @if ($brand->navbar_visibility)
                                                 checked
                                                 @endif class="custom-switch-input" onchange="
                                                     $(this).parent('form'),submit();

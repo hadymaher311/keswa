@@ -39,7 +39,7 @@
                         event.preventDefault();
                         if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
                             $(this).parent('form').submit();
-                        }" class="btn btn-danger btn-lg" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
+                        }" class="btn btn-danger mb-3" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
                     </form>
                     <div class="table-responsive">
                     <table class="table table-striped" id="table-2">

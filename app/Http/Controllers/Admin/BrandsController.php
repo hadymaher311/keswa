@@ -103,6 +103,7 @@ class BrandsController extends Controller
         $brand->name_ar = $request->name_ar;
         $brand->description_en = $request->description_en;
         $brand->description_ar = $request->description_ar;
+        $brand->category_id = $request->category;
         $brand->save();
         if ($request->has('image')) {
             $brand
