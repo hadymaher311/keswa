@@ -72,11 +72,17 @@ abstract class LocalizableModel extends Model {
         // locale-specific attribute e.g. name_en
         if (in_array($attribute, $this->localizable)) {
             $localeSpecificAttribute = $attribute.'_'.app()->getLocale();
+            $localeInverseSpecificAttribute = $attribute.'_'.$this->getInverseLocale();
 
-            return $this->{$localeSpecificAttribute};
+            return ($this->{$localeSpecificAttribute}) ? $this->{$localeSpecificAttribute} : $this->{$localeInverseSpecificAttribute};
         }
 
         return parent::__get($attribute);
+    }
+
+    protected function getInverseLocale()
+    {
+        return (app()->getLocale() == 'ar') ? 'en' : 'ar';
     }
 
 

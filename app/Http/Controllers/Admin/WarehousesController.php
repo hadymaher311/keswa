@@ -6,6 +6,7 @@ use App\Models\warehouse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Warehouses\CreateRequest;
+use App\Http\Requests\Admin\Warehouses\UpdateRequest;
 
 class WarehousesController extends Controller
 {
@@ -63,7 +64,7 @@ class WarehousesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(warehouse $warehous)
+    public function show(warehouse $warehouse)
     {
         return view('admin.warehouses.show', compact('warehouse'));
     }
@@ -71,10 +72,10 @@ class WarehousesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  warehouse  $warehous
+     * @param  warehouse  $warehouse
      * @return \Illuminate\Http\Response
      */
-    public function edit(warehouse $warehous)
+    public function edit(warehouse $warehouse)
     {
         return view('admin.warehouses.edit', compact('warehouse'));
     }
@@ -83,23 +84,24 @@ class WarehousesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  warehouse  $warehous
+     * @param  warehouse  $warehouse
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, warehouse $warehous)
+    public function update(UpdateRequest $request, warehouse $warehouse)
     {
-        $this->validate($request, [
-            'name' => 'required|string|min:2'
-        ]);
-        $warehous->name = $request->name;
-        $warehous->save();
+        return $warehouse;
+        $warehouse->name_en = $request->name;
+        $warehouse->name_ar = $request->name_ar;
+        $warehouse->location_en = $request->location;
+        $warehouse->location_ar = $request->location_ar;
+        $warehouse->save();
         return redirect()->route('warehouses.index')->with('status', trans('Updated Successfully'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  warehouse  $warehous
+     * @param  warehouse  $warehouse
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)

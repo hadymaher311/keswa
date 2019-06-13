@@ -52,7 +52,6 @@ class RolesController extends Controller
             'name' => 'required|string|min:2|unique:roles',
         ]);
         $role = Role::create(['name' => $request->name]);
-        $role->syncPermissions($request->permissions);
         return back()->with(['status' => trans('Added Successfully')]);
     }
     

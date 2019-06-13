@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('title')
-{{ __('View role') }}
+{{ __('View warehouse') }}
 @endsection
 
 @section('css')
@@ -10,7 +10,7 @@
 
 @section('body')
     <div class="section-header">
-        <h1>{{ __('Roles') }}</h1>
+        <h1>{{ __('Warehouses') }}</h1>
     </div>
 
     <div class="section-body">
@@ -18,10 +18,10 @@
             <div class="col-12">
                 <div class="card">
                 <div class="card-header">
-                    <h4>{{ __('View role') }}</h4> <br>
-                        <a href="{{ route('roles.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new role') }}</a>
-                        <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning m-3"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
-                    <a href="{{ route('roles.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
+                    <h4>{{ __('View warehouse') }}</h4> <br>
+                        <a href="{{ route('warehouses.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new warehouse') }}</a>
+                        <a href="{{ route('warehouses.edit', $warehouse->id) }}" class="btn btn-warning m-3"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
+                    <a href="{{ route('warehouses.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -37,7 +37,9 @@
                     
                     <div class="row">
                         <div class="col-sm-3"><b>{{ __('Name') }}:</b></div>
-                        <div class="col-sm-9">{{ $role->name }}</div>
+                        <div class="col-sm-9">{{ $warehouse->name }}</div>
+                        <div class="col-sm-3"><b>{{ __('Location') }}:</b></div>
+                        <div class="col-sm-9">{{ $warehouse->location }}</div>
                     </div>
 
                 </div>
