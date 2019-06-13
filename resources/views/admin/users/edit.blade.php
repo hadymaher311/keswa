@@ -33,9 +33,6 @@
                           </div>
                         </div>
                     @endif
-                    @foreach ($errors->all() as $error)
-                        {{ $error }}
-                    @endforeach
                     <form action="{{ route('users.update', $user->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         {{ method_field('PUT') }}

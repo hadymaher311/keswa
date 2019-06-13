@@ -440,6 +440,7 @@
     "Choose Image": "اختر صورة",
     "Change Image": "تغيير صورة",
     "Edit password": "تغيير كلمة السر",
+    "Change password": "تغيير كلمة السر",
     "Users": "المستخدمون",
     "User": "المستخدم",
     "Go To": "الذهاب الي",
@@ -447,5 +448,6 @@
     "Addresses": "العناوين",
     "Orders": "الطلبات",
     "Cart": "العربة",
-    "Wishlist": "المفضلة"
+    "Wishlist": "المفضلة",
+    "Edit info": "تعديل المعلومات"
 }
