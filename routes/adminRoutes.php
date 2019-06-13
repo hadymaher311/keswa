@@ -47,7 +47,16 @@ Route::group([
         /*********************************************** categories CRUD routes *******************************************/
         Route::resource('/admin/categories', 'CategoriesController');
         Route::delete('/admin/categories', 'CategoriesController@destroy')->name('categories.destroy');
+        Route::PUT('/admin/categories/{category}/active', 'CategoriesController@active')->name('categories.active');
+        Route::PUT('/admin/categories/{category}/visibility', 'CategoriesController@visibility')->name('categories.visibility');
         /*********************************************** categories CRUD routes *******************************************/
+        
+        /*********************************************** sub_categories CRUD routes *******************************************/
+        Route::resource('/admin/sub_categories', 'SubCategoriesController');
+        Route::delete('/admin/sub_categories', 'SubCategoriesController@destroy')->name('sub_categories.destroy');
+        Route::PUT('/admin/sub_categories/{sub_category}/active', 'SubCategoriesController@active')->name('sub_categories.active');
+        Route::PUT('/admin/sub_categories/{sub_category}/visibility', 'SubCategoriesController@visibility')->name('sub_categories.visibility');
+        /*********************************************** sub_categories CRUD routes *******************************************/
         
         /*********************************************** brands CRUD routes *******************************************/
         Route::resource('/admin/brands', 'BrandsController');

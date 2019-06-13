@@ -89,7 +89,6 @@ class WarehousesController extends Controller
      */
     public function update(UpdateRequest $request, warehouse $warehouse)
     {
-        return $warehouse;
         $warehouse->name_en = $request->name;
         $warehouse->name_ar = $request->name_ar;
         $warehouse->location_en = $request->location;

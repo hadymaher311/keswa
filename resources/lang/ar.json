@@ -453,8 +453,8 @@
     "Catalog": "الكتالوج",
     "Warehouses": "المخازن",
     "Brands": "العلامات التجارية",
-    "Categories": "الأصناف",
-    "Sub categories": "الأصناف الفرعية",
+    "Categories": "الأقسام",
+    "Sub categories": "الأقسام الفرعية",
     "Products": "المنتجات",
     "Add new warehouse": "أضف مخزن جديد",
     "Edit warehouse": "تعديل المخزن",
@@ -466,5 +466,11 @@
     "in Arabic": "بالعربية",
     "in English": "بالانجليزية",
     "Active": "نشط",
-    "Not Active": "غير نشط"
+    "Activate": "تنشيط",
+    "Not Active": "غير نشط",
+    "Navbar visibility": "الظهور في شريط الموقع",
+    "Visibility": "الظهور",
+    "Visible": "مرئ",
+    "Not Visible": "غير مرئ",
+    "Nothing yet": "لا شئ إلي الآن"
 }

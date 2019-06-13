@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Categories\CreateRequest;
-use App\Http\Requests\Admin\Categories\UpdateRequest;
 
-class CategoriesController extends Controller
+class SubCategoriesController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -27,8 +25,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('admin.categories.index', compact('categories'));
+        $sub_categories = SubCategory::all();
+        return view('admin.sub_categories.index', compact('sub_categories'));
     }
     
     /**
@@ -38,7 +36,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return view('admin.sub_categories.create');
     }
     
     /**
@@ -49,16 +47,16 @@ class CategoriesController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $category = Category::create([
+        $sub_category = SubCategory::create([
             'name_en' => $request->name_en,
             'name_ar' => $request->name_ar,
             'description_en' => $request->description_en,
             'description_ar' => $request->description_ar,
         ]);
         if ($request->has('image')) {
-            $category
+            $sub_category
                 ->addMediaFromUrl($request->image)
-                ->toMediaCollection('category.image');
+                ->toMediaCollection('sub_category.image');
         }
         return back()->with(['status' => trans('Added Successfully')]);
     }
@@ -69,42 +67,42 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(SubCategory $sub_category)
     {
-        return view('admin.categories.show', compact('category'));
+        return view('admin.sub_categories.show', compact('sub_category'));
     }
     
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Category  $category
+     * @param  SubCategory  $sub_category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(SubCategory $sub_category)
     {
-        return view('admin.categories.edit', compact('category'));
+        return view('admin.sub_categories.edit', compact('sub_category'));
     }
     
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Category  $category
+     * @param  SubCategory  $sub_category
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, Category $category)
+    public function update(UpdateRequest $request, SubCategory $sub_category)
     {
-        $category->name_en = $request->name_en;
-        $category->name_ar = $request->name_ar;
-        $category->description_en = $request->description_en;
-        $category->description_ar = $request->description_ar;
-        $category->save();
+        $sub_category->name_en = $request->name_en;
+        $sub_category->name_ar = $request->name_ar;
+        $sub_category->description_en = $request->description_en;
+        $sub_category->description_ar = $request->description_ar;
+        $sub_category->save();
         if ($request->has('image')) {
-            $category
+            $sub_category
                 ->addMediaFromUrl($request->image)
-                ->toMediaCollection('category.image');
+                ->toMediaCollection('sub_category.image');
         }
-        return redirect()->route('categories.index')->with('status', trans('Updated Successfully'));
+        return redirect()->route('sub_categories.index')->with('status', trans('Updated Successfully'));
     }
 
     /**
@@ -115,13 +113,13 @@ class CategoriesController extends Controller
      */
     public function destroy(Request $request)
     {
-        if (!$request->categories) {
+        if (!$request->sub_categories) {
             return back();
         }
         $this->validate($request, [
-            'categories.*' => 'required|exists:categories,id',
+            'sub_categories.*' => 'required|exists:sub_categories,id',
         ]);
-        Category::destroy($request->categories);
+        SubCategory::destroy($request->sub_categories);
         return back()->with('status', trans('Deleted Successfully'));
     }
 
@@ -129,27 +127,27 @@ class CategoriesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Category  $category
+     * @param  SubCategory  $sub_category
      * @return \Illuminate\Http\Response
      */
-    public function active(Request $request, Category $category)
+    public function active(Request $request, SubCategory $sub_category)
     {
-        $category->active = !($category->active);
-        $category->save();
-        return redirect()->route('categories.index')->with('status', trans('Updated Successfully'));
+        $sub_category->active = !($sub_category->active);
+        $sub_category->save();
+        return redirect()->route('sub_categories.index')->with('status', trans('Updated Successfully'));
     }
     
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Category  $category
+     * @param  SubCategory  $sub_category
      * @return \Illuminate\Http\Response
      */
-    public function visibility(Request $request, Category $category)
+    public function visibility(Request $request, SubCategory $sub_category)
     {
-        $category->navbar_visibility = !($category->navbar_visibility);
-        $category->save();
-        return redirect()->route('categories.index')->with('status', trans('Updated Successfully'));
+        $sub_category->navbar_visibility = !($sub_category->navbar_visibility);
+        $sub_category->save();
+        return redirect()->route('sub_categories.index')->with('status', trans('Updated Successfully'));
     }
 }

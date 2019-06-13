@@ -23,6 +23,7 @@ class CreateBrandsTable extends Migration
             $table->bigInteger('category_id')->unsigned();
             $table->boolean('navbar_visibility')->default(0);
             $table->boolean('active')->default(1);
+            $table->foreign('category_id')->references('id')->on('sub_categories')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
