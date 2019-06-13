@@ -2,9 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Helpers\LocalizableModel;
 
-class warehouse extends Model
+class warehouse extends LocalizableModel
 {
-    //
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name_en', 'name_ar',
+        'location_en', 'location_ar',
+    ];
+ 
+    /**
+     * Localized attributes.
+     *
+     * @var array
+     */
+    protected $localizable = [
+        'name',
+        'location'
+    ];
 }

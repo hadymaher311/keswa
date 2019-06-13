@@ -455,5 +455,16 @@
     "Brands": "العلامات التجارية",
     "Categories": "الأصناف",
     "Sub categories": "الأصناف الفرعية",
-    "Products": "المنتجات"
+    "Products": "المنتجات",
+    "Add new warehouse": "أضف مخزن جديد",
+    "Edit warehouse": "تعديل المخزن",
+    "Delete warehouse": "حذف المخزن",
+    "Warehouses Table": "جدول المخازن",
+    "View warehouse": "عرض المخزن",
+    "Description": "الوصف",
+    "Location": "الموقع",
+    "in Arabic": "بالعربية",
+    "in English": "بالانجليزية",
+    "Active": "نشط",
+    "Not Active": "غير نشط"
 }

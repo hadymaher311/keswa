@@ -152,6 +152,11 @@ return [
         'image' => 'الصورة',
         'role' => 'الوظيفة',
         'permission' => 'التصريح',
+        'name_ar' => 'الاسم بالعربية',
+        'description' => 'الوصف',
+        'description_ar' => 'الوصف بالعربية',
+        'locarion' => 'الموقع',
+        'locarion_ar' => 'الموقع بالعربية',
     ],
 
 ];

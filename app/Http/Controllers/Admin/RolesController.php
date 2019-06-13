@@ -50,7 +50,6 @@ class RolesController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string|min:2|unique:roles',
-            'permissions.*' => 'sometimes|exists:permissions,id',
         ]);
         $role = Role::create(['name' => $request->name]);
         $role->syncPermissions($request->permissions);

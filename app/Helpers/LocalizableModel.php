@@ -39,6 +39,9 @@ abstract class LocalizableModel extends Model {
      */
     public function __construct($attributes = [])
     {
+        $locales = [
+            'ar', 'en'
+        ];
         // We dynamically append localizable attributes to array output
         // and hide the localized attributes from array output
         foreach($this->localizable as $localizableAttribute) {
@@ -47,7 +50,7 @@ abstract class LocalizableModel extends Model {
             }
 
             if ($this->hideLocaleSpecificAttributes) {
-                foreach(locale()->supported() as $locale) {
+                foreach($locales as $locale) {
                     $this->hidden[] = $localizableAttribute.'_'.$locale;
                 }
             }
@@ -68,7 +71,7 @@ abstract class LocalizableModel extends Model {
         // We determine the current locale and return the associated
         // locale-specific attribute e.g. name_en
         if (in_array($attribute, $this->localizable)) {
-            $localeSpecificAttribute = $attribute.'_'.locale()->current();
+            $localeSpecificAttribute = $attribute.'_'.app()->getLocale();
 
             return $this->{$localeSpecificAttribute};
         }
