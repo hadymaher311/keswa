@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Models\AdminSetting;
 
 class ProfileController extends Controller
 {
@@ -98,9 +99,43 @@ class ProfileController extends Controller
     {
         $this->validate($request, [
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-        auth()->user()->password = Hash::make($request->password);
+            ]);
+            auth()->user()->password = Hash::make($request->password);
         auth()->user()->save();
         return redirect()->route('admin.profile')->with('status', trans('Updated Successfully'));
+    }
+    
+    /**
+     * Show the settings.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showSettings()
+    {
+        return view('admin.profile.settings');
+    }
+    
+    
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateLanguage(Request $request)
+    {
+        $this->validate($request, [
+            'language' => ['required', 'string', 'in:ar,en'],
+            ]);
+        $settings = auth()->user()->settings;
+        if ($settings) {
+            $settings->language = $request->language;
+        } else {
+            $settings = new AdminSetting;
+            $settings->language = $request->language;
+            $settings->admin_id = auth()->id();
+        }
+        $settings->save();
+        return redirect($settings->language.'/admin/profile')->with('status', trans('Updated Successfully'));
     }
 }

@@ -36,7 +36,7 @@
         <a href="{{ route('admin.profile') }}" class="dropdown-item has-icon">
           <i class="far fa-user"></i> {{ __('Profile') }}
         </a>
-        <a href="features-settings.html" class="dropdown-item has-icon">
+        <a href="{{ route('admin.profile.settings') }}" class="dropdown-item has-icon">
           <i class="fas fa-cog"></i> {{ __('Settings') }}
         </a>
         <div class="dropdown-divider"></div>

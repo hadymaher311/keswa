@@ -76,6 +76,8 @@ Route::group([
         Route::put('/admin/profile/edit', 'ProfileController@update')->name('admin.profile.edit');
         Route::get('/admin/profile/edit/password', 'ProfileController@editPassword')->name('admin.profile.edit.password');
         Route::PUT('/admin/profile/edit/password', 'ProfileController@updatePassword')->name('admin.profile.edit.password');
+        Route::get('/admin/profile/settings', 'ProfileController@showSettings')->name('admin.profile.settings');
+        Route::PUT('/admin/profile/edit/language', 'ProfileController@updateLanguage')->name('admin.profile.edit.language');
         /*********************************************** Admin profile pages *******************************************/
 
         /*********************************************** Users CRUD routes *******************************************/

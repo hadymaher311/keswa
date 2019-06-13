@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class LocalizationMiddleware
 {
@@ -15,8 +16,18 @@ class LocalizationMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (in_array($request->locale, ['en', 'ar'])) {
-            app()->setLocale($request->locale);
+        if (Auth::check('admin')) {
+            if (auth()->user()->settings) {
+                app()->setLocale(auth()->user()->settings->language);
+            } else {
+                if (in_array($request->locale, ['en', 'ar'])) {
+                    app()->setLocale($request->locale);
+                }
+            }
+        } else {
+            if (in_array($request->locale, ['en', 'ar'])) {
+                app()->setLocale($request->locale);
+            }
         }
         \URL::defaults(['locale' => app()->getLocale()]);
         return $next($request);

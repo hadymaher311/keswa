@@ -9,6 +9,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use App\Notifications\AdminResetPasswordNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\AdminSetting;
 
 class Admin extends Authenticatable implements HasMedia
 {
@@ -67,6 +68,15 @@ class Admin extends Authenticatable implements HasMedia
     public function getImageAttribute()
     {
         return $this->getMedia('admin.avatar')->last();
+    }
+    
+    /**
+     * The function to return admin settings.
+     *
+     */
+    public function settings()
+    {
+        return $this->hasOne(AdminSetting::class);
     }
 
     //Send password reset notification
