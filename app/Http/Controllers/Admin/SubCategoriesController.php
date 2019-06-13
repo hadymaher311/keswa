@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\SubCategories\CreateRequest;
+use App\Http\Requests\Admin\SubCategories\UpdateRequest;
 
 class SubCategoriesController extends Controller
 {
@@ -36,7 +39,8 @@ class SubCategoriesController extends Controller
      */
     public function create()
     {
-        return view('admin.sub_categories.create');
+        $categories = Category::all();
+        return view('admin.sub_categories.create', compact('categories'));
     }
     
     /**
@@ -52,6 +56,7 @@ class SubCategoriesController extends Controller
             'name_ar' => $request->name_ar,
             'description_en' => $request->description_en,
             'description_ar' => $request->description_ar,
+            'category_id' => $request->category,
         ]);
         if ($request->has('image')) {
             $sub_category
@@ -80,7 +85,8 @@ class SubCategoriesController extends Controller
      */
     public function edit(SubCategory $sub_category)
     {
-        return view('admin.sub_categories.edit', compact('sub_category'));
+        $categories = Category::all();
+        return view('admin.sub_categories.edit', compact('sub_category', 'categories'));
     }
     
     /**

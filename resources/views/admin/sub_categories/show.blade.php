@@ -1,0 +1,62 @@
+@extends('admin.layouts.app')
+
+@section('title')
+{{ __('View sub category') }}
+@endsection
+
+@section('css')
+    
+@endsection
+
+@section('body')
+    <div class="section-header">
+        <h1>{{ __('Sub categories') }}</h1>
+    </div>
+
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                <div class="card-header">
+                    <h4>{{ __('View sub category') }}</h4> <br>
+                        <a href="{{ route('sub_categories.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new sub category') }}</a>
+                        <a href="{{ route('sub_categories.edit', $sub_category->id) }}" class="btn btn-warning m-3"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
+                    <a href="{{ route('sub_categories.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
+                </div>
+                <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success alert-dismissible show fade">
+                          <div class="alert-body">
+                            <button class="close" data-dismiss="alert">
+                              <span>&times;</span>
+                            </button>
+                            {{ __(session('status')) }}
+                          </div>
+                        </div>
+                    @endif
+
+                    @if ($sub_category->image)
+                        <img alt="image" src="{{ $sub_category->image->getUrl('thumb') }}" class="img-fluid">
+                    @endif
+
+                    <div class="row">
+                        <div class="col-sm-3"><b>{{ __('Name') }}:</b></div>
+                        <div class="col-sm-9">{{ $sub_category->name }}</div>
+                        <div class="col-sm-3"><b>{{ __('Description') }}:</b></div>
+                        <div class="col-sm-9">{!! $sub_category->description !!}</div>
+                        <div class="col-sm-3"><b>{{ __('Category') }}:</b></div>
+                        <div class="col-sm-9">
+                            <a href="{{ route('categories.show', $sub_category->category_id) }}" class="badge badge-primary">{{ $sub_category->main_category->name }}</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+@endsection
+
+@section('js')
+@endsection

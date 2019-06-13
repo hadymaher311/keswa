@@ -20,6 +20,7 @@ class SubCategory  extends LocalizableModel implements HasMedia
     protected $fillable = [
         'name_en', 'name_ar',
         'description_en', 'description_ar',
+        'category_id'
     ];
  
     /**
@@ -57,6 +58,6 @@ class SubCategory  extends LocalizableModel implements HasMedia
      */
     public function main_category()
     {
-        $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }
