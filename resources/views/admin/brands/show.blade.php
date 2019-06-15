@@ -34,21 +34,29 @@
                           </div>
                         </div>
                     @endif
-
-                    @if ($brand->image)
-                        <img alt="image" src="{{ $brand->image->getUrl('thumb') }}" class="img-fluid">
-                    @endif
-
+                    
                     <div class="row">
-                        <div class="col-sm-3"><b>{{ __('Name') }}:</b></div>
-                        <div class="col-sm-9">{{ $brand->name }}</div>
-                        <div class="col-sm-3"><b>{{ __('Description') }}:</b></div>
-                        <div class="col-sm-9">{!! $brand->description !!}</div>
-                        <div class="col-sm-3"><b>{{ __('Category') }}:</b></div>
-                        <div class="col-sm-9">
-                            <a href="{{ route('sub_categories.show', $brand->category_id) }}" class="badge badge-primary">{{ $brand->category->name }}</a>
+                        <div class="col-md-4">
+                            @if ($brand->image)
+                                <div class=" text-center">
+                                    <img alt="image" src="{{ $brand->image->getUrl('card') }}" class="border img-fluid">
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-sm-3"><b>{{ __('Name') }}:</b></div>
+                                <div class="col-sm-9">{{ $brand->name }}</div>
+                                <div class="col-sm-3"><b>{{ __('Description') }}:</b></div>
+                                <div class="col-sm-9">{!! $brand->description !!}</div>
+                                <div class="col-sm-3"><b>{{ __('Category') }}:</b></div>
+                                <div class="col-sm-9">
+                                    <a href="{{ route('sub_categories.show', $brand->category_id) }}" class="badge badge-primary">{{ $brand->category->name }}</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
 
                 </div>
             </div>

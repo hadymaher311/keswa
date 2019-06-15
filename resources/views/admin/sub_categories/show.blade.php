@@ -35,18 +35,25 @@
                         </div>
                     @endif
 
-                    @if ($sub_category->image)
-                        <img alt="image" src="{{ $sub_category->image->getUrl('thumb') }}" class="img-fluid">
-                    @endif
-
                     <div class="row">
-                        <div class="col-sm-3"><b>{{ __('Name') }}:</b></div>
-                        <div class="col-sm-9">{{ $sub_category->name }}</div>
-                        <div class="col-sm-3"><b>{{ __('Description') }}:</b></div>
-                        <div class="col-sm-9">{!! $sub_category->description !!}</div>
-                        <div class="col-sm-3"><b>{{ __('Category') }}:</b></div>
-                        <div class="col-sm-9">
-                            <a href="{{ route('categories.show', $sub_category->category_id) }}" class="badge badge-primary">{{ $sub_category->main_category->name }}</a>
+                        <div class="col-md-4">
+                            @if ($sub_category->image)
+                                <div class=" text-center">
+                                    <img alt="image" src="{{ $sub_category->image->getUrl('card') }}" class="border img-fluid">
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-sm-3"><b>{{ __('Name') }}:</b></div>
+                                <div class="col-sm-9">{{ $sub_category->name }}</div>
+                                <div class="col-sm-3"><b>{{ __('Description') }}:</b></div>
+                                <div class="col-sm-9">{!! $sub_category->description !!}</div>
+                                <div class="col-sm-3"><b>{{ __('Category') }}:</b></div>
+                                <div class="col-sm-9">
+                                    <a href="{{ route('categories.show', $sub_category->category_id) }}" class="badge badge-primary">{{ $sub_category->main_category->name }}</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

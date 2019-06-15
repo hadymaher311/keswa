@@ -35,23 +35,30 @@
                         </div>
                     @endif
 
-                    @if ($category->image)
-                        <img alt="image" src="{{ $category->image->getUrl('thumb') }}" class="img-fluid">
-                    @endif
-
                     <div class="row">
-                        <div class="col-sm-3"><b>{{ __('Name') }}:</b></div>
-                        <div class="col-sm-9">{{ $category->name }}</div>
-                        <div class="col-sm-3"><b>{{ __('Description') }}:</b></div>
-                        <div class="col-sm-9">{!! $category->description !!}</div>
-                        <div class="col-sm-3"><b>{{ __('Sub categories') }}:</b></div>
-                        <div class="col-sm-9">
-                            @if (!$category->sub_categories)
-                                <div class="text-warning">{{ __('Nothing yet') }}</div>
+                        <div class="col-md-4">
+                            @if ($category->image)
+                                <div class=" text-center">
+                                    <img alt="image" src="{{ $category->image->getUrl('card') }}" class="border img-fluid">
+                                </div>
                             @endif
-                            @foreach ($category->sub_categories as $sub_category)
-                                <a href="{{ route('sub_categories.show', $sub_category->id) }}" class="badge badge-primary">{{ $sub_category->name }}</a>
-                            @endforeach
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-sm-3"><b>{{ __('Name') }}:</b></div>
+                                <div class="col-sm-9">{{ $category->name }}</div>
+                                <div class="col-sm-3"><b>{{ __('Description') }}:</b></div>
+                                <div class="col-sm-9">{!! $category->description !!}</div>
+                                <div class="col-sm-3"><b>{{ __('Sub categories') }}:</b></div>
+                                <div class="col-sm-9">
+                                    @if (!$category->sub_categories)
+                                        <div class="text-warning">{{ __('Nothing yet') }}</div>
+                                    @endif
+                                    @foreach ($category->sub_categories as $sub_category)
+                                        <a href="{{ route('sub_categories.show', $sub_category->id) }}" class="badge badge-primary">{{ $sub_category->name }}</a>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
                     </div>
 
