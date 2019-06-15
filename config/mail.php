@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME', 'postmaster@sandbox77561c3544e64f58bcd30fc913a4fc51.mailgun.org'),
+    'username' => env('MAIL_USERNAME', '7agtyshop@gmail.com'),
 
-    'password' => env('MAIL_PASSWORD', '6ef4c2ca3aaab8fc1306a7c2951f6383-87cdd773-302fc04d'),
+    'password' => env('MAIL_PASSWORD', 'thisismy0password'),
 
     /*
     |--------------------------------------------------------------------------
