@@ -63,6 +63,10 @@ body.sidebar-mini .main-sidebar:after {
     padding-left: 30px;
 }
 
+.custom-file, .custom-file-label, .custom-select, .custom-file-label:after, .form-control[type="color"], select.form-control:not([size]):not([multiple]) {
+    height: calc(2.25rem + 12px);
+}
+
 .main-footer {
     padding: 20px 280px 20px 30px;
 }
