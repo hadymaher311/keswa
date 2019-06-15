@@ -1,0 +1,68 @@
+body.sidebar-mini .navbar {
+    right: 65px;
+}
+body.sidebar-mini .main-content, body.sidebar-mini .main-footer {
+    padding-right: 90px;
+    padding-left: 30px;
+}
+body.sidebar-mini .navbar {
+    left: 5px;
+}
+nav.navbar {
+    text-align: right;
+    right: 250px;
+    left: 5px;
+}
+
+nav.navbar form.form-inline {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+}
+
+body.sidebar-mini .main-sidebar .sidebar-menu > li ul.dropdown-menu {
+    right: 65px;
+}
+body.sidebar-mini .main-sidebar .sidebar-menu li:hover > ul.dropdown-menu li .dropdown-menu {
+    right: 200px;
+}
+.main-sidebar .sidebar-menu > li ul.dropdown-menu li a {
+    padding-right: 35px;
+    padding-left: 0;
+}
+.main-sidebar .sidebar-menu > li ul.dropdown-menu li ul.dropdown-menu li a {
+    padding-right: 85px;
+    padding-left: 0;
+}
+body.sidebar-mini .main-sidebar .sidebar-menu > li ul.dropdown-menu li a {
+    padding-right: 0;
+    padding-left: 0;
+}
+body.sidebar-mini .main-sidebar .sidebar-menu > li ul.dropdown-menu li ul.dropdown-menu li a {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.main-sidebar .sidebar-menu li a.has-dropdown:after {
+    left: 20px;
+}
+
+nav.navbar form.form-inline ul.navbar-nav {
+    padding: 0;
+}
+
+.main-sidebar.sidebar-style-2 {
+    right: 0
+}
+
+body.sidebar-mini .main-sidebar:after {
+    right: 0;
+}
+
+.main-content {
+    padding-right: 280px;
+    padding-left: 30px;
+}
+
+.main-footer {
+    padding: 20px 280px 20px 30px;
+}

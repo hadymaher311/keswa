@@ -20,9 +20,10 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('/admin_styles/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('/admin_styles/css/components.css') }}">
-
+    
     @if (app()->isLocale('ar'))
-      <link href="https://fonts.googleapis.com/css?family=Cairo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cairo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('/admin_styles/css/style-ar.css') }}">
       <style>
         *{
           font-family: 'Cairo', sans-serif;
