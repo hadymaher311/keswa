@@ -61,7 +61,7 @@ return [
             'secret' => env('AWS_SECRET_ACCESS_KEY', 'BYFX3WtgrhNZbZmvOQGhTi9Zn3I4Iq6Ty5DFY7gu'),
             'region' => env('AWS_DEFAULT_REGION', 'us-east-2'),
             'bucket' => env('AWS_BUCKET', '7agty3-demo'),
-            'url' => env('AWS_URL', 'https://7agty3-demo.s3-us-east-2.amazonaws.com'),
+            'url' => env('AWS_URL', '7agty3-demo.s3-us-east-2.amazonaws.com'),
         ],
 
     ],
