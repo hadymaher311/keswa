@@ -83,7 +83,7 @@
                             <div class="col-sm-9">
                                 <div id="image-preview" class="image-preview"
                                 @if ($admin->image)
-                                    style="background-image: url('data:{{ $admin->image->meme_type }};base64, {{ base64_encode(file_get_contents($admin->image->getPath('card'))) }}'); background-repeat: no-repeat;background-size: cover;
+                                    style="background-image: url('data:{{ $admin->image->meme_type }};base64, {{ base64_encode(file_get_contents($admin->image->getUrl('card'))) }}'); background-repeat: no-repeat;background-size: cover;
                                     background-position: center center;"
                                 @endif
                                 >

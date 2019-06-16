@@ -80,7 +80,7 @@
                             <div class="col-sm-9">
                                 <div id="image-preview" class="image-preview"
                                 @if ($user->image)
-                                    style="background-image: url('data:{{ $user->image->meme_type }};base64, {{ base64_encode(file_get_contents($user->image->getPath('card'))) }}'); background-repeat: no-repeat;background-size: cover;
+                                    style="background-image: url('data:{{ $user->image->meme_type }};base64, {{ base64_encode(file_get_contents($user->image->getUrl('card'))) }}'); background-repeat: no-repeat;background-size: cover;
                                     background-position: center center;"
                                 @endif
                                 >
