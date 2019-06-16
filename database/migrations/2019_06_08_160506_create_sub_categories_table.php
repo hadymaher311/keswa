@@ -19,7 +19,6 @@ class CreateSubCategoriesTable extends Migration
             $table->string('name_ar')->nullable();
             $table->text('description_en')->nullable();
             $table->text('description_ar')->nullable();
-            $table->string('image')->nullable();
             $table->bigInteger('category_id')->unsigned();
             $table->boolean('navbar_visibility')->default(0);
             $table->boolean('active')->default(1);
