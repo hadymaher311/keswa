@@ -2,6 +2,7 @@
 
 use App\Models\Admin;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
@@ -69,12 +70,13 @@ class DatabaseSeeder extends Seeder
         
         foreach ($this->permissions as $permission) {
             Permission::create([
-                'name' => $permission->name,
-                'guard_name' => $permission->guard_name,
+                'name' => $permission['name'],
+                'guard_name' => $permission['guard_name'],
             ]);
         }
 
-        $role = Role::create(['name' => 'super']);
+        $role = Role::create(['name' => 'super', 'guard_name' => 'admin']);
         $role->givePermissionTo(Permission::all());
+        $admin->syncRoles($role);
     }
 }
