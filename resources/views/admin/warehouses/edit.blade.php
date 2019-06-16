@@ -19,8 +19,13 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Edit warehouse') }}</h4> <br>
+                    @can('create warehouses')
                         <a href="{{ route('warehouses.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new warehouse') }}</a>
-                    <a href="{{ route('warehouses.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
+                    @endcan
+
+                    @can('view warehouses')
+                        <a href="{{ route('warehouses.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     @if (session('status'))

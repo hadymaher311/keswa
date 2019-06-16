@@ -7,6 +7,21 @@ use App\Http\Controllers\Controller;
 
 class OrdersController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+        $this->middleware('permission:view orders')->only(['index', 'show']);
+        $this->middleware('permission:create orders')->only(['create', 'store']);
+        $this->middleware('permission:update orders')->only(['edit', 'update']);
+        $this->middleware('permission:delete orders')->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *

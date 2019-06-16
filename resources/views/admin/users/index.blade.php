@@ -19,7 +19,9 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Users Table') }}</h4> <br>
+                    @can('create users')
                         <a href="{{ route('users.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new user') }}</a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -32,6 +34,7 @@
                           </div>
                         </div>
                     @endif
+                    @can('delete users')
                         <form action="{{ route('users.destroy') }}" method="POST" id="deleteForm">
                             @csrf
                             {{ method_field('DELETE') }}
@@ -41,6 +44,7 @@
                                 $(this).parent('form').submit();
                             }" class="btn btn-danger mb-3" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
                         </form>
+                    @endcan
                     <div class="table-responsive">
                     <table class="table table-striped" id="table-2">
                         <thead>
@@ -79,6 +83,7 @@
                                     <td>{{ $user->created_at->diffForHumans() }}</td>
                                     
                                     <td>
+                                        @can('update users')
                                             <form action="{{ route('users.active', $user->id) }}" method="post">
                                                 @csrf
                                                 @method('PUT')
@@ -94,23 +99,26 @@
                                                     ">
                                                     <span class="custom-switch-indicator"></span>
                                                 </label>
-                                        </form>
+                                            </form>
+                                        @endcan
                                     </td>
 
                                     <td>
+                                        @can('update users')
                                             <a href="{{ route('users.edit', $user->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                        
-                                        <a href="{{ route('users.edit.password', $user->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit password') }}" class="btn btn-sm btn-dark">
-                                            <i class="fa fa-lock"></i>
-                                        </a>
+                                            
+                                            <a href="{{ route('users.edit.password', $user->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit password') }}" class="btn btn-sm btn-dark">
+                                                <i class="fa fa-lock"></i>
+                                            </a>
+                                        @endcan
                                             
                                         <a href="{{ route('users.show', $user->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('View') }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-file"></i>
                                         </a>
                                                 
-                                                
+                                        @can('delete users') 
                                             <a 
                                                 href="#" 
                                                 class="btn btn-danger btn-sm"
@@ -125,7 +133,7 @@
                                                 {{ method_field('DELETE') }}
                                                 <input type="hidden" name="users[]" value="{{ $user->id }}">
                                             </form>
-
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

@@ -19,6 +19,10 @@ class SubCategoriesController extends Controller
     public function __construct()
     {
         $this->middleware('auth:admin');
+        $this->middleware('permission:view sub_categories')->only(['index', 'show']);
+        $this->middleware('permission:create sub_categories')->only(['create', 'store']);
+        $this->middleware('permission:update sub_categories')->only(['edit', 'update', 'visibility', 'active']);
+        $this->middleware('permission:delete sub_categories')->only(['destroy']);
     }
     
     /**

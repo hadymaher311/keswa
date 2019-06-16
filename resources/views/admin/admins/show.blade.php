@@ -19,8 +19,13 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('View admin') }}</h4> <br>
+                    @can('create admins')
                         <a href="{{ route('admins.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new admin') }}</a>
+                    @endcan
+                    
+                    @can('update admins')
                         <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-warning m-3"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
+                    @endcan
                     <a href="{{ route('admins.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
                 </div>
                 <div class="card-body">
@@ -48,10 +53,18 @@
                             <div class="author-box-description">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        {{ __('Email') }}
+                                        <b>{{ __('Email') }}</b>
                                     </div>
                                     <div class="col sm-3">
                                         {{ $admin->email }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3"><b>{{ __('Permissions') }}:</b></div>
+                                    <div class="col-sm-9">
+                                        @foreach ($admin->roles->first()->permissions as $permission)
+                                            <div class="badge badge-primary mt-3">{{ $permission->name }}</div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>

@@ -19,9 +19,17 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Edit admin') }}</h4> <br>
+                    @can('create admins')
                         <a href="{{ route('admins.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new admin') }}</a>
+                    @endcan
+
+                    @can('update admins')
                         <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-warning m-3"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
-                    <a href="{{ route('admins.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
+                    @endcan
+
+                    @can('view admins')
+                        <a href="{{ route('admins.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     @if (session('status'))

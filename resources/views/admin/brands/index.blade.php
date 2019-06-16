@@ -19,7 +19,9 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Brands Table') }}</h4> <br>
+                    @can('create brands')
                         <a href="{{ route('brands.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new brand') }}</a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -32,15 +34,17 @@
                           </div>
                         </div>
                     @endif
-                    <form action="{{ route('brands.destroy') }}" method="POST" id="deleteForm">
-                        @csrf
-                        {{ method_field('DELETE') }}
-                        <button type="submit" onclick="
-                        event.preventDefault();
-                        if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
-                            $(this).parent('form').submit();
-                        }" class="btn btn-danger mb-3" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
-                    </form>
+                    @can('delete brands')
+                        <form action="{{ route('brands.destroy') }}" method="POST" id="deleteForm">
+                            @csrf
+                            {{ method_field('DELETE') }}
+                            <button type="submit" onclick="
+                            event.preventDefault();
+                            if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
+                                $(this).parent('form').submit();
+                            }" class="btn btn-danger mb-3" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
+                        </form>
+                    @endcan
                     <div class="table-responsive">
                     <table class="table table-striped" id="table-2">
                         <thead>
@@ -76,50 +80,56 @@
                                     <td><a href="{{ route('sub_categories.show', $brand->category_id) }}" class="badge badge-primary">{{ $brand->category->name }}</a></td>
                                     <td>{{ $brand->created_at->diffForHumans() }}</td>
                                     <td>
-                                        <form action="{{ route('brands.active', $brand->id) }}" method="post">
-                                            @csrf
-                                            @method('PUT')
-                                            <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if ($brand->active)
-                                                {{ __('Active') }}
-                                                @else
-                                                {{ __('Not Active') }}
-                                                @endif">
-                                                <input name="active" value="{{ $brand->id }}" type="checkbox" @if ($brand->active)
-                                                checked
-                                                @endif class="custom-switch-input" onchange="
-                                                    $(this).parent('form'),submit();
-                                                ">
-                                                <span class="custom-switch-indicator"></span>
-                                            </label>
-                                        </form>
+                                        @can('update brands')
+                                            <form action="{{ route('brands.active', $brand->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if ($brand->active)
+                                                    {{ __('Active') }}
+                                                    @else
+                                                    {{ __('Not Active') }}
+                                                    @endif">
+                                                    <input name="active" value="{{ $brand->id }}" type="checkbox" @if ($brand->active)
+                                                    checked
+                                                    @endif class="custom-switch-input" onchange="
+                                                        $(this).parent('form'),submit();
+                                                    ">
+                                                    <span class="custom-switch-indicator"></span>
+                                                </label>
+                                            </form>
+                                        @endcan
                                     </td>
                                     <td>
-                                        <form action="{{ route('brands.visibility', $brand->id) }}" method="post">
-                                            @csrf
-                                            @method('PUT')
-                                            <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if ($brand->navbar_visibility)
-                                                {{ __('Visible') }}
-                                                @else
-                                                {{ __('Not Visible') }}
-                                                @endif">
-                                                <input name="visibility" value="{{ $brand->id }}" type="checkbox" @if ($brand->navbar_visibility)
-                                                checked
-                                                @endif class="custom-switch-input" onchange="
-                                                    $(this).parent('form'),submit();
-                                                ">
-                                                <span class="custom-switch-indicator"></span>
-                                            </label>
-                                        </form>
+                                        @can('update brands')
+                                            <form action="{{ route('brands.visibility', $brand->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if ($brand->navbar_visibility)
+                                                    {{ __('Visible') }}
+                                                    @else
+                                                    {{ __('Not Visible') }}
+                                                    @endif">
+                                                    <input name="visibility" value="{{ $brand->id }}" type="checkbox" @if ($brand->navbar_visibility)
+                                                    checked
+                                                    @endif class="custom-switch-input" onchange="
+                                                        $(this).parent('form'),submit();
+                                                    ">
+                                                    <span class="custom-switch-indicator"></span>
+                                                </label>
+                                            </form>
+                                        @endcan
                                     </td>
                                     <td>
+                                        @can('update brands')
                                             <a href="{{ route('brands.edit', $brand->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-
+                                        @endcan
                                         <a href="{{ route('brands.show', $brand->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('View') }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-file"></i>
                                         </a>
                                             
+                                        @can('delete brands')
                                             <a 
                                                 href="#" 
                                                 class="btn btn-danger btn-sm"
@@ -134,7 +144,7 @@
                                                 {{ method_field('DELETE') }}
                                                 <input type="hidden" name="brands[]" value="{{ $brand->id }}">
                                             </form>
-
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

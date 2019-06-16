@@ -19,7 +19,9 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Warehouses Table') }}</h4> <br>
+                    @can('create warehouses')
                         <a href="{{ route('warehouses.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new warehouse') }}</a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -32,15 +34,18 @@
                           </div>
                         </div>
                     @endif
-                    <form action="{{ route('warehouses.destroy') }}" method="POST" id="deleteForm">
-                        @csrf
-                        {{ method_field('DELETE') }}
-                        <button type="submit" onclick="
-                        event.preventDefault();
-                        if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
-                            $(this).parent('form').submit();
-                        }" class="btn btn-danger mb-3" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
-                    </form>
+
+                    @can('delete warehouses')
+                        <form action="{{ route('warehouses.destroy') }}" method="POST" id="deleteForm">
+                            @csrf
+                            {{ method_field('DELETE') }}
+                            <button type="submit" onclick="
+                            event.preventDefault();
+                            if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
+                                $(this).parent('form').submit();
+                            }" class="btn btn-danger mb-3" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
+                        </form>
+                    @endcan
                     <div class="table-responsive">
                     <table class="table table-striped" id="table-2">
                         <thead>
@@ -72,14 +77,17 @@
                                     <td>{{ $warehouse->location }}</td>
                                     <td>{{ $warehouse->created_at->diffForHumans() }}</td>
                                     <td>
+                                        @can('update warehouses')
                                             <a href="{{ route('warehouses.edit', $warehouse->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                                 <i class="fa fa-edit"></i>
                                             </a>
+                                        @endcan
 
                                         <a href="{{ route('warehouses.show', $warehouse->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('View') }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-file"></i>
                                         </a>
                                             
+                                        @can('delete warehouses')
                                             <a 
                                                 href="#" 
                                                 class="btn btn-danger btn-sm"
@@ -94,7 +102,7 @@
                                                 {{ method_field('DELETE') }}
                                                 <input type="hidden" name="warehouses[]" value="{{ $warehouse->id }}">
                                             </form>
-
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

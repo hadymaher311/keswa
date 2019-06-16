@@ -19,8 +19,13 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('View user') }}</h4> <br>
+                    @can('create users')
                         <a href="{{ route('users.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new user') }}</a>
+                    @endcan
+
+                    @can('update users')
                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning m-3"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
+                    @endcan
                     <a href="{{ route('users.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
                 </div>
                 <div class="card-body">

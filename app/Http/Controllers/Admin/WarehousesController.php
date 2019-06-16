@@ -18,6 +18,10 @@ class WarehousesController extends Controller
     public function __construct()
     {
         $this->middleware('auth:admin');
+        $this->middleware('permission:view warehouses')->only(['index', 'show']);
+        $this->middleware('permission:create warehouses')->only(['create', 'store']);
+        $this->middleware('permission:update warehouses')->only(['edit', 'update']);
+        $this->middleware('permission:delete warehouses')->only(['destroy']);
     }
     
     /**

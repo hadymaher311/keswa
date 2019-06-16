@@ -19,8 +19,13 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('View warehouse') }}</h4> <br>
+                    @can('create warehouses')
                         <a href="{{ route('warehouses.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new warehouse') }}</a>
+                    @endcan
+
+                    @can('update warehouses')
                         <a href="{{ route('warehouses.edit', $warehouse->id) }}" class="btn btn-warning m-3"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
+                    @endcan
                     <a href="{{ route('warehouses.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
                 </div>
                 <div class="card-body">

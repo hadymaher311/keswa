@@ -26,6 +26,11 @@ Route::group([
         Route::delete('/admin/roles', 'RolesController@destroy')->name('roles.destroy');
         /*********************************************** Roles CRUD routes *******************************************/
         
+        /*********************************************** permissions CRUD routes *******************************************/
+        Route::resource('/admin/permissions', 'PermissionsController');
+        Route::delete('/admin/permissions', 'PermissionsController@destroy')->name('permissions.destroy');
+        /*********************************************** permissions CRUD routes *******************************************/
+        
         /*********************************************** Admins CRUD routes *******************************************/
         Route::resource('/admin/admins', 'AdminsController');
         Route::delete('/admin/admins', 'AdminsController@destroy')->name('admins.destroy');

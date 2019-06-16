@@ -17,6 +17,10 @@ class RolesController extends Controller
     public function __construct()
     {
         $this->middleware('auth:admin');
+        $this->middleware('permission:view roles')->only(['index', 'show']);
+        $this->middleware('permission:create roles')->only(['create', 'store']);
+        $this->middleware('permission:update roles')->only(['edit', 'update']);
+        $this->middleware('permission:delete roles')->only(['destroy']);
     }
     
     /**
@@ -37,7 +41,8 @@ class RolesController extends Controller
      */
     public function create()
     {
-        return view('admin.roles.create');
+        $permissions = Permission::all();
+        return view('admin.roles.create', compact('permissions'));
     }
     
     /**
@@ -50,8 +55,10 @@ class RolesController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string|min:2|unique:roles',
+            'permissions.*' => 'sometimes|exists:permissions,id',
         ]);
         $role = Role::create(['name' => $request->name]);
+        $role->syncPermissions($request->permissions);
         return back()->with(['status' => trans('Added Successfully')]);
     }
     
@@ -74,7 +81,8 @@ class RolesController extends Controller
      */
     public function edit(Role $role)
     {
-        return view('admin.roles.edit', compact('role'));
+        $permissions = Permission::all();
+        return view('admin.roles.edit', compact('role', 'permissions'));
     }
     
     /**
@@ -91,6 +99,7 @@ class RolesController extends Controller
         ]);
         $role->name = $request->name;
         $role->save();
+        $role->syncPermissions($request->permissions);
         return redirect()->route('roles.index')->with('status', trans('Updated Successfully'));
     }
 

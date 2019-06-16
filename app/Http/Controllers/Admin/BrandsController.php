@@ -20,6 +20,10 @@ class BrandsController extends Controller
     public function __construct()
     {
         $this->middleware('auth:admin');
+        $this->middleware('permission:view brands')->only(['index', 'show']);
+        $this->middleware('permission:create brands')->only(['create', 'store']);
+        $this->middleware('permission:update brands')->only(['edit', 'update', 'visibility', 'active']);
+        $this->middleware('permission:delete brands')->only(['destroy']);
     }
     
     /**

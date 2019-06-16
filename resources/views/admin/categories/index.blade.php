@@ -19,7 +19,9 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Categories Table') }}</h4> <br>
+                    @can('create categories')
                         <a href="{{ route('categories.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new category') }}</a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -32,15 +34,17 @@
                           </div>
                         </div>
                     @endif
-                    <form action="{{ route('categories.destroy') }}" method="POST" id="deleteForm">
-                        @csrf
-                        {{ method_field('DELETE') }}
-                        <button type="submit" onclick="
-                        event.preventDefault();
-                        if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
-                            $(this).parent('form').submit();
-                        }" class="btn btn-danger mb-3" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
-                    </form>
+                    @can('delete categories')
+                        <form action="{{ route('categories.destroy') }}" method="POST" id="deleteForm">
+                            @csrf
+                            {{ method_field('DELETE') }}
+                            <button type="submit" onclick="
+                            event.preventDefault();
+                            if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
+                                $(this).parent('form').submit();
+                            }" class="btn btn-danger mb-3" data-toggle="tooltip" data-placement="top" title="{{ __('Delete selected') }}"><i class="fa fa-times"></i> {{ __('Delete selected') }}</button>
+                        </form>
+                    @endcan
                     <div class="table-responsive">
                     <table class="table table-striped" id="table-2">
                         <thead>
@@ -74,50 +78,56 @@
                                     <td>{!! $category->description !!}</td>
                                     <td>{{ $category->created_at->diffForHumans() }}</td>
                                     <td>
-                                        <form action="{{ route('categories.active', $category->id) }}" method="post">
-                                            @csrf
-                                            @method('PUT')
-                                            <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if ($category->active)
-                                                {{ __('Active') }}
-                                                @else
-                                                {{ __('Not Active') }}
-                                                @endif">
-                                                <input name="active" value="{{ $category->id }}" type="checkbox" @if ($category->active)
-                                                checked
-                                                @endif class="custom-switch-input" onchange="
-                                                    $(this).parent('form'),submit();
-                                                ">
-                                                <span class="custom-switch-indicator"></span>
-                                            </label>
-                                        </form>
+                                        @can('update categories')
+                                            <form action="{{ route('categories.active', $category->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if ($category->active)
+                                                    {{ __('Active') }}
+                                                    @else
+                                                    {{ __('Not Active') }}
+                                                    @endif">
+                                                    <input name="active" value="{{ $category->id }}" type="checkbox" @if ($category->active)
+                                                    checked
+                                                    @endif class="custom-switch-input" onchange="
+                                                        $(this).parent('form'),submit();
+                                                    ">
+                                                    <span class="custom-switch-indicator"></span>
+                                                </label>
+                                            </form>
+                                        @endcan
                                     </td>
                                     <td>
-                                        <form action="{{ route('categories.visibility', $category->id) }}" method="post">
-                                            @csrf
-                                            @method('PUT')
-                                            <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if ($category->navbar_visibility)
-                                                {{ __('Visible') }}
-                                                @else
-                                                {{ __('Not Visible') }}
-                                                @endif">
-                                                <input name="active" value="{{ $category->id }}" type="checkbox" @if ($category->navbar_visibility)
-                                                checked
-                                                @endif class="custom-switch-input" onchange="
-                                                    $(this).parent('form'),submit();
-                                                ">
-                                                <span class="custom-switch-indicator"></span>
-                                            </label>
-                                        </form>
+                                        @can('update categories')
+                                            <form action="{{ route('categories.visibility', $category->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if ($category->navbar_visibility)
+                                                    {{ __('Visible') }}
+                                                    @else
+                                                    {{ __('Not Visible') }}
+                                                    @endif">
+                                                    <input name="active" value="{{ $category->id }}" type="checkbox" @if ($category->navbar_visibility)
+                                                    checked
+                                                    @endif class="custom-switch-input" onchange="
+                                                        $(this).parent('form'),submit();
+                                                    ">
+                                                    <span class="custom-switch-indicator"></span>
+                                                </label>
+                                            </form>
+                                        @endcan
                                     </td>
                                     <td>
+                                        @can('update categories')
                                             <a href="{{ route('categories.edit', $category->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                                 <i class="fa fa-edit"></i>
                                             </a>
+                                        @endcan
 
                                         <a href="{{ route('categories.show', $category->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('View') }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-file"></i>
                                         </a>
-                                            
+                                        @can('delete categories')
                                             <a 
                                                 href="#" 
                                                 class="btn btn-danger btn-sm"
@@ -132,7 +142,7 @@
                                                 {{ method_field('DELETE') }}
                                                 <input type="hidden" name="categories[]" value="{{ $category->id }}">
                                             </form>
-
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

@@ -21,6 +21,10 @@ class AdminsController extends Controller
     public function __construct()
     {
         $this->middleware('auth:admin');
+        $this->middleware('permission:view admins')->only(['index', 'show']);
+        $this->middleware('permission:create admins')->only(['create', 'store']);
+        $this->middleware('permission:update admins')->only(['edit', 'update', 'editPassword', 'updatePassword', 'active']);
+        $this->middleware('permission:delete admins')->only(['destroy']);
     }
     
     /**

@@ -19,8 +19,12 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Edit brand') }}</h4> <br>
+                    @can('create brands')
                         <a href="{{ route('brands.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new brand') }}</a>
-                    <a href="{{ route('brands.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
+                    @endcan
+                    @can('view brands')
+                        <a href="{{ route('brands.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     @if (session('status'))

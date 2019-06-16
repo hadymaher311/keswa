@@ -19,8 +19,13 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('View category') }}</h4> <br>
+                    @can('create categories')
                         <a href="{{ route('categories.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new category') }}</a>
+                    @endcan
+
+                    @can('update categories')
                         <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning m-3"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
+                    @endcan
                     <a href="{{ route('categories.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
                 </div>
                 <div class="card-body">

@@ -20,6 +20,10 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware('auth:admin');
+        $this->middleware('permission:view users')->only(['index', 'show']);
+        $this->middleware('permission:create users')->only(['create', 'store']);
+        $this->middleware('permission:update users')->only(['edit', 'update', 'editPassword', 'updatePassword', 'active']);
+        $this->middleware('permission:delete users')->only(['destroy']);
     }
     
     /**

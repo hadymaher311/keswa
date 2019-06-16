@@ -19,7 +19,9 @@
                 <div class="card">
                 <div class="card-header">
                     <h4>{{ __('Edit role') }}</h4> <br>
+                    @can('create roles')
                         <a href="{{ route('roles.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new role') }}</a>
+                    @endcan
                     <a href="{{ route('roles.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
                 </div>
                 <div class="card-body">
@@ -49,6 +51,59 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <div class="col-sm-3">
+                                <label for="inputEmail" class="control-label">{{ __('Permissions') }}</label>
+                                
+                                <div class="custom-checkbox custom-control">
+                                    <input type="checkbox" id="permission" class="custom-control-input minimal"
+                                    >
+                                    <label for="permission" class="custom-control-label">{{ __('Check all') }}</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-9">
+                                @php
+                                    $permissionsArray = array();
+                                @endphp
+                                @foreach ($permissions as $permission)
+            
+                                    @if (!in_array(explode(' ', $permission->name)[1], $permissionsArray))
+                                        
+                                        <div class="check-all-container">
+                                        <div style="clear: both;"></div>
+                                        <b>{{ ucfirst(explode(' ', $permission->name)[1]) }}:</b> <br>
+                                        <div class="row">
+                                            @foreach ($permissions as $permission2)
+                
+                                                @if (explode(' ', $permission->name)[1] === explode(' ', $permission2->name)[1])
+                
+                                                <div class="col-sm-4">
+                                                    <div class="custom-checkbox custom-control">
+                                                        <input type="checkbox" id="permission-{{ $loop->index+1 }}" class="custom-control-input minimal" name="permissions[]" value="{{ $permission2->id }}"
+                                                        @foreach ($role->permissions as $rolePermission)
+                                                            @if ($permission2->id == $rolePermission->id)
+                                                            {{ 'checked' }} 
+                                                            @endif
+                                                        @endforeach
+                                                        > 
+                                                        <label for="permission-{{ $loop->index+1 }}" class="custom-control-label">{{ $permission2->name }}</label>
+                                                    </div>
+                                                </div>
+                
+                                                @endif
+                
+                                            @endforeach
+                                        </div>
+                                        </div>
+                                        
+                                        @php
+                                            $permissionsArray[] = explode(' ', $permission->name)[1];
+                                        @endphp
+            
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <div class="col-sm-3"></div>
                             <div class="col-sm-9">
                                 <button type="submit" class="btn btn-warning btn-block">{{ __('Submit') }}</button>
@@ -64,4 +119,13 @@
 @endsection
 
 @section('js')
+<script>
+    $("input#permission").on('change', function(e) {
+        if ($(this).prop('checked')) {
+            $("input[type=checkbox]").attr('checked', true)
+        } else {
+            $("input[type=checkbox]").attr('checked', false)
+        }
+    })
+</script>
 @endsection

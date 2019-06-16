@@ -13,11 +13,15 @@
             <li><a class="nav-link" href="{{ route('admin.home') }}">{{ __('Home') }}</a></li>
           </ul>
         </li>
-        @role ('super')
+        @if (auth()->user()->can('view products') || auth()->user()->can('view orders') || auth()->user()->can('view brands') || auth()->user()->can('view categories') || auth()->user()->can('view sub_categories') || auth()->user()->can('view warehouses'))
           @include('admin.layouts.sidenavbar.catalogmenu')
-          @include('admin.layouts.sidenavbar.adminmenu')
+        @endif
+        @if (auth()->user()->can('view users'))
           @include('admin.layouts.sidenavbar.usermenu')
-        @endrole
+        @endif
+        @if (auth()->user()->can('view admins') || auth()->user()->can('view permissions') || auth()->user()->can('view roles'))
+          @include('admin.layouts.sidenavbar.adminmenu')
+        @endif
       </ul>
     </aside>
   </div>
