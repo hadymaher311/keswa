@@ -48,7 +48,7 @@
                                 <div class="card-body">
                                     <div class="author-box-left">
                                         @if (auth()->user()->image)
-                                            <img alt="image" src="{{ auth()->user()->image->getUrl('thumb') }}" class="rounded-circle author-box-picture">
+                                            <img alt="image" src="{{ auth()->user()->image->getUrl('card') }}" class="rounded-circle author-box-picture">
                                         @endif
                                     </div>
                                     <div class="author-box-details">
