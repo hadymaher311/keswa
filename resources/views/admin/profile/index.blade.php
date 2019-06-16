@@ -50,6 +50,16 @@
                                         @if (auth()->user()->image)
                                             <img alt="image" src="{{ auth()->user()->image->getUrl('card') }}" class="rounded-circle author-box-picture">
                                         @endif
+                                        <br>
+                                        <br>
+                                        @error('image')
+                                            <div class="alert alert-danger" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </div>
+                                        @enderror
+                                        <div>
+                                            <button class="btn btn-primary" id="modal-1">{{ __("Change image") }}</button>
+                                        </div>
                                     </div>
                                     <div class="author-box-details">
                                     <div class="author-box-name">
@@ -87,5 +97,5 @@
 @endsection
 
 @section('js')
-    
+@include('admin.profile.editImageModal')
 @endsection

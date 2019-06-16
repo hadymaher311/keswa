@@ -54,14 +54,6 @@ class ProfileController extends Controller
         auth()->user()->last_name = $request->last_name;
         auth()->user()->email = $request->email;
         auth()->user()->save();
-        if ($request->has('image')) {
-            foreach (auth()->user()->getMedia('admin.avatar') as $image) {
-                $image->delete();
-            }
-            auth()->user()
-                ->addMediaFromBase64($request->image)
-                ->toMediaCollection('admin.avatar');
-        }
         return redirect()->route('admin.profile')->with('status', trans('Updated Successfully'));
     }
 
@@ -79,7 +71,6 @@ class ProfileController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 
                         Rule::unique('admins')->ignore(auth()->id())
                         ],
-            'image' => ['sometimes', 'base64image']
         ]);
     }
     
@@ -106,6 +97,26 @@ class ProfileController extends Controller
             ]);
             auth()->user()->password = Hash::make($request->password);
         auth()->user()->save();
+        return redirect()->route('admin.profile')->with('status', trans('Updated Successfully'));
+    }
+    
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateImage(Request $request)
+    {
+        $this->validate($request, [
+            'image' => ['required', 'base64image']
+            ]);
+            foreach (auth()->user()->getMedia('admin.avatar') as $image) {
+                $image->delete();
+            }
+            auth()->user()
+                ->addMediaFromBase64($request->image)
+                ->toMediaCollection('admin.avatar');
         return redirect()->route('admin.profile')->with('status', trans('Updated Successfully'));
     }
     
