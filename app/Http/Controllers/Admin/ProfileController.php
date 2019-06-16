@@ -48,14 +48,18 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
+        // return $request->all();
         $this->ValidateUpdateRequest($request);
         auth()->user()->first_name = $request->first_name;
         auth()->user()->last_name = $request->last_name;
         auth()->user()->email = $request->email;
         auth()->user()->save();
         if ($request->has('image')) {
+            foreach (auth()->user()->getMedia('admin.avatar') as $image) {
+                $image->delete();
+            }
             auth()->user()
-                ->addMediaFromUrl($request->image)
+                ->addMediaFromBase64($request->image)
                 ->toMediaCollection('admin.avatar');
         }
         return redirect()->route('admin.profile')->with('status', trans('Updated Successfully'));
@@ -75,7 +79,7 @@ class ProfileController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 
                         Rule::unique('admins')->ignore(auth()->id())
                         ],
-            'image' => ['sometimes', 'image']
+            'image' => ['sometimes', 'base64image']
         ]);
     }
     

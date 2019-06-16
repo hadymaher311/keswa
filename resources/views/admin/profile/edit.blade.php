@@ -5,7 +5,12 @@
 @endsection
 
 @section('css')
-    
+    <link rel="stylesheet" href="{{ asset('/admin_styles/css/croppie.css') }}">
+    <style>
+        .croppie-container .cr-image {
+            position: relative;
+        }
+    </style>
 @endsection
 
 @section('body')
@@ -93,22 +98,30 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 col-form-label">{{ __('Image') }}</label>
                                                         <div class="col-sm-9">
-                                                            <div id="image-preview" class="image-preview">
-                                                                <label for="image-upload" id="image-label">{{ __('Choose Image') }}</label>
-                                                                <input type="file" accept="image/*" name="image" id="image-upload" />
-                                                                
-                                                                @error('image')
-                                                                    <span class="invalid-feedback" role="alert">
-                                                                        <strong>{{ $message }}</strong>
-                                                                    </span>
-                                                                @enderror
+                                                            <div class="image-preview-demo">
+                                                                @if (auth()->user()->image)
+                                                                    <img src="{{ auth()->user()->image->getUrl() }}" alt="" class="img-fluid preview">
+                                                                @else
+                                                                    <img src="{{ asset('/admin_styles/img/avatar/avatar-1.png') }}" alt="" class="img-fluid preview">
+                                                                @endif
                                                             </div>
+
+                                                            <div>
+                                                                <input type="hidden" name="image" class="image-data">
+                                                                <input type="file" accept="image/*" class="form-control file-input @error('image') is-invalid @enderror" />
+                                                            </div>
+                                                            
+                                                            @error('image')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <div class="col-sm-3"></div>
                                                         <div class="col-sm-9">
-                                                            <button type="submit" class="btn btn-warning btn-block">{{ __('Submit') }}</button>
+                                                            <button type="submit" class="submit-edit btn btn-warning btn-block">{{ __('Submit') }}</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -129,17 +142,39 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('/admin_styles/modules/upload-preview/assets/js/jquery.uploadPreview.min.js') }}"></script>
+    <script src="{{ asset('/admin_styles/js/croppie.min.js') }}"></script>
 
     <script>
-        $.uploadPreview({
-            input_field: "#image-upload",   // Default: .image-upload
-            preview_box: "#image-preview",  // Default: .image-preview
-            label_field: "#image-label",    // Default: .image-label
-            label_default: "{{ __('Choose Image') }}",   // Default: {{ __('Choose Image') }}
-            label_selected: "{{ __('Change Image') }}",  // Default: Change File
-            no_label: false,                // Default: false
-            success_callback: null          // Default: null
+        var crop = $('.image-preview-demo img.preview').croppie({
+            enableExif: true,
+            enableResize: true,
+            viewport: { width: 200, height: 200, type: 'square' }
         });
+
+        $('.file-input').on('change', function(e) {
+            let image = e.target.files[0];
+            let reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onload = e => {
+                $('.image-preview-demo img.preview').attr('src', e.target.result)
+                $('.image-preview-demo .cr-boundary').remove()
+                $('.image-preview-demo .cr-slider-wrap').remove()
+                var crop = $('.image-preview-demo img.preview').croppie({
+                    enableExif: true,
+                    enableResize: true,
+                    viewport: { width: 200, height: 200, type: 'square' }
+                });
+            }
+        })
+
+        $('button.submit-edit').on('click', function(e) {
+            e.preventDefault();
+            var that = $(this);
+            crop.croppie('result', 'base64').then((image_data) => {
+                $("input.image-data").val(image_data);
+                that.parents('form').submit();
+            })
+        })
+
     </script>
 @endsection
