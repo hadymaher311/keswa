@@ -111,7 +111,12 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">{{ __('Image') }}</label>
                             <div class="col-sm-9">
-                                <div id="image-preview" class="image-preview">
+                                <div id="image-preview" class="image-preview"
+                                @if ($brand->image)
+                                    style="background-image: url('data:{{ $brand->image->meme_type }};base64, {{ base64_encode(file_get_contents($brand->image->getPath('card'))) }}'); background-repeat: no-repeat;background-size: cover;
+                                    background-position: center center;"
+                                @endif
+                                >
                                     <label for="image-upload" id="image-label">{{ __('Choose Image') }}</label>
                                     <input type="file" accept="image/*" name="image" id="image-upload" />
                                     

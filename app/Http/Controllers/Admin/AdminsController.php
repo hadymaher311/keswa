@@ -9,6 +9,7 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Admin\Admins\CreateRequest;
+use function GuzzleHttp\json_encode;
 
 class AdminsController extends Controller
 {
