@@ -2,6 +2,7 @@
 <style>
     .croppie-container .cr-image {
         position: relative;
+        max-width: 100%;
     }
 </style>
 <script src="{{ asset('/admin_styles/js/croppie.min.js') }}"></script>

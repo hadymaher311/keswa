@@ -81,6 +81,9 @@ class RolesController extends Controller
      */
     public function edit(Role $role)
     {
+        if ($role->name == 'super' && $role->guard_name = 'admin') {
+            return back();
+        }
         $permissions = Permission::all();
         return view('admin.roles.edit', compact('role', 'permissions'));
     }
@@ -97,6 +100,9 @@ class RolesController extends Controller
         $this->validate($request, [
             'name' => 'required|string|min:2'
         ]);
+        if ($role->name == 'super' && $role->guard_name = 'admin') {
+            return back();
+        }
         $role->name = $request->name;
         $role->save();
         $role->syncPermissions($request->permissions);
@@ -117,6 +123,12 @@ class RolesController extends Controller
         $this->validate($request, [
             'roles.*' => 'required|exists:roles,id',
         ]);
+        $roles = Role::find($request->roles);
+        foreach ($roles as $role) {
+            if ($role->name == 'super' && $role->guard_name = 'admin') {
+                return back();
+            }
+        }
         Role::destroy($request->roles);
         return back()->with('status', trans('Deleted Successfully'));
     }

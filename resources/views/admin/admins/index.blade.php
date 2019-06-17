@@ -75,9 +75,6 @@
                                     </td>
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>
-                                        @if ($admin->image)
-                                            <img src="{{ $admin->image->getUrl('thumb') }}" alt="" class="img-fluid" style="max-width: 50px; border-radius: 100%">
-                                        @endif 
                                         {{ $admin->name }}
                                     </td>
                                     <td>{{ $admin->email }}</td>
@@ -101,7 +98,7 @@
                                                     ">
                                                     <span class="custom-switch-indicator"></span>
                                                 </label>
-                                        </form>
+                                            </form>
                                         @endcan
                                     </td>
 

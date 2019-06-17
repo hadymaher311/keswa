@@ -49,6 +49,8 @@
                                     <div class="author-box-left">
                                         @if (auth()->user()->image)
                                             <img alt="image" src="{{ auth()->user()->image->getUrl('card') }}" class="rounded-circle author-box-picture">
+                                        @else
+                                            <img alt="image" src="{{ asset(config('app.default_avatar')) }}" class="rounded-circle author-box-picture">
                                         @endif
                                         <br>
                                         <br>

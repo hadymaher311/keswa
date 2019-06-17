@@ -55,6 +55,7 @@ return [
     'url' => env('APP_URL', 'https://guarded-coast-79380.herokuapp.com'),
 
     'asset_url' => env('ASSET_URL', 'https://guarded-coast-79380.herokuapp.com'),
+    'default_avatar' => '/admin_styles/img/avatar/avatar-1.png',
 
     /*
     |--------------------------------------------------------------------------

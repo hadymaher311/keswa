@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
 
@@ -54,7 +55,11 @@ class PermissionsController extends Controller
         $this->validate($request, [
             'name' => 'required|string|min:2'
         ]);
-        Permission::create(['name' => $request->name]);
+        $permission = Permission::create(['name' => $request->name]);
+        $role = Role::where(['name' => 'super', 'guard_name' => 'admin'])->first();
+        if ($role) {
+            $role->givePermissionTo($permission);
+        }
         return back()->with(['status' => trans('Added Successfully')]);
     }
 

@@ -74,9 +74,6 @@
                                     </td>
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>
-                                        @if ($user->image)
-                                            <img src="{{ $user->image->getUrl('thumb') }}" alt="" class="img-fluid" style="max-width: 50px; border-radius: 100%">
-                                        @endif 
                                         {{ $user->name }}
                                     </td>
                                     <td>{{ $user->email }}</td>

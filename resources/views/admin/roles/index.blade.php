@@ -73,9 +73,11 @@
                                     <td>{{ $role->created_at->diffForHumans() }}</td>
                                     <td>
                                         @can('update roles')
-                                            <a href="{{ route('roles.edit', $role->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
+                                            @if ($role->name != 'super')
+                                                <a href="{{ route('roles.edit', $role->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            @endif
                                         @endcan
 
                                         <a href="{{ route('roles.show', $role->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('View') }}" class="btn btn-sm btn-primary">
@@ -83,20 +85,22 @@
                                         </a>
                                             
                                         @can('delete roles')
-                                            <a 
-                                                href="#" 
-                                                class="btn btn-danger btn-sm"
-                                                onclick="
-                                                        event.preventDefault();
-                                                        if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
-                                                            $(this).siblings('form').submit();
-                                                        }" data-toggle="tooltip" data-placement="top" title="{{ __('Delete') }}"
-                                            ><i class="fa fa-times"></i></a>
-                                            <form action="{{ route('roles.destroy') }}" method="POST">
-                                                @csrf
-                                                {{ method_field('DELETE') }}
-                                                <input type="hidden" name="roles[]" value="{{ $role->id }}">
-                                            </form>
+                                            @if ($role->name != 'super')
+                                                <a 
+                                                    href="#" 
+                                                    class="btn btn-danger btn-sm"
+                                                    onclick="
+                                                            event.preventDefault();
+                                                            if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
+                                                                $(this).siblings('form').submit();
+                                                            }" data-toggle="tooltip" data-placement="top" title="{{ __('Delete') }}"
+                                                ><i class="fa fa-times"></i></a>
+                                                <form action="{{ route('roles.destroy') }}" method="POST">
+                                                    @csrf
+                                                    {{ method_field('DELETE') }}
+                                                    <input type="hidden" name="roles[]" value="{{ $role->id }}">
+                                                </form>
+                                            @endif
                                         @endcan
 
                                     </td>
