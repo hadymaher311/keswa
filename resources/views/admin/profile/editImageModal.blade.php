@@ -32,7 +32,6 @@
                     aspectRatio: 1 / 1,
                     dragMode: 'move',
                     autoCropArea: 1.0,
-                    cropBoxMovable: false
                     });
             }
         })
