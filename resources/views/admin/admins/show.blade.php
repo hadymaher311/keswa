@@ -62,8 +62,34 @@
                                 <div class="row">
                                     <div class="col-sm-3"><b>{{ __('Permissions') }}:</b></div>
                                     <div class="col-sm-9">
+                                        @php
+                                            $permissionsArray = array();
+                                        @endphp
                                         @foreach ($admin->roles->first()->permissions as $permission)
-                                            <div class="badge badge-primary mt-3">{{ $permission->name }}</div>
+                    
+                                            @if (!in_array(explode(' ', $permission->name)[1], $permissionsArray))
+                                                
+                                                <div class="check-all-container">
+                                                <div style="clear: both;"></div>
+                                                <b>{{ ucfirst(explode(' ', $permission->name)[1]) }}:</b> <br>
+                                                <div class="row">
+                                                    @foreach ($admin->roles->first()->permissions as $permission2)
+                        
+                                                        @if (explode(' ', $permission->name)[1] === explode(' ', $permission2->name)[1])
+                        
+                                                            <div class="badge badge-primary" style="margin: 5px">{{ $permission2->name }}</div>
+                        
+                                                        @endif
+                        
+                                                    @endforeach
+                                                </div>
+                                                </div>
+                                                
+                                                @php
+                                                    $permissionsArray[] = explode(' ', $permission->name)[1];
+                                                @endphp
+                    
+                                            @endif
                                         @endforeach
                                     </div>
                                 </div>
