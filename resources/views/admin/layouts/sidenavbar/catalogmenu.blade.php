@@ -49,6 +49,18 @@
                 </ul>
             </li>
         @endcan
+        
+        @can('view sub_sub_categories')
+            <li class="dropdown">
+                <a class="nav-link has-dropdown" href="#"><i class="fa fa-copyright"></i>{{ __('Sub sub categories') }}</a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="{{ route('sub_sub_categories.index') }}">{{ __('Home') }}</a></li>
+                    @can('create sub_sub_categories')
+                        <li><a class="nav-link" href="{{ route('sub_sub_categories.create') }}">{{ __('Create') }}</a></li>
+                    @endcan
+                </ul>
+            </li>
+        @endcan
 
         @can('view brands')
             <li class="dropdown">

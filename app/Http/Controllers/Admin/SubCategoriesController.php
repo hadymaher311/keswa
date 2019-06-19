@@ -106,6 +106,7 @@ class SubCategoriesController extends Controller
         $sub_category->name_ar = $request->name_ar;
         $sub_category->description_en = $request->description_en;
         $sub_category->description_ar = $request->description_ar;
+        $sub_category->category_id = $request->category;
         $sub_category->save();
         if ($request->has('image')) {
             $sub_category
