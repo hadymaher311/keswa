@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Category;
+use App\Models\SubSubCategory;
 use App\Helpers\LocalizableModel;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -59,5 +60,14 @@ class SubCategory  extends LocalizableModel implements HasMedia
     public function main_category()
     {
         return $this->belongsTo(Category::class, 'category_id');
+    }
+    
+    /**
+     * Get sub sub category
+     * 
+     */
+    public function sub_sub_categories()
+    {
+        return $this->hasMany(SubSubCategory::class);
     }
 }

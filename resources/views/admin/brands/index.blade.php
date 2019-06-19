@@ -58,7 +58,6 @@
                             <th>{{ __('#') }}</th>
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Description') }}</th>
-                            <th>{{ __('Category') }}</th>
                             <th>{{ __('Added from') }}</th>
                             <th>{{ __('Activate') }}</th>
                             <th>{{ __('Navbar visibility') }}</th>
@@ -77,7 +76,6 @@
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>{{ $brand->name }}</td>
                                     <td>{!! $brand->description !!}</td>
-                                    <td><a href="{{ route('sub_categories.show', $brand->category_id) }}" class="badge badge-primary">{{ $brand->category->name }}</a></td>
                                     <td>{{ $brand->created_at->diffForHumans() }}</td>
                                     <td>
                                         @can('update brands')

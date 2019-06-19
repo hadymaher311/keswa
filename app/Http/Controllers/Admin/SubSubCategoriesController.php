@@ -6,8 +6,8 @@ use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use App\Models\SubSubCategory;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\SubCategories\CreateRequest;
-use App\Http\Requests\Admin\SubCategories\UpdateRequest;
+use App\Http\Requests\Admin\SubSubCategories\CreateRequest;
+use App\Http\Requests\Admin\SubSubCategories\UpdateRequest;
 
 class SubSubCategoriesController extends Controller
 {

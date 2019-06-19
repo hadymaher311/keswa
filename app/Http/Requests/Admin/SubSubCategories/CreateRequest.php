@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\Brands;
+namespace App\Http\Requests\Admin\SubSubCategories;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,6 +28,7 @@ class CreateRequest extends FormRequest
             'name_ar' => 'required_without:name_en',
             'description_en' => 'required_without:description_ar',
             'description_ar' => 'required_without:description_en',
+            'category' => 'required|exists:sub_categories,id',
             'image' => ['sometimes', 'image']
         ];
     }

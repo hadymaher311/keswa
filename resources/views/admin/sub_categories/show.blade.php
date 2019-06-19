@@ -57,6 +57,15 @@
                                 <div class="col-sm-9">
                                     <a href="{{ route('categories.show', $sub_category->category_id) }}" class="badge badge-primary">{{ $sub_category->main_category->name }}</a>
                                 </div>
+                                <div class="col-sm-3"><b>{{ __('Sub sub categories') }}:</b></div>
+                                <div class="col-sm-9">
+                                    @if (!$sub_category->sub_sub_categories)
+                                        <div class="text-warning">{{ __('Nothing yet') }}</div>
+                                    @endif
+                                    @foreach ($sub_category->sub_sub_categories as $sub_sub_category)
+                                        <a href="{{ route('sub_sub_categories.show', $sub_sub_category->id) }}" style="margin: 10px;" class="badge badge-primary">{{ $sub_sub_category->name }}</a>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>

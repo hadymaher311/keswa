@@ -86,26 +86,6 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail" class="col-sm-3 control-label">{{ __('Categories') }}</label>
-        
-                            <div class="col-sm-9">
-                                <select name="category" id="category" required class="form-control @error('category') is-invalid @enderror">
-                                    <option value="">{{ __('Choose category') }}</option>
-                                    @foreach ($categories as $category)
-                                        <option @if ($category->id == old('category'))
-                                            selected
-                                        @endif value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-
-                                @error('category')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <label class="col-sm-3 col-form-label">{{ __('Image') }}</label>
                             <div class="col-sm-9">
                                 <div id="image-preview" class="image-preview">

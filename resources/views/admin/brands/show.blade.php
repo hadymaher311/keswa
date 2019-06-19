@@ -53,10 +53,6 @@
                                 <div class="col-sm-9">{{ $brand->name }}</div>
                                 <div class="col-sm-3"><b>{{ __('Description') }}:</b></div>
                                 <div class="col-sm-9">{!! $brand->description !!}</div>
-                                <div class="col-sm-3"><b>{{ __('Category') }}:</b></div>
-                                <div class="col-sm-9">
-                                    <a href="{{ route('sub_categories.show', $brand->category_id) }}" class="badge badge-primary">{{ $brand->category->name }}</a>
-                                </div>
                             </div>
                         </div>
                     </div>

@@ -28,7 +28,6 @@ class UpdateRequest extends FormRequest
             'name_ar' => 'required_without:name_en',
             'description_en' => 'required_without:description_ar',
             'description_ar' => 'required_without:description_en',
-            'category' => 'required|exists:sub_categories,id',
             'image' => ['sometimes', 'image']
         ];
     }
