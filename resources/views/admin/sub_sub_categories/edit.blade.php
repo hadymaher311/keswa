@@ -93,7 +93,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail" class="col-sm-3 control-label">{{ __('Categories') }}</label>
+                            <label for="inputEmail" class="col-sm-3 control-label">{{ __('Sub categories') }}</label>
         
                             <div class="col-sm-9">
                                 <select name="category" id="category" required class="form-control @error('category') is-invalid @enderror">

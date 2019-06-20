@@ -54,17 +54,45 @@ nav.navbar form.form-inline ul.navbar-nav {
     right: 0
 }
 
+body.sidebar-gone .main-sidebar {
+    right: -250px;
+}
+
+.dropdown-menu { 
+    text-align: right;
+}
+
 body.sidebar-mini .main-sidebar:after {
     right: 0;
 }
-
 .main-content {
     padding-right: 280px;
     padding-left: 30px;
 }
 
+@media (max-width: 1024px)
+{
+    nav.navbar {
+        right: 0;
+    }
+    .main-content {
+        padding-left: 30px;
+        padding-right: 30px;
+        width: 100% !important;
+    }
+    .navbar-expand-lg .navbar-nav .dropdown-menu-right {
+        left: 0;
+        right: auto;
+    }
+}
+
+
 .custom-file, .custom-file-label, .custom-select, .custom-file-label:after, .form-control[type="color"], select.form-control:not([size]):not([multiple]) {
     height: calc(2.25rem + 12px);
+}
+
+ul.nav.nav-pills {
+    padding: 0;
 }
 
 .main-footer {

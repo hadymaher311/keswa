@@ -98,7 +98,8 @@ class RolesController extends Controller
     public function update(Request $request, Role $role)
     {
         $this->validate($request, [
-            'name' => 'required|string|min:2'
+            'name' => 'required|string|min:2',
+            'permissions.*' => 'sometimes|exists:permissions,id',
         ]);
         if ($role->name == 'super' && $role->guard_name = 'admin') {
             return back();

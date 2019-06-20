@@ -42,6 +42,9 @@ Route::group([
         /*********************************************** products CRUD routes *******************************************/
         Route::resource('/admin/products', 'ProductsController');
         Route::delete('/admin/products', 'ProductsController@destroy')->name('products.destroy');
+        Route::PUT('/admin/products/{product}/active', 'ProductsController@active')->name('products.active');
+        Route::PUT('/admin/products/{product}/allowreviews', 'ProductsController@allowReviews')->name('products.allow.reviews');
+        Route::PUT('/admin/products/{product}/freeshipping', 'ProductsController@freeShipping')->name('products.free.shipping');
         /*********************************************** products CRUD routes *******************************************/
         
         /*********************************************** orders CRUD routes *******************************************/

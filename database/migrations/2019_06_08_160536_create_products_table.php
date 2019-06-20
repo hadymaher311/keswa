@@ -29,7 +29,7 @@ class CreateProductsTable extends Migration
             $table->integer('cost')->unsigned();
             $table->integer('price')->unsigned();
             $table->integer('weight')->unsigned()->nullable();
-            $table->integer('lenght')->unsigned()->nullable();
+            $table->integer('length')->unsigned()->nullable();
             $table->integer('width')->unsigned()->nullable();
             $table->integer('depth')->unsigned()->nullable();
             $table->timestamp('expiry_date')->nullable();

@@ -17,6 +17,7 @@
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('/admin_styles/modules/bootstrap-social/bootstrap-social.css') }}">
   
+    @yield('css')
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('/admin_styles/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('/admin_styles/css/components.css') }}">
@@ -31,6 +32,5 @@
       </style>
     @endif
 
-    @yield('css')
 
 </head>
