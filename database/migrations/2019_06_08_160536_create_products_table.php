@@ -34,10 +34,12 @@ class CreateProductsTable extends Migration
             $table->integer('depth')->unsigned()->nullable();
             $table->timestamp('expiry_date')->nullable();
             $table->bigInteger('brand_id')->unsigned();
+            $table->bigInteger('warehouse_id')->unsigned()->nullable();
             $table->boolean('active')->default(1);
             $table->boolean('free_shipping')->default(0);
             $table->boolean('allow_review')->default(1);
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('warehouses_id')->references('id')->on('warehousess')->onDelete('set null')->onUpdate('cascade');
             $table->timestamps();
         });
     }

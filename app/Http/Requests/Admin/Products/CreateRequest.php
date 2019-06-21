@@ -43,6 +43,7 @@ class CreateRequest extends FormRequest
             'price'                 => 'required|integer|min:1|gt:cost',
             'discount'              => 'nullable|in:value,percentage',
             'discount_value'        => 'nullable|required_if:discount,value,percentage|integer|min:1|lt:price',
+            'discount_amount'       => 'nullable|required_if:discount,value,percentage|integer|min:1|lte:quantity',
             'width'                 => 'required|integer|min:1',
             'length'                => 'required|integer|min:1',
             'depth'                 => 'required|integer|min:1',
@@ -53,6 +54,7 @@ class CreateRequest extends FormRequest
             'feature_value.*'       => 'nullable',
             'related_product.*'     => 'sometimes|exists:products,id',
             'accessories.*'         => 'sometimes|exists:products,id',
+            'tags'                  => 'nullable|string',
         ];
     }
 }

@@ -7,11 +7,13 @@ use App\Models\Tag;
 use App\Models\Brand;
 use App\Models\Feature;
 use App\Models\Product;
+use App\Models\Discount;
 use App\Models\warehouse;
 use Illuminate\Http\Request;
 use App\Models\SubSubCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Products\CreateRequest;
+use App\Http\Requests\Admin\Products\UpdateRequest;
 
 class ProductsController extends Controller
 {
@@ -59,7 +61,7 @@ class ProductsController extends Controller
      * Store product.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \App\Http\Product
+     * @return \App\Models\Product
      */
     protected function storeProduct(Request $request)
     {
@@ -90,7 +92,7 @@ class ProductsController extends Controller
      * Store product Images.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param \App\Http\Product
+     * @param \App\Models\Product
      */
     protected function storeProductImages(Product $product, Request $request)
     {
@@ -105,21 +107,22 @@ class ProductsController extends Controller
      * Store product Features.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param \App\Http\Product
+     * @param \App\Models\Product
      */
     protected function storeProductFeatures(Product $product, Request $request)
     {
         if ($request->feature_type) {
-            $data = [];
             for ($i=0; $i < count($request->feature_type); $i++) { 
-                $data[] = [
-                    'name_en' => $request->feature_type[$i],
-                    'value_en' => $request->feature_value[$i],
-                ];
+                if ($request->feature_type[$i]) {
+
+                    $feature = Feature::create([
+                        'name_en' => $request->feature_type[$i],
+                        'value_en' => $request->feature_value[$i],
+                    ]);
+                    $product->features()->attach($feature);
+                }
             }
-            $features = Feature::create($data);
     
-            $product->features()->sync($features);
         }
     }
     
@@ -127,7 +130,7 @@ class ProductsController extends Controller
      * Store product Tags.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param \App\Http\Product
+     * @param \App\Models\Product
      */
     protected function storeProductTags(Product $product, Request $request)
     {
@@ -143,10 +146,28 @@ class ProductsController extends Controller
     }
     
     /**
+     * Store product Discount.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Models\Product
+     */
+    protected function storeProductDiscount(Product $product, Request $request)
+    {
+        if ($request->discount) {
+            Discount::create([
+                'type' => $request->discount,
+                'amount' => $request->discount_value,
+                'product_amount' => $request->amount,
+                'product_id' => $product->id,
+            ]);
+        }
+    }
+    
+    /**
      * Store product Accessories.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param \App\Http\Product
+     * @param \App\Models\Product
      */
     protected function storeProductAccessories(Product $product, Request $request)
     {
@@ -159,7 +180,7 @@ class ProductsController extends Controller
      * Store product RelatedProducts.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param \App\Http\Product
+     * @param \App\Models\Product
      */
     protected function storeRelatedProducts(Product $product, Request $request)
     {
@@ -179,9 +200,11 @@ class ProductsController extends Controller
         $product = $this->storeProduct($request);
         // sync with categories
         $product->categories()->sync($request->categories);
+
         $this->storeProductImages($product, $request);
         $this->storeProductFeatures($product, $request);
         $this->storeProductTags($product, $request);
+        $this->storeProductDiscount($product, $request);
         
         // store related products and accessories
         $this->storeRelatedProducts($product, $request);
@@ -209,8 +232,126 @@ class ProductsController extends Controller
      */
     public function edit(Product $product)
     {
-        // $sub_categories = SubCategory::all();
-        // return view('admin.products.edit', compact('product', 'sub_categories'));
+        $sub_sub_categories = SubSubCategory::all();
+        $warehouses = warehouse::all();
+        $products = Product::all();
+        $brands = Brand::all();
+        return view('admin.products.edit', compact('product', 'sub_sub_categories', 'warehouses', 'products', 'brands'));
+    }
+
+    /**
+     * Update product.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Product
+     */
+    protected function updateProduct(Product $product, Request $request)
+    {
+        $product->update([
+            'name_en' => $request->name_en,
+            'name_ar' => $request->name_ar,
+            'short_description_en' => $request->short_description_en,
+            'short_description_ar' => $request->short_description_ar,
+            'description_en' => $request->description_en,
+            'description_ar' => $request->description_ar,
+            'expiry_date' => Carbon::create($request->expiry_date),
+            'SKU' => $request->sku,
+            'quantity' => $request->quantity,
+            'low_quantity' => $request->low_quantity,
+            'quantity_per_packet' => $request->quantity_per_packet,
+            'min_sale_quantity' => $request->min_sale_quantity,
+            'price' => $request->price,
+            'cost' => $request->cost,
+            'length' => $request->length,
+            'width' => $request->width,
+            'depth' => $request->depth,
+            'weight' => $request->weight,
+            'brand_id' => $request->brand,
+        ]);
+    }
+
+    /**
+     * Update product Features.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Models\Product
+     */
+    protected function updateProductFeatures(Product $product, Request $request)
+    {
+        $product->features()->detach();
+        if ($request->feature_type) {
+            for ($i=0; $i < count($request->feature_type); $i++) { 
+                if ($request->feature_type[$i]) {
+                    $feature = Feature::create([
+                        'name_en' => $request->feature_type[$i],
+                        'value_en' => $request->feature_value[$i],
+                    ]);
+                    $product->features()->attach($feature);
+                }
+            }
+    
+        }
+    }
+    
+    /**
+     * Update product Tags.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Models\Product
+     */
+    protected function updateProductTags(Product $product, Request $request)
+    {
+        $product->tags()->delete();
+        if ($request->tags) {
+            $tags = explode(',', $request->tags);
+            foreach ($tags as $tag) {
+                Tag::create([
+                    'name' => $tag,
+                    'product_id' => $product->id,
+                ]); 
+            }
+        }
+    }
+    
+    /**
+     * Update product Discount.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Models\Product
+     */
+    protected function updateProductDiscount(Product $product, Request $request)
+    {
+        $product->discount()->delete();
+        if ($request->discount) {
+            Discount::create([
+                'type' => $request->discount,
+                'amount' => $request->discount_value,
+                'product_amount' => $request->amount,
+                'product_id' => $product->id,
+            ]);
+        }
+    }
+    
+    /**
+     * Update product Accessories.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Models\Product
+     */
+    protected function updateProductAccessories(Product $product, Request $request)
+    {
+        $product->accessories()->sync($request->accessories);
+    }
+    
+    /**
+     * Update product RelatedProducts.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Models\Product
+     */
+    protected function updateRelatedProducts(Product $product, Request $request)
+    {
+        $product->related_products()->sync($request->related_product);
     }
     
     /**
@@ -222,18 +363,17 @@ class ProductsController extends Controller
      */
     public function update(UpdateRequest $request, Product $product)
     {
-        // $product->name_en = $request->name_en;
-        // $product->name_ar = $request->name_ar;
-        // $product->description_en = $request->description_en;
-        // $product->description_ar = $request->description_ar;
-        // $product->sub_category_id = $request->category;
-        // $product->save();
-        // if ($request->has('image')) {
-        //     $product
-        //         ->addMediaFromUrl($request->image)
-        //         ->toMediaCollection('product.images');
-        // }
-        // return redirect()->route('products.index')->with('status', trans('Updated Successfully'));
+        $this->updateProduct($product, $request);
+        // sync with categories
+        $product->categories()->sync($request->categories);
+        $this->updateProductFeatures($product, $request);
+        $this->updateProductTags($product, $request);
+        $this->updateProductDiscount($product, $request);
+        
+        // update related products and accessories
+        $this->updateRelatedProducts($product, $request);
+        $this->updateProductAccessories($product, $request);
+        return redirect()->route('products.index')->with('status', trans('Updated Successfully'));
     }
 
     /**

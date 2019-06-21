@@ -341,7 +341,7 @@
                                             'percentage' => trans('By percentage'),
                                         ]
                                     @endphp
-                                    <div class="col-sm-4 m-auto">
+                                    <div class="col-sm-3">
                                         <select name="discount" id="discount" class="form-control @error('discount') is-invalid @enderror">
                                             <option value="">{{ __('Choose discount') }} ({{ __('No discount') }})</option>
                                             @foreach ($discounts as $discount => $value)
@@ -357,10 +357,19 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="col-sm-4 m-auto">
+                                    <div class="col-sm-3">
                                         <input id="discount_value" type="number" class="form-control @error('discount_value') is-invalid @enderror" name="discount_value" min="1" value="{{ old('discount_value')  }}" autocomplete="discount_value" placeholder="{{ __('Value') }}">
                                         
                                         @error('discount_value')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input id="discount_amount" type="number" class="form-control @error('discount_amount') is-invalid @enderror" name="discount_amount" min="1" value="{{ old('discount_amount')  }}" autocomplete="discount_amount" placeholder="{{ __('Quantity') }}">
+                                        
+                                        @error('discount_amount')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -592,6 +601,7 @@
         $(".features").on('click', '.add-feature', function(e) {
             e.preventDefault()
             $(this).parents('.features').append(feature_body)
+            $("*[data-toggle=tooltip]").tooltip()
         })
         $(".features").on('click', '.remove-feature', function(e) {
             e.preventDefault()
@@ -618,9 +628,5 @@
 
     })
 
-</script>
-
-<script>
-    
 </script>
 @endsection

@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\Tag;
 use App\Models\Feature;
 use App\Models\Product;
+use App\Models\Discount;
+use App\Models\warehouse;
 use App\Models\SubSubCategory;
 use App\Helpers\LocalizableModel;
 use Spatie\MediaLibrary\Models\Media;
@@ -116,6 +118,24 @@ class Product extends LocalizableModel implements HasMedia
     public function tags()
     {
         return $this->hasMany(Tag::class);
+    }
+    
+    /**
+     * Get product discount
+     * 
+     */
+    public function discount()
+    {
+        return $this->hasOne(Discount::class);
+    }
+    
+    /**
+     * Get product warehouse
+     * 
+     */
+    public function warehouse()
+    {
+        return $this->belongsTo(warehouse::class);
     }
 
     /**
