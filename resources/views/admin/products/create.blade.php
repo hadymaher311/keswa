@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="{{ asset('/admin_styles/modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/admin_styles/modules/dropzonejs/dropzone.css') }}">
 <link rel="stylesheet" href="{{ asset('/admin_styles/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('/admin_styles/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
 <style>
     .select2-container {
         width: 100% !important;
@@ -187,7 +188,7 @@
                                     <label for="inputEmail" class="col-sm-3 control-label">{{ __('Categories') }}</label>
                 
                                     <div class="col-sm-9">
-                                        <select name="categories[]" id="categories" required class="form-control select2 @error('categories') is-invalid @enderror" multiple>
+                                        <select name="categories[]" id="categories" required class="form-control select2 @error('categories[]') is-invalid @enderror" multiple>
                                             @foreach ($sub_sub_categories as $category)
                                                 <option 
                                                     @if (old('categories'))
@@ -201,7 +202,7 @@
                                             @endforeach
                                         </select>
 
-                                        @error('category')
+                                        @error('categories[]')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -475,7 +476,7 @@
                                     <label for="inputEmail" class="col-sm-3 control-label">{{ __('Related products') }}</label>
                 
                                     <div class="col-sm-9">
-                                        <select name="related_product[]" id="related_product" class="form-control select2 @error('related_product') is-invalid @enderror" multiple>
+                                        <select name="related_product[]" id="related_product" class="form-control select2 @error('related_product[]') is-invalid @enderror" multiple>
                                             @foreach ($products as $product)
                                                 <option 
                                                 @if (old('related_product'))
@@ -489,7 +490,7 @@
                                             @endforeach
                                         </select>
 
-                                        @error('related_product')
+                                        @error('related_product[]')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -515,10 +516,23 @@
                                             @endforeach
                                         </select>
 
-                                        @error('accessories')
+                                        @error('accessories[]')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">{{ __('Tags') }}</label>
+                                    <div class="col-sm-9">
+                                        <input id="tags" type="text" class="form-control inputtags @error('tags') is-invalid @enderror" name="tags" value="{{ old('tags') }}" autocomplete="tags">
+                                        
+                                        @error('tags')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                     </div>
                                 </div>
@@ -547,6 +561,7 @@
 <script src="{{ asset('/admin_styles/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{ asset('/admin_styles/modules/dropzonejs/min/dropzone.min.js') }}"></script>
 <script src="{{ asset('/admin_styles/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ asset('/admin_styles/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
 <script>
 
     $(function() {
@@ -558,6 +573,8 @@
             autoProcessQueue: false,
             dictDefaultMessage: "{{ __('Choose Images') }}",
         });
+
+        $(".inputtags").tagsinput('items');
 
         var feature_body = '<div class="col-sm-3 feature-box mt-3"></div>';
         feature_body    += '<div class="col-sm-4 feature-box mt-3">';

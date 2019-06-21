@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Tag;
 use App\Models\Feature;
 use App\Models\Product;
 use App\Models\SubSubCategory;
@@ -106,6 +107,15 @@ class Product extends LocalizableModel implements HasMedia
     public function accessories()
     {
         return $this->belongsToMany(Product::class, 'product_accessories', 'product_id', 'accessory_id')->withTimestamps();
+    }
+    
+    /**
+     * Get product Tags
+     * 
+     */
+    public function tags()
+    {
+        return $this->hasMany(Tag::class);
     }
 
     /**

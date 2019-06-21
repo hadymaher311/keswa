@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Carbon\Carbon;
+use App\Models\Tag;
 use App\Models\Brand;
 use App\Models\Feature;
 use App\Models\Product;
@@ -123,6 +124,25 @@ class ProductsController extends Controller
     }
     
     /**
+     * Store product Tags.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Http\Product
+     */
+    protected function storeProductTags(Product $product, Request $request)
+    {
+        if ($request->tags) {
+            $tags = explode(',', $request->tags);
+            foreach ($tags as $tag) {
+                Tag::create([
+                    'name' => $tag,
+                    'product_id' => $product->id,
+                ]); 
+            }
+        }
+    }
+    
+    /**
      * Store product Accessories.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -161,6 +181,7 @@ class ProductsController extends Controller
         $product->categories()->sync($request->categories);
         $this->storeProductImages($product, $request);
         $this->storeProductFeatures($product, $request);
+        $this->storeProductTags($product, $request);
         
         // store related products and accessories
         $this->storeRelatedProducts($product, $request);

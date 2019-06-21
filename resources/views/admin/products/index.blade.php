@@ -57,7 +57,7 @@
                             </th>
                             <th>{{ __('#') }}</th>
                             <th>{{ __('Name') }}</th>
-                            <th>{{ __('Short description') }}</th>
+                            <th>{{ __('Tags') }}</th>
                             <th>{{ __('Quantity') }}</th>
                             <th>{{ __('Price') }}</th>
                             <th>{{ __('Added from') }}</th>
@@ -78,7 +78,13 @@
                                     </td>
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>{{ $product->name }}</td>
-                                    <td>{!! $product->short_description !!}</td>
+                                    <td>
+                                        @foreach ($product->tags as $tag)
+                                            <div class="badge badge-primary">
+                                                {{ $tag->name }}
+                                            </div>    
+                                        @endforeach
+                                    </td>
                                     <td>{{ $product->quantity }}</td>
                                     <td>{{ $product->price }}</td>
                                     <td>{{ $product->created_at->diffForHumans() }}</td>
