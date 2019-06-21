@@ -15,4 +15,13 @@ class Discount extends Model
         'type', 'amount',
         'product_id', 'product_amount',
     ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'active' => 'boolean',
+    ];
 }

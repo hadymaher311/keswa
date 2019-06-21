@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Tag;
+use App\Models\Brand;
 use App\Models\Feature;
 use App\Models\Product;
 use App\Models\Discount;
@@ -127,6 +128,15 @@ class Product extends LocalizableModel implements HasMedia
     public function discount()
     {
         return $this->hasOne(Discount::class);
+    }
+    
+    /**
+     * Get product brand
+     * 
+     */
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
     
     /**

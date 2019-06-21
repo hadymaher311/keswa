@@ -45,6 +45,7 @@ Route::group([
         Route::PUT('/admin/products/{product}/active', 'ProductsController@active')->name('products.active');
         Route::PUT('/admin/products/{product}/allowreviews', 'ProductsController@allowReviews')->name('products.allow.reviews');
         Route::PUT('/admin/products/{product}/freeshipping', 'ProductsController@freeShipping')->name('products.free.shipping');
+        Route::PUT('/admin/products/{product}/discount/activate', 'ProductsController@activateDiscount')->name('products.discount.active');
         /*********************************************** products CRUD routes *******************************************/
         
         /*********************************************** orders CRUD routes *******************************************/

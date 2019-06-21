@@ -382,7 +382,7 @@
                             {{------------------------------------------ Shipping ----------------------------------------------}}
                             <div class="tab-pane fade" id="shipping4" role="tabpanel" aria-labelledby="shipping-tab4">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">{{ __('Dimensions') }}</label>
+                                    <label class="col-sm-3 col-form-label">{{ __('Dimensions') }} {{ __('in cm') }}</label>
                                     <div class="col-sm-3">
                                         <input id="width" type="number" class="form-control @error('width') is-invalid @enderror" name="width" min="1" value="{{ old('width')  }}" autocomplete="width" placeholder="{{ __('Width') }}">
                                         

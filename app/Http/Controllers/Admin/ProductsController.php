@@ -157,7 +157,7 @@ class ProductsController extends Controller
             Discount::create([
                 'type' => $request->discount,
                 'amount' => $request->discount_value,
-                'product_amount' => $request->amount,
+                'product_amount' => $request->discount_amount,
                 'product_id' => $product->id,
             ]);
         }
@@ -326,7 +326,7 @@ class ProductsController extends Controller
             Discount::create([
                 'type' => $request->discount,
                 'amount' => $request->discount_value,
-                'product_amount' => $request->amount,
+                'product_amount' => $request->discount_amount,
                 'product_id' => $product->id,
             ]);
         }
@@ -405,7 +405,7 @@ class ProductsController extends Controller
     {
         $product->active = !($product->active);
         $product->save();
-        return redirect()->route('products.index')->with('status', trans('Updated Successfully'));
+        return back()->with('status', trans('Updated Successfully'));
     }
 
     /**
@@ -419,7 +419,7 @@ class ProductsController extends Controller
     {
         $product->allow_review = !($product->allow_review);
         $product->save();
-        return redirect()->route('products.index')->with('status', trans('Updated Successfully'));
+        return back()->with('status', trans('Updated Successfully'));
     }
 
     /**
@@ -433,6 +433,23 @@ class ProductsController extends Controller
     {
         $product->free_shipping = !($product->free_shipping);
         $product->save();
-        return redirect()->route('products.index')->with('status', trans('Updated Successfully'));
+        return back()->with('status', trans('Updated Successfully'));
+    }
+    
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function activateDiscount(Request $request, Product $product)
+    {
+        if ($product->discount) {
+            $product->discount->active = !($product->discount->active);
+            $product->discount->save();
+            return back()->with('status', trans('Updated Successfully'));
+        }
+        return back()->with('status', trans('No discount for this product'));
     }
 }

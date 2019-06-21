@@ -57,11 +57,11 @@
                             </th>
                             <th>{{ __('#') }}</th>
                             <th>{{ __('Name') }}</th>
-                            <th>{{ __('Tags') }}</th>
                             <th>{{ __('Quantity') }}</th>
                             <th>{{ __('Price') }}</th>
                             <th>{{ __('Added from') }}</th>
                             <th>{{ __('Activate') }}</th>
+                            <th>{{ __('Activate discount') }}</th>
                             <th>{{ __('Allow reviews') }}</th>
                             <th>{{ __('Free shipping') }}</th>
                             <th>{{ __('Controls') }}</th>
@@ -78,13 +78,6 @@
                                     </td>
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>{{ $product->name }}</td>
-                                    <td>
-                                        @foreach ($product->tags as $tag)
-                                            <div class="badge badge-primary">
-                                                {{ $tag->name }}
-                                            </div>    
-                                        @endforeach
-                                    </td>
                                     <td>{{ $product->quantity }}</td>
                                     <td>{{ $product->price }}</td>
                                     <td>{{ $product->created_at->diffForHumans() }}</td>
@@ -106,6 +99,30 @@
                                                     <span class="custom-switch-indicator"></span>
                                                 </label>
                                             </form>
+                                        @endcan
+                                    </td>
+                                    <td>
+                                        @can('update products')
+                                            @if ($product->discount)
+                                                <form action="{{ route('products.discount.active', $product->id) }}" method="post">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if ($product->discount->active)
+                                                        {{ __('Active') }}
+                                                        @else
+                                                        {{ __('Not Active') }}
+                                                        @endif">
+                                                        <input name="active" value="{{ $product->id }}" type="checkbox" @if ($product->discount->active)
+                                                        checked
+                                                        @endif class="custom-switch-input" onchange="
+                                                            $(this).parent('form'),submit();
+                                                        ">
+                                                        <span class="custom-switch-indicator"></span>
+                                                    </label>
+                                                </form>
+                                            @else
+                                                {{ __('No discount for this product') }}
+                                            @endif
                                         @endcan
                                     </td>
                                     <td>

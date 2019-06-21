@@ -255,7 +255,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">{{ __('Quantity pre packet') }}</label>
+                                    <label class="col-sm-3 col-form-label">{{ __('Quantity per packet') }}</label>
                                     <div class="col-sm-9">
                                         <input id="quantity_per_packet" type="number" class="form-control @error('quantity_per_packet') is-invalid @enderror" name="quantity_per_packet" min="1" value="{{ $product->quantity_per_packet  }}" required autocomplete="quantity_per_packet">
                                         
@@ -364,7 +364,7 @@
                             {{------------------------------------------ Shipping ----------------------------------------------}}
                             <div class="tab-pane fade" id="shipping4" role="tabpanel" aria-labelledby="shipping-tab4">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">{{ __('Dimensions') }}</label>
+                                    <label class="col-sm-3 col-form-label">{{ __('Dimensions') }} {{ __('in cm') }}</label>
                                     <div class="col-sm-3">
                                         <input id="width" type="number" class="form-control @error('width') is-invalid @enderror" name="width" min="1" value="{{ $product->width  }}" autocomplete="width" placeholder="{{ __('Width') }}">
                                         
