@@ -46,6 +46,8 @@ Route::group([
         Route::PUT('/admin/products/{product}/allowreviews', 'ProductsController@allowReviews')->name('products.allow.reviews');
         Route::PUT('/admin/products/{product}/freeshipping', 'ProductsController@freeShipping')->name('products.free.shipping');
         Route::PUT('/admin/products/{product}/discount/activate', 'ProductsController@activateDiscount')->name('products.discount.active');
+        Route::GET('/admin/products/{product}/images/edit', 'ProductsController@editImages')->name('products.images.edit');
+        Route::PUT('/admin/products/{product}/images/edit', 'ProductsController@updateImages')->name('products.images.edit');
         /*********************************************** products CRUD routes *******************************************/
         
         /*********************************************** orders CRUD routes *******************************************/

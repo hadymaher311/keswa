@@ -170,6 +170,10 @@
                                             <a href="{{ route('products.edit', $product->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                                 <i class="fa fa-edit"></i>
                                             </a>
+                                            
+                                            <a href="{{ route('products.images.edit', $product->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit images') }}" class="btn btn-sm btn-dark">
+                                                <i class="fa fa-image"></i>
+                                            </a>
                                         @endcan
                                         
                                         <a href="{{ route('products.show', $product->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('View') }}" class="btn btn-sm btn-primary">

@@ -12,6 +12,7 @@ use App\Models\warehouse;
 use Illuminate\Http\Request;
 use App\Models\SubSubCategory;
 use App\Http\Controllers\Controller;
+use Spatie\MediaLibrary\Models\Media;
 use App\Http\Requests\Admin\Products\CreateRequest;
 use App\Http\Requests\Admin\Products\UpdateRequest;
 
@@ -373,6 +374,46 @@ class ProductsController extends Controller
         // update related products and accessories
         $this->updateRelatedProducts($product, $request);
         $this->updateProductAccessories($product, $request);
+        return redirect()->route('products.index')->with('status', trans('Updated Successfully'));
+    }
+
+    /**
+     * Show the form for editing the images.
+     *
+     * @param  Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function editImages(Product $product)
+    {
+        return view('admin.products.editimages', compact('product'));
+    }
+
+    /**
+     * remove product images.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    protected function removeImages(Request $request)
+    {
+        Media::destroy($request->removed);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function updateImages(Request $request, Product $product)
+    {
+        $this->validate($request, [
+            'removed' => 'array',
+            'removed.*' => 'required|exists:media,id',
+            'images.*' => 'sometimes|base64image'
+        ]);
+        $this->removeImages($request);
+        $this->storeProductImages($product, $request);
         return redirect()->route('products.index')->with('status', trans('Updated Successfully'));
     }
 
