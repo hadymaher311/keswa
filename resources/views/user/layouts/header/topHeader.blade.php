@@ -54,8 +54,8 @@
                                     <span class="fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{{ route(Route::currentRouteName(), ['locale' => 'en']) }}">{{ __('English') }}</a></li>
-                                    <li><a href="{{ route(Route::currentRouteName(), ['locale' => 'ar']) }}">{{ __('Arabic') }}</a></li>
+                                    <li><a href="{{ url(substr_replace(Request::path(), 'en', 0, 2)) }}">{{ __('English') }}</a></li>
+                                    <li><a href="{{ url(substr_replace(Request::path(), 'ar', 0, 2)) }}">{{ __('Arabic') }}</a></li>
                                 </ul>
                             </form>
                         </div>
