@@ -94,4 +94,15 @@ class Admin extends Authenticatable implements HasMedia
               ->width(100)
               ->height(100);
     }
+
+    /**
+     * Scope a query to only include active users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
+    }
 }

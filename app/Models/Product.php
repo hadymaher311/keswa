@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\Tag;
 use App\Models\Brand;
 use App\Models\Feature;
-use App\Models\Product;
 use App\Models\Discount;
 use App\Models\warehouse;
 use App\Models\SubSubCategory;
