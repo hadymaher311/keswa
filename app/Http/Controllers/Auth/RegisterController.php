@@ -38,7 +38,7 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
-        $this->redirectTo = \App::getLocale() . '/home';
+        $this->redirectTo = app()->getLocale() . '/home';
     }
 
     /**
@@ -64,7 +64,43 @@ class RegisterController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            
+            // personal info
+            'phone' => ['required', 'string', 'max:11', 'min:11'],
+            'gender' => ['required', 'string', 'in:male,female'],
+
+            // Address
+            'country' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'street' => ['required', 'string', 'max:255'],
+            'building' => ['required', 'string', 'max:255'],
+            'floor' => ['required', 'string', 'max:255'],
+            'apartment' => ['required', 'string', 'max:255'],
+            'nearest_landmark' => ['nullable', 'string', 'max:255'],
+            'location_type' => ['required', 'string', 'in:home,business'],
         ]);
+    }
+
+    /**
+     * Create a new user address after a valid registration.
+     *
+     * @param  array  $data
+     * @param  \App\User
+     */
+    protected function createAddress(array $data, User $user)
+    {
+        $user->addresses()->create($data);
+    }
+    
+    /**
+     * Create a new user personal info after a valid registration.
+     *
+     * @param  array  $data
+     * @param  \App\User
+     */
+    protected function createPersonalInfo(array $data, User $user)
+    {
+        $user->personalInfo()->create($data);
     }
 
     /**
@@ -75,11 +111,14 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user =  User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+        $this->createAddress($data, $user);
+        $this->createPersonalInfo($data, $user);
+        return $user;
     }
 }

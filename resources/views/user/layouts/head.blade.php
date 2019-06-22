@@ -61,7 +61,17 @@
     ============================================ -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,500i,700' rel='stylesheet' type='text/css'>
     <style type="text/css">
-            body{font-family:'Roboto', sans-serif}
+        body{font-family:'Roboto', sans-serif}
+        .invalid-feedback {
+            color: red;
+            font-size: 12px;
+        }
+        .is-invalid {
+            border-color: #ea2a33;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(213, 39, 39, 0.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(213, 39, 39, 0.6);
+        }
     </style>
 
     @yield('css')

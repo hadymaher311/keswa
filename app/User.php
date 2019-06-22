@@ -8,6 +8,8 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\UserPersonalInfo;
+use App\Models\UserAddress;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
@@ -68,5 +70,23 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         $this->addMediaConversion('thumb')
               ->width(100)
               ->height(100);
+    }
+
+    /**
+     * Get user personal info
+     * 
+     */
+    public function personalInfo()
+    {
+        return $this->hasOne(UserPersonalInfo::class);
+    }
+    
+    /**
+     * Get user addresses
+     * 
+     */
+    public function addresses()
+    {
+        return $this->hasMany(UserAddress::class);
     }
 }

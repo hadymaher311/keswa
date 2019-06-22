@@ -53,4 +53,14 @@ class LoginController extends Controller
             'active' => 1,
         ];
     }
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        return view('user.auth.login');
+    }
 }
