@@ -10,12 +10,33 @@
                         <li class="account" id="my_account">
                             <a href="#" title="My Account " class="btn-xs dropdown-toggle" data-toggle="dropdown"> <span class="hidden-xs">{{ __('My Account') }} </span>  <span class="fa fa-caret-down"></span>
                             </a>
-                            <ul class="dropdown-menu ">
-                                <li><a href="register.html"><i class="fa fa-user"></i> Register</a></li>
-                                <li><a href="login.html"><i class="fa fa-pencil-square-o"></i> Login</a></li>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ route('register') }}"><i class="fa fa-user"></i> {{ __('Register') }}</a></li>
+                                <li><a href="{{ route('login') }}"><i class="fa fa-pencil-square-o"></i> {{ __('Login') }}</a></li>
                             </ul>
                         </li>
-                    </ul>            
+                    </ul>
+                @else
+                    <ul class="top-link list-inline hidden-lg hidden-md">
+                        <li class="account" id="my_account">
+                            <a href="#" title="My Account " class="btn-xs dropdown-toggle" data-toggle="dropdown"> <span class="hidden-md">{{ auth()->user()->name }} </span>  <span class="fa fa-caret-down"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="fa fa-user"></i> {{ __('Profile') }}</a></li>
+                                <li>
+                                    <a style="color: red" href="{{ route('logout', app()->getLocale()) }}"
+                                        onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                                        <i class="fa fa-sign-out"></i> {{ __('Logout') }}
+                                    </a>
+
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form id="logout-form" action="{{ route('logout', app()->getLocale()) }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 @endguest
             </div>
 
@@ -25,7 +46,7 @@
                         <div class="btn-group languages-block ">
                             <form action="index.html" method="post" enctype="multipart/form-data" id="bt-language">
                                 <a class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-                                    @if (app()->getLocale('ar'))
+                                    @if (app()->isLocale('ar'))
                                         <span class="">{{ __('Arabic') }}</span>
                                     @else
                                         <span class="">{{ __('English') }}</span>
