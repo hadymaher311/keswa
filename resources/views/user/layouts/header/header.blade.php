@@ -11,7 +11,7 @@
             <div class="row">
                 <!-- Logo -->
                 <div class="navbar-logo col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                    <div class="logo" style="color: white"><a class="h1" href="{{ url('/') }}">{{ config('app.name') }}</a></div>
+                    <div class="logo" style="color: white"><a class="h1" href="{{ url('/'.app()->getLocale() ) }}">{{ config('app.name') }}</a></div>
                 </div>
                 <!-- //end Logo -->
 

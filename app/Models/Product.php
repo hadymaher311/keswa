@@ -74,6 +74,42 @@ class Product extends LocalizableModel implements HasMedia
     {
         return $this->getMedia('product.images');
     }
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     */
+    public function getSlugAttribute()
+    {
+        return str_replace(' ', '-', $this->name);
+    }
+    
+    /**
+     * Return the english sluggable configuration array for this model.
+     *
+     */
+    public function getSlugEnAttribute()
+    {
+        return str_replace(' ', '-', $this->name_en);
+    }
+    
+    /**
+     * Return the arabic sluggable configuration array for this model.
+     *
+     */
+    public function getSlugArAttribute()
+    {
+        return str_replace(' ', '-', $this->name_ar);
+    }
+    
+    /**
+     * check if true slug.
+     *
+     */
+    public function isTrueSlug($slug)
+    {
+        return ($this->slug == $slug or $this->slug_en == $slug or $this->slug_ar == $slug);
+    }
     
     /**
      * The function to return product rating.
@@ -220,5 +256,26 @@ class Product extends LocalizableModel implements HasMedia
     public function scopeActive($query)
     {
         return $query->where('active', 1);
+    }
+    
+    /**
+     * Scope a query to only include available products.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAvailable($query)
+    {
+        return $query->where('quantity', '>=' , 'min_sale_quantity');
+    }
+    
+    /**
+     * if product is available.
+     *
+     * @return bool
+     */
+    public function isAvailable()
+    {
+        return ($this->quantity >= $this->min_sale_quantity);
     }
 }

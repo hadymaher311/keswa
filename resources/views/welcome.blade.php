@@ -11,14 +11,7 @@
             
             <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 main-left sidebar-offcanvas">
                 <div class="module col1 hidden-sm hidden-xs"></div>
-                <div class="module">
-                    <div class="banners banners2">
-                        <div class="banner">
-                            <a href="#"><img src="image/catalog/banners/banner4.jpg" alt="image"></a>
-                        </div>
-                    </div>
-                </div>
-                
+
                 <div class="module product-simple">
                     <h3 class="modtitle">
                         <span>{{ __('Top Rated') }}</span>
@@ -33,7 +26,7 @@
                                         <div class="product-layout item-inner style1 ">
                                             <div class="item-image">
                                                 <div class="item-img-info">
-                                                    <a href="#" target="_self" title="{{ $product->name }} ">
+                                                    <a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" target="_self" title="{{ $product->name }} ">
                                                         <img src="{{ $product->images->first()->getUrl('card') }}" alt="{{ $product->name }}">
                                                         </a>
                                                 </div>
@@ -41,7 +34,7 @@
                                             </div>
                                             <div class="item-info">
                                                 <div class="item-title">
-                                                    <a href="#" target="_self" title="{{ $product->name }}">{{ $product->name }} </a>
+                                                    <a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" target="_self" title="{{ $product->name }}">{{ $product->name }} </a>
                                                 </div>
                                                 <div class="rating">
                                                     @php $rating = $product->rating; @endphp  
@@ -107,7 +100,7 @@
                                                                     -{{ $product->discount_percentage }}%
                                                                 </span>
                                                             @endif
-                                                            <a href="#" target="_self" title="product">
+                                                            <a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" target="_self" title="{{ $product->name }}">
                                                                 <img src="{{ $product->images->first()->getUrl('card') }}" alt="{{ $product->name }}" class="img-responsive">
                                                             </a>
                                                             <div class="button-group so-quickview">
@@ -120,7 +113,7 @@
                                                     </div>
                                                     <div class="item-right col-lg-6 col-md-7 col-sm-7 col-xs-12">
                                                         <div class="caption">
-                                                            <h4><a href="#" target="_self" title="{{ $product->name }}">{{ $product->name }}</a></h4>
+                                                            <h4><a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" target="_self" title="{{ $product->name }}">{{ $product->name }}</a></h4>
                                                             <p class="price">
                                                                 @if ($product->activeDiscount)
                                                                     <span class="price-old">{{ $product->price }} {{ __('LE') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -185,7 +178,7 @@
                                                             <div class="product-item-container">
                                                                 <div class="left-block">
                                                                     <div class="product-image-container second_img" style="height: 400px;">
-                                                                        <a href="#" target="_self" title="{{ $product->name }}">
+                                                                        <a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" target="_self" title="{{ $product->name }}">
                                                                             <img src="{{ $product->images->first()->getUrl() }}" class="img-1 img-responsive" alt="{{ $product->name }}">
                                                                             @if (count($product->images) > 1)
                                                                                 <img src="{{ $product->images[1]->getUrl() }}" class="img-2 img-responsive" alt="{{ $product->name }}">
@@ -222,7 +215,7 @@
                                                                                 <span>{{ $product->price }} {{ __('LE') }}</span>
                                                                             @endif
                                                                         </div>
-                                                                        <h4><a href="" title="{{ $product->name }}" target="_self">{{ $product->name }}</a></h4>
+                                                                        <h4><a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" title="{{ $product->name }}" target="_self">{{ $product->name }}</a></h4>
                                                                         
                                                                     </div>
                                                                 </div>
@@ -233,7 +226,7 @@
                                                             <div class="product-item-container">
                                                                 <div class="left-block">
                                                                     <div class="product-image-container second_img" style="height: 170px;">
-                                                                        <a href="#" target="_self" title="{{ $product->name }}">
+                                                                        <a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" target="_self" title="{{ $product->name }}">
                                                                             <img src="{{ $product->images->first()->getUrl('card') }}" class="img-1 img-responsive" alt="{{ $product->name }}">
                                                                             @if (count($product->images) > 1)
                                                                                 <img src="{{ $product->images[1]->getUrl('card') }}" class="img-2 img-responsive" alt="{{ $product->name }}">
@@ -269,7 +262,7 @@
                                                                                 <span>{{ $product->price }} {{ __('LE') }}</span>
                                                                             @endif
                                                                         </div>
-                                                                        <h4><a href="#" title="{{ $product->name }}" target="_self">{{ $product->name }}</a></h4>
+                                                                        <h4><a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" title="{{ $product->name }}" target="_self">{{ $product->name }}</a></h4>
                                                                         
                                                                     </div>
                                                                 </div>

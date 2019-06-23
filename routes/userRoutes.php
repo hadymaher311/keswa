@@ -18,10 +18,12 @@ Route::group([
      * All User Controllers will be in User Folder
      */
     Route::group(['namespace' => 'User'],function(){
+        Route::get('/', 'HomeController@welcome')->name('welcome');
+        Route::get('/products/{product}/{slug}', 'ProductsController@show')->name('user.products.show');
+
         // blocked user routes for auth only
         Route::group(['middleware' => ['auth', 'verified'],], function() {
             Route::get('/home', 'HomeController@index')->name('home');
         });
-        Route::get('/', 'HomeController@welcome')->name('welcome');
     });
 });
