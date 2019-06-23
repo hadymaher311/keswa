@@ -117,22 +117,30 @@
             <div class="product-view row">
                 <div class="left-content-product">
             
-                    <div class="content-product-left class-honizol col-md-5 col-sm-12 col-xs-12">
-                        <div class="large-image text-center">
-                            <img itemprop="image" class="product-image-zoom" src="{{ $product->images->first()->getUrl() }}" data-zoom-image="{{ $product->images->first()->getUrl() }}" title="{{ $product->name }}" alt="{{ $product->name }}">
+                    <div class="content-product-left col-md-6 col-sm-12 col-xs-12">
+                        <div id="thumb-slider-vertical" class="thumb-vertical-outer">
+                            <!-- <span class="btn-more prev-thumb nt"><i class="fa fa-angle-up"></i></span>
+                            <span class="btn-more next-thumb nt"><i class="fa fa-angle-down"></i></span> -->
+                            <ul class="thumb-vertical">
+
+                                @foreach ($product->images as $image)
+                                    <li class="owl2-item">
+                                        <a data-index="{{ $loop->index }}" class="img thumbnail" data-image="{{ $image->getUrl() }}" title="Canon EOS 5D">
+                                            <img src="{{ $image->getUrl() }}" title="{{ $product->name }}" alt="{{ $product->name }}">
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            
+                            
                         </div>
-                        
-                        <div id="thumb-slider" class="yt-content-slider full_slider owl-drag" data-rtl="yes" data-autoplay="no" data-autoheight="no" data-delay="4" data-speed="0.6" data-margin="10" data-items_column0="4" data-items_column1="3" data-items_column2="4"  data-items_column3="1" data-items_column4="1" data-arrows="yes" data-pagination="no" data-lazyload="yes" data-loop="no" data-hoverpause="yes">
-                            @foreach ($product->images as $image)
-                                <a data-index="{{ $loop->index }}" class="img thumbnail " data-image="{{ $image->getUrl() }}" title="{{ $product->name }}">
-                                    <img src="{{ $image->getUrl() }}" title="{{ $product->name }}" alt="{{ $product->name }}">
-                                </a>
-                            @endforeach
+                        <div class="large-image text-center vertical">
+                            <img itemprop="image" class="product-image-zoom" src="{{ $product->images->first()->getUrl() }}" data-zoom-image="{{ $product->images->first()->getUrl() }}" title="{{ $product->name }}" alt="{{ $product->name }}">
                         </div>
                         
                     </div>
 
-                    <div class="content-product-right col-md-7 col-sm-12 col-xs-12">
+                    <div class="content-product-right col-md-6 col-sm-12 col-xs-12">
                         <div class="title-product">
                             <h1>{{ $product->name }}</h1>
                         </div>
@@ -323,7 +331,7 @@
                 <div class="related titleLine products-list grid module ">
                     <h3 class="modtitle">{{ __('Related products') }}  </h3>
             
-                    <div class="releate-products yt-content-slider products-list" data-rtl="no" data-loop="yes" data-autoplay="no" data-autoheight="no" data-autowidth="no" data-delay="4" data-speed="0.6" data-margin="30" data-items_column0="5" data-items_column1="3" data-items_column2="3" data-items_column3="2" data-items_column4="1" data-arrows="yes" data-pagination="no" data-lazyload="yes" data-hoverpause="yes">
+                    <div class="releate-products yt-content-slider products-list" data-rtl="yes" data-loop="yes" data-autoplay="no" data-autoheight="no" data-autowidth="no" data-delay="4" data-speed="0.6" data-margin="30" data-items_column0="5" data-items_column1="3" data-items_column2="3" data-items_column3="2" data-items_column4="1" data-arrows="yes" data-pagination="no" data-lazyload="yes" data-hoverpause="yes">
                         @foreach ($product->related_products as $related)
                             <div class="item">
                                 <div class="item-inner product-layout transition product-grid">
@@ -390,7 +398,7 @@
                 <div class="related titleLine products-list grid module ">
                     <h3 class="modtitle">{{ __('Accessories') }}  </h3>
             
-                    <div class="releate-products yt-content-slider products-list" data-rtl="no" data-loop="yes" data-autoplay="no" data-autoheight="no" data-autowidth="no" data-delay="4" data-speed="0.6" data-margin="30" data-items_column0="5" data-items_column1="3" data-items_column2="3" data-items_column3="2" data-items_column4="1" data-arrows="yes" data-pagination="no" data-lazyload="yes" data-hoverpause="yes">
+                    <div class="releate-products yt-content-slider products-list" data-rtl="yes" data-loop="yes" data-autoplay="no" data-autoheight="no" data-autowidth="no" data-delay="4" data-speed="0.6" data-margin="30" data-items_column0="5" data-items_column1="3" data-items_column2="3" data-items_column3="2" data-items_column4="1" data-arrows="yes" data-pagination="no" data-lazyload="yes" data-hoverpause="yes">
                         @foreach ($product->accessories as $accessory)
                             <div class="item">
                                 <div class="item-inner product-layout transition product-grid">

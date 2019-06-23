@@ -15,13 +15,13 @@
     <!-- Theme files
     ============================================ -->
 
+    <script type="text/javascript" src="{{ asset('/user_styles/RTL/js/themejs/application.js') }}"></script>
     
     <script type="text/javascript" src="{{ asset('/user_styles/RTL/js/themejs/homepage.js') }}"></script>
     
     <script type="text/javascript" src="{{ asset('/user_styles/RTL/js/themejs/toppanel.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/user_styles/RTL/js/themejs/so_megamenu.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/user_styles/RTL/js/themejs/addtocart.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/user_styles/RTL/js/themejs/application.js') }}"></script>
 @else
     <script type="text/javascript" src="{{ asset('/user_styles/js/jquery-2.2.4.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/user_styles/js/bootstrap.min.js') }}"></script>

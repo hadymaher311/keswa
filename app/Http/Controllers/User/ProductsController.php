@@ -17,7 +17,7 @@ class ProductsController extends Controller
      */
     public function show(Product $product, $slug)
     {
-        if ($product->isTrueSlug($slug)) {
+        if ($product->isTrueSlug($slug) and $product->active) {
             $latest_products = Product::orderBy('created_at', 'desc')->active()->get()->take(5);
             return view('user.products.show', compact('product', 'latest_products'));
         }
