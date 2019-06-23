@@ -3,7 +3,7 @@
     dir="rtl"
 @endif>
     @include('user.layouts.head')
-<body class="@if (Request::is('/'))
+<body class="@if (Route::currentRouteName() == 'welcome')
     common-home
 @endif res layout-1 layout-subpage">
     <div id="wrapper" class="wrapper-fluid banners-effect-5">

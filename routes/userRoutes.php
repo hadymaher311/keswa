@@ -11,16 +11,17 @@ Route::group([
     'where' => ['locale' => 'en|ar'],
     'middleware' => 'LocalizationMiddleware'], function() {
     
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('welcome');
-
+        
     Auth::routes(['verify' => true]);
-
+    
     /**
      * All User Controllers will be in User Folder
      */
     Route::group(['namespace' => 'User'],function(){
-        Route::get('/home', 'HomeController@index')->name('home');
+        // blocked user routes for auth only
+        Route::group(['middleware' => ['auth', 'verified'],], function() {
+            Route::get('/home', 'HomeController@index')->name('home');
+        });
+        Route::get('/', 'HomeController@welcome')->name('welcome');
     });
 });

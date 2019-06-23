@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Tag;
 use App\Models\Brand;
+use App\Models\Review;
 use App\Models\Feature;
 use App\Models\Discount;
 use App\Models\warehouse;
@@ -57,12 +58,48 @@ class Product extends LocalizableModel implements HasMedia
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'rating', 'discount_percentage'
+    ];
+
+    /**
      * The function to return Image url.
      *
      */
     public function getImagesAttribute()
     {
         return $this->getMedia('product.images');
+    }
+    
+    /**
+     * The function to return product rating.
+     *
+     */
+    public function getRatingAttribute()
+    {
+        return ($this->approvedReviews->count()) ? $this->approvedReviews->sum(function($review) {
+            return $review->rate;
+          }) / $this->approvedReviews->count() : 0;
+    }
+    
+    /**
+     * The function to return product discount percentage.
+     *
+     */
+    public function getDiscountPercentageAttribute()
+    {
+        if ($this->activeDiscount) {
+            if ($this->activeDiscount->type == 'value') {
+                return (1 - ($this->price - $this->activeDiscount->amount)) * 100;
+            } else {
+                return $this->activeDiscount->amount;
+            }
+        }
+        return 0;
     }
 
     public function registerMediaConversions(Media $media = null)
@@ -146,9 +183,36 @@ class Product extends LocalizableModel implements HasMedia
     {
         return $this->belongsTo(warehouse::class);
     }
+    
+    /**
+     * Get product reviews
+     * 
+     */
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+    
+    /**
+     * Get product approved reviews
+     * 
+     */
+    public function approvedReviews()
+    {
+        return $this->hasMany(Review::class)->approved();
+    }
+    
+    /**
+     * Get product active discount
+     * 
+     */
+    public function activeDiscount()
+    {
+        return $this->hasOne(Discount::class)->active();
+    }
 
     /**
-     * Scope a query to only include active users.
+     * Scope a query to only include active products.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder

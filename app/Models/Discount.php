@@ -33,6 +33,6 @@ class Discount extends Model
      */
     public function scopeActive($query)
     {
-        return $query->where('active', 1);
+        return $query->where('active', 1)->where('product_amount', '>', 0);
     }
 }

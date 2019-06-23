@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Product;
 use App\Models\SubCategory;
 use App\Helpers\LocalizableModel;
 use Spatie\MediaLibrary\Models\Media;
@@ -60,9 +61,27 @@ class SubSubCategory  extends LocalizableModel implements HasMedia
     {
         return $this->belongsTo(SubCategory::class, 'sub_category_id');
     }
+    
+    /**
+     * Get products
+     * 
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_categories', 'sub_sub_category_id', 'product_id')->withTimestamps();
+    }
+    
+    /**
+     * Get latest products
+     * 
+     */
+    public function latestProducts()
+    {
+        return $this->belongsToMany(Product::class, 'product_categories', 'sub_sub_category_id', 'product_id')->active()->orderBy('created_at', 'desc')->take(7)->withTimestamps();
+    }
 
     /**
-     * Scope a query to only include active users.
+     * Scope a query to only include active sub sub categories.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder

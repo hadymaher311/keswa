@@ -486,40 +486,7 @@
 			ajax_url = $tabs.parents('.ltabs-tabs-container').attr('data-ajaxurl')+path_url+category_id+ '.html';
 			
 			$loading.show();
-			$.ajax({
-				type: 'POST',
-				url: ajax_url,
-				//dataType: 'json',// when on gave connection errors
-				data: {
-					is_ajax_listing_tabs: 1,
-					ajax_reslisting_start: 1,
-					categoryid: category_id,
-					setting: setting,
-					lbmoduleid: 1,
-				},
-				success: function (data) {
-					
-					if (data != '') {
-						
-						$('.ltabs-loading', _items_active).replaceWith(data);
-						_items_active.addClass('ltabs-items-loaded').removeClass('ltabs-process');
-						$loading.remove();
-						if (type_show != 'slider') {
-							showAnimateItems(_items_active);
-						}
-						updateStatus(_items_active);
-						listing_tab_ajax(_items_active);
-					}
-					if(typeof(_SoQuickView) != 'undefined'){
-						_SoQuickView();
-					}
-						
-				},
-				error: function(xhr, ajaxOptions, thrownError) {
-					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-				}
-				
-			});
+			
 
 		} else {
 			if (type_show == 'loadmore') {
