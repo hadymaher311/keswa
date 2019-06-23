@@ -12,102 +12,11 @@
 
         <!--Left Part Start -->
         <aside class="col-sm-4 col-md-3 content-aside" id="column-left">
-            <div class="module category-style">
-                <h3 class="modtitle">{{ __('Categories') }}</h3>
-                <div class="modcontent">
-
-                    <div class="box-category">
-                        <ul id="cat_accordion" class="list-group">
-                            @foreach ($all_categories as $category)
-                                <li class="hadchild"><a href="#" class="cutom-parent">{{ $category->name }}</a>   <span class="button-view  fa fa-plus-square-o"></span>
-                                    <ul style="display: none;">
-                                        @foreach ($category->sub_categories->where('active', '1') as $sub_category)
-                                            
-                                        @endforeach
-                                        <li class="hadchild"><a  class="cutom-parent" href="#">{{ $sub_category->name }}</a>   <span class="button-view  fa fa-plus-square-o"></span>
-                                            <ul style="display: none;">
-                                                @foreach ($sub_category->sub_sub_categories->where('active', '1') as $sub_sub_category)
-                                                    <li><a href="#">{{ $sub_sub_category->name }}</a></li>
-                                                @endforeach
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    
-                </div>
-            </div>
-
-            <div class="module product-simple">
-                <h3 class="modtitle">
-                    <span>{{ __('Latest products') }}</span>
-                </h3>
-                <div class="modcontent">
-                    <div class="extraslider" >
-                        <!-- Begin extraslider-inner -->
-                        <div class=" extraslider-inner">
-                            <div class="item ">
-
-                                @foreach ($latest_products as $pro)
-                                    <div class="product-layout item-inner style1 ">
-                                        <div class="item-image">
-                                            <div class="item-img-info">
-                                                <a href="{{ route('user.products.show', ['product'=> $pro->id, 'slug' => $pro->slug]) }}" target="_self" title="{{ $pro->name }} ">
-                                                    <img src="{{ $pro->images->first()->getUrl('card') }}" alt="{{ $pro->name }}">
-                                                    </a>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="item-info">
-                                            <div class="item-title">
-                                                <a href="{{ route('user.products.show', ['product'=> $pro->id, 'slug' => $pro->slug]) }}" target="_self" title="{{ $pro->name }}">{{ $pro->name }} </a>
-                                            </div>
-                                            <div class="rating">
-                                                @php $rating = $pro->rating; @endphp  
-
-                                                @foreach(range(1,5) as $i)
-                                                    <span class="fa-stack">
-                                                        <i class="fa fa-star-o fa-stack-2x"></i>
-                                    
-                                                        @if($rating >0)
-                                                            @if($rating >0.5)
-                                                                <i class="fa fa-star fa-stack-2x"></i>
-                                                            @else
-                                                                <i style="color: #ff9600;" class="fa fa-star-half-o fa-stack-2x"></i>
-                                                            @endif
-                                                        @endif
-                                                        @php $rating--; @endphp
-                                                    </span>
-                                                @endforeach
-                                            </div>
-                                            <div class="content_price price">
-                                                @if ($pro->activeDiscount)
-                                                    <span class="price-old">{{ $pro->price }} {{ __('LE') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    @if ($pro->activeDiscount->type == 'value')
-                                                        <span class="price-new">{{ $pro->price - $pro->activeDiscount->amount }} {{ __('LE') }}</span>
-                                                    @elseif ($pro->activeDiscount->type == 'percentage')
-                                                        <span class="price-new">{{ ($pro->price * (100 - $pro->activeDiscount->amount) / 100) }} {{ __('LE') }}</span>
-                                                    @endif
-                                                @else
-                                                    <span>{{ $pro->price }} {{ __('LE') }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <!-- End item-info -->
-                                        <!-- End item-wrap-inner -->
-                                    </div>
-                                    <!-- End item-wrap -->
-                                @endforeach
-
-                            </div>
-                            
-                        </div>
-                        <!--End extraslider-inner -->
-                    </div>
-                </div>
-            </div>
+            
+            @include('user.components.categories')
+            
+            @include('user.components.latestProducts')
+            
         </aside>
         <!--Left Part End -->
 
@@ -119,8 +28,6 @@
             
                     <div class="content-product-left col-md-6 col-sm-12 col-xs-12">
                         <div id="thumb-slider-vertical" class="thumb-vertical-outer">
-                            <!-- <span class="btn-more prev-thumb nt"><i class="fa fa-angle-up"></i></span>
-                            <span class="btn-more next-thumb nt"><i class="fa fa-angle-down"></i></span> -->
                             <ul class="thumb-vertical">
 
                                 @foreach ($product->images as $image)

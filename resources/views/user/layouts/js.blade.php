@@ -16,10 +16,11 @@
     ============================================ -->
 
     <script type="text/javascript" src="{{ asset('/user_styles/RTL/js/themejs/application.js') }}"></script>
-    
     <script type="text/javascript" src="{{ asset('/user_styles/RTL/js/themejs/homepage.js') }}"></script>
+    @if (Route::currentRouteName() == 'welcome')
+        <script type="text/javascript" src="{{ asset('/user_styles/RTL/js/themejs/toppanel.js') }}"></script>
+    @endif
     
-    <script type="text/javascript" src="{{ asset('/user_styles/RTL/js/themejs/toppanel.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/user_styles/RTL/js/themejs/so_megamenu.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/user_styles/RTL/js/themejs/addtocart.js') }}"></script>
 @else
@@ -42,8 +43,9 @@
     <script type="text/javascript" src="{{ asset('/user_styles/js/themejs/application.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset('/user_styles/js/themejs/homepage.js') }}"></script>
-
-    <script type="text/javascript" src="{{ asset('/user_styles/js/themejs/toppanel.js') }}"></script>
+    @if (Route::currentRouteName() == 'welcome')
+        <script type="text/javascript" src="{{ asset('/user_styles/js/themejs/toppanel.js') }}"></script>
+    @endif
     <script type="text/javascript" src="{{ asset('/user_styles/js/themejs/so_megamenu.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/user_styles/js/themejs/addtocart.js') }}"></script>
 @endif

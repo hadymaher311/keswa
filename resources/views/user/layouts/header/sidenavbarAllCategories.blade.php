@@ -47,7 +47,7 @@
                                                                         <a href="#"  class="main-menu">{{ $sub_category->name }}</a>
                                                                         <ul>
                                                                             @foreach ($sub_category->sub_sub_categories->where('active', '1') as $sub_sub_category) 
-                                                                                <li><a href="#" >{{ $sub_sub_category->name }}</a></li>
+                                                                                <li><a href="{{ route('user.products.category.show', [$sub_sub_category->id]) }}" >{{ $sub_sub_category->name }}</a></li>
                                                                             @endforeach
                                                                         </ul>
                                                                     </li>

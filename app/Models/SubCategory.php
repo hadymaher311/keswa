@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Product;
 use App\Models\Category;
+use App\Models\SubCategory;
 use App\Models\SubSubCategory;
 use App\Helpers\LocalizableModel;
 use Spatie\MediaLibrary\Models\Media;

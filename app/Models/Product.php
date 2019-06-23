@@ -63,7 +63,7 @@ class Product extends LocalizableModel implements HasMedia
      * @var array
      */
     protected $appends = [
-        'rating', 'discount_percentage'
+        'rating', 'discount_percentage', 'name'
     ];
 
     /**

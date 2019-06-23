@@ -16,7 +16,7 @@
                                     <div>
                                         <ul class="row-list">
                                             @foreach ($sub_category->sub_sub_categories->where('navbar_visibility', '1')->where('active', '1') as $sub_sub_category)
-                                                <li><a href="#">{{ $sub_sub_category->name }}</a></li>
+                                                <li><a href="{{ route('user.products.category.show', [$sub_sub_category->id]) }}">{{ $sub_sub_category->name }}</a></li>
                                             @endforeach
                                         </ul>
                                         
