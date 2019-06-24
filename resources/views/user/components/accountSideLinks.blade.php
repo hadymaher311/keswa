@@ -5,11 +5,11 @@
         <ul class="list-item nav nav-pills nav-stacked">
             <li><a href="{{ route('user.profile') }}">{{ __('Profile') }}</a>
             </li>
-            <li><a href="#">{{ __('Cart') }}</a>
+            <li><a href="{{ route('user.cart') }}">{{ __('Cart') }}</a>
             </li>
             <li><a href="{{ route('user.wishlist') }}">{{ __('WishList') }}</a>
             </li>
-            <li><a href="#">{{ __('Address Book') }}</a>
+            <li><a href="{{ route('user.addresses') }}">{{ __('Address Book') }}</a>
             </li>
             <li><a href="#">{{ __('Order History') }}</a>
             </li>

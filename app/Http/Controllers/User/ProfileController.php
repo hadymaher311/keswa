@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 class ProfileController extends Controller
 {
     /**
-     * Display the specified resource.
+     * Display user profile.
      *
      * @return \Illuminate\Http\Response
      */
@@ -35,5 +35,37 @@ class ProfileController extends Controller
             ->addMediaFromBase64($request->image)
             ->toMediaCollection('user.avatar');
         return back()->with('status', trans('Updated Successfully'));
+    }
+
+    /**
+     * Display user addresses.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showAddress()
+    {
+        return view('user.profile.addressBook');
+    }
+
+    /**
+     * store user address in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeAddress(Request $request)
+    {
+        $this->validate($request, [
+            'country' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'street' => ['required', 'string', 'max:255'],
+            'building' => ['required', 'string', 'max:255'],
+            'floor' => ['required', 'string', 'max:255'],
+            'apartment' => ['required', 'string', 'max:255'],
+            'nearest_landmark' => ['nullable', 'string', 'max:255'],
+            'location_type' => ['required', 'string', 'in:home,business'],
+        ]);
+        auth()->user()->addresses()->create($request->all());
+        return back()->with('status', trans('Added Successfully'));
     }
 }
