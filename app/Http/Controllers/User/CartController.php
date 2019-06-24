@@ -49,4 +49,20 @@ class CartController extends Controller
         auth()->user()->cart()->detach($product->id);
         return back()->with(['status' => trans('Added Successfully')]);
     }
+    
+    /**
+     * update item from cart.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\Product $product
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Product $product)
+    {
+        $this->validate($request, [
+            'quantity' => 'required|integer|min:1',
+        ]);
+        auth()->user()->cart()->updateExistingPivot($product->id, ['quantity' => $request->quantity]);
+        return back()->with(['status' => trans('Updated Successfully')]);
+    }
 }

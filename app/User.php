@@ -107,7 +107,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function getCartTotalPriceAttribute()
     {
         return ($this->cart->count()) ? $this->cart->sum(function($cart) {
-            return $cart->final_price;
+            return $cart->final_price * $cart->pivot->quantity;
           }) : 0;
     }
 }

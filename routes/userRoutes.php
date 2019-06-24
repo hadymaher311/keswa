@@ -28,6 +28,7 @@ Route::group([
             // cart routes
             Route::get('/user/cart', 'CartController@show')->name('user.cart');
             Route::post('/user/cart/{product}', 'CartController@store')->name('user.cart.store');
+            Route::PUT('/user/cart/{product}/update', 'CartController@update')->name('user.cart.update');
             Route::DELETE('/user/cart/{product}/destroy', 'CartController@destroy')->name('user.cart.remove');
 
             // profile and account routes
