@@ -50,5 +50,26 @@
     <script type="text/javascript" src="{{ asset('/user_styles/js/themejs/addtocart.js') }}"></script>
 @endif
 
+<script src="{{ asset('/user_styles/js/iziToast.min.js') }}"></script>
+
+<script>
+    $(function() {
+        @if (session('status'))
+            @if (app()->getLocale() == 'ar')
+                iziToast.success({
+                    title: '{{ __("Success") }}!',
+                    message: '{{ __(session("status")) }}',
+                    position: 'topRight'
+                });
+            @else
+                iziToast.success({
+                    title: '{{ __("Success") }}!',
+                    message: '{{ __(session("status")) }}',
+                    position: 'topLeft'
+                });
+            @endif
+        @endif
+    })
+</script>
 
 @yield('js')

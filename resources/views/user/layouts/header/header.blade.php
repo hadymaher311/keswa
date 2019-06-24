@@ -61,7 +61,7 @@
                                         </span>
                                         <div class="shopcart-inner">
                                             <p class="text-shopping-cart">
-                                                    {{ auth()->user()->name }}
+                                                {{ auth()->user()->name }}
                                             </p>
                                         </div>
                                     </div>
@@ -69,7 +69,7 @@
     
                                 <ul class="dropdown-menu pull-right shoppingcart-box" style="min-width: 120px" role="menu">
                                     <li>
-                                        <a href="#"><i class="fa fa-user"></i> {{ __('Profile') }}</a>
+                                        <a href="{{ route('user.profile') }}"><i class="fa fa-user"></i> {{ __('Profile') }}</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('logout', app()->getLocale()) }}"

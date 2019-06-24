@@ -2,8 +2,8 @@
 <aside class="col-sm-3 hidden-xs" id="column-right">
     <h2 class="subtitle">{{ __('Account') }}</h2>
     <div class="list-group">
-        <ul class="list-item">
-            <li><a href="#">{{ __('Profile') }}</a>
+        <ul class="list-item nav nav-pills nav-stacked">
+            <li><a href="{{ route('user.profile') }}">{{ __('Profile') }}</a>
             </li>
             <li><a href="#">{{ __('Cart') }}</a>
             </li>

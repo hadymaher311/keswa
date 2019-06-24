@@ -38,7 +38,12 @@ Route::group([
 
 
             // profile and account routes
-            Route::get('/home', 'HomeController@index')->name('home');
+            Route::get('/user/profile', 'ProfileController@index')->name('user.profile');
+            Route::PUT('/user/profile/edit/image', 'ProfileController@updateImage')->name('user.profile.edit.image');
+            Route::PUT('/user/profile/edit/info', 'ProfileController@edit')->name('user.info.edit');
+
+
+            Route::get('/home', 'HomeController@welcome')->name('home');
         });
     });
 });

@@ -22,7 +22,7 @@
                             <a href="#" title="My Account " class="btn-xs dropdown-toggle" data-toggle="dropdown"> <span class="hidden-md">{{ auth()->user()->name }} </span>  <span class="fa fa-caret-down"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#"><i class="fa fa-user"></i> {{ __('Profile') }}</a></li>
+                                <li><a href="{{ route('user.profile') }}"><i class="fa fa-user"></i> {{ __('Profile') }}</a></li>
                                 <li>
                                     <a style="color: red" href="{{ route('logout', app()->getLocale()) }}"
                                         onclick="event.preventDefault();

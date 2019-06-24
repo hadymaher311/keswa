@@ -57,6 +57,7 @@
         <link href="{{ asset('/user_styles/css/responsive.css') }}" rel="stylesheet">
     @endif
 
+    <link rel="stylesheet" href="{{ asset('/user_styles/css/iziToast.min.css') }}">
         <!-- Google web fonts
     ============================================ -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,500i,700' rel='stylesheet' type='text/css'>
