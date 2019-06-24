@@ -21,6 +21,7 @@ Route::group([
         Route::get('/', 'HomeController@welcome')->name('welcome');
         Route::get('/products/{product}/{slug}', 'ProductsController@show')->name('user.products.show');
         Route::get('/category/products/{category}', 'ProductsController@category')->name('user.products.category.show');
+        Route::get('/products/search', 'ProductsController@search')->name('user.products.search');
 
         // blocked user routes for auth only
         Route::group(['middleware' => ['auth', 'verified'],], function() {
