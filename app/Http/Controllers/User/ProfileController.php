@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\UserAddress;
 
 class ProfileController extends Controller
 {
@@ -67,5 +68,37 @@ class ProfileController extends Controller
         ]);
         auth()->user()->addresses()->create($request->all());
         return back()->with('status', trans('Added Successfully'));
+    }
+    
+    /**
+     * Display user edit addresses.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function editAddress(UserAddress $address)
+    {
+        return view('user.profile.addressEdit', compact('address'));
+    }
+
+    /**
+     * update user address in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateAddress(Request $request, UserAddress $address)
+    {
+        $this->validate($request, [
+            'country' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'street' => ['required', 'string', 'max:255'],
+            'building' => ['required', 'string', 'max:255'],
+            'floor' => ['required', 'string', 'max:255'],
+            'apartment' => ['required', 'string', 'max:255'],
+            'nearest_landmark' => ['nullable', 'string', 'max:255'],
+            'location_type' => ['required', 'string', 'in:home,business'],
+        ]);
+        $address->update($request->all());
+        return redirect()->route('user.addresses')->with('status', trans('Updated Successfully'));
     }
 }

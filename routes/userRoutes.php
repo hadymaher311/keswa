@@ -44,6 +44,7 @@ Route::group([
             Route::get('/user/profile/addresses', 'ProfileController@showAddress')->name('user.addresses');
             Route::POST('/user/profile/addresses/store', 'ProfileController@storeAddress')->name('user.addresses.store');
             Route::get('/user/profile/addresses/{address}/edit', 'ProfileController@editAddress')->name('user.addresses.edit');
+            Route::PUT('/user/profile/addresses/{address}/update', 'ProfileController@updateAddress')->name('user.addresses.update');
 
 
             Route::get('/home', 'HomeController@welcome')->name('home');
