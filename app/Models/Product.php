@@ -123,6 +123,15 @@ class Product extends LocalizableModel implements HasMedia
     }
     
     /**
+     * The function to return product final price after discount.
+     *
+     */
+    public function getFinalPriceAttribute()
+    {
+        return $this->price - ($this->price * ($this->discount_percentage / 100));
+    }
+    
+    /**
      * The function to return product discount percentage.
      *
      */

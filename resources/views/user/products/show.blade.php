@@ -124,19 +124,21 @@
                             @endif
 
                             <div class="form-group box-info-product">
-                                <div class="option quantity">
-                                    <div class="input-group quantity-control" unselectable="on" style="-webkit-user-select: none;">
-                                        <label>{{ __('Quantity') }}</label>
-                                        <input class="form-control" type="text" name="quantity"
-                                        value="1">
-                                        <input type="hidden" name="product_id" value="">
-                                        <span class="input-group-addon product_quantity_down">−</span>
-                                        <span class="input-group-addon product_quantity_up">+</span>
+                                <form action="{{ route('user.cart.store', $product->id) }}" method="post">
+                                    @csrf
+                                    <div class="option quantity">
+                                        <div class="input-group quantity-control" unselectable="on" style="-webkit-user-select: none;">
+                                            <label>{{ __('Quantity') }}</label>
+                                            <input class="form-control" type="text" name="quantity"
+                                            value="1">
+                                            <span class="input-group-addon product_quantity_down">−</span>
+                                            <span class="input-group-addon product_quantity_up">+</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="cart">
-                                    <input type="button" data-toggle="tooltip" title="" value="{{ __('Add to cart') }}" data-loading-text="Loading..." id="button-cart" class="btn btn-mega btn-lg" data-original-title="{{ __('Add to cart') }}">
-                                </div>
+                                    <div class="cart">
+                                        <input type="submit" data-toggle="tooltip" title="" value="{{ __('Add to cart') }}" data-loading-text="Loading..." id="button-cart" class="btn btn-mega btn-lg" data-original-title="{{ __('Add to cart') }}">
+                                    </div>
+                                </form>
                                 <div class="add-to-links wish_comp">
                                     <ul class="blank list-inline">
                                         <li class="wishlist">
@@ -264,11 +266,10 @@
                                                 @endif
                                             @endif
                                             <div class="button-group so-quickview cartinfo--left">
-                                                <button type="button" class="addToCart btn-button" title="{{ __('Add to cart') }}">  <i class="fa fa-shopping-basket"></i>
-                                                    <span>{{ __('Add to cart') }} </span>   
-                                                </button>
-                                                <button type="button" class="wishlist btn-button" title="{{ __('Add to WishList') }}"><i class="fa fa-heart"></i><span>{{ __('Add to WishList') }}</span>
-                                                </button>
+                                                @php
+                                                    $product_id = $related->id;
+                                                @endphp
+                                                @include('user.components.productButtons')
                                             </div>
                                         </div>
                                         <div class="right-block">
@@ -331,11 +332,10 @@
                                                 @endif
                                             @endif
                                             <div class="button-group so-quickview cartinfo--left">
-                                                <button type="button" class="addToCart btn-button" title="{{ __('Add to cart') }}">  <i class="fa fa-shopping-basket"></i>
-                                                    <span>{{ __('Add to cart') }} </span>   
-                                                </button>
-                                                <button type="button" class="wishlist btn-button" title="{{ __('Add to WishList') }}"><i class="fa fa-heart"></i><span>{{ __('Add to WishList') }}</span>
-                                                </button>
+                                                @php
+                                                    $product_id = $accessory->id;
+                                                @endphp
+                                                @include('user.components.productButtons')
                                             </div>
                                         </div>
                                         <div class="right-block">

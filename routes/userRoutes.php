@@ -25,6 +25,12 @@ Route::group([
 
         // blocked user routes for auth only
         Route::group(['middleware' => ['auth', 'verified'],], function() {
+            // cart routes
+            Route::get('/user/cart', 'CartController@show')->name('user.cart');
+            Route::post('/user/cart/{product}', 'CartController@store')->name('user.cart.store');
+            Route::DELETE('/user/cart/{product}/destroy', 'CartController@destroy')->name('user.cart.remove');
+
+            // profile and account routes
             Route::get('/home', 'HomeController@index')->name('home');
         });
     });

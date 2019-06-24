@@ -164,7 +164,7 @@
                                             </p>
 
                                             <span class="total-shopping-cart cart-total-full">
-                                                <span class="items_cart">02</span><span class="items_cart2"> {{ __('Item') }}</span><span class="items_carts"> - $162.00 </span>
+                                                <span class="items_cart">{{ auth()->user()->cart->count() }}</span><span class="items_cart2"> {{ __('Item') }}</span><span class="items_carts"> - {{ auth()->user()->cart_total_price }} {{ __('LE') }}</span>
                                             </span>
                                         </div>
                                     </div>
@@ -174,23 +174,29 @@
                                     <li>
                                         <table class="table table-striped">
                                             <tbody>
-                                                <tr>
-                                                    <td class="text-center" style="width:70px">
-                                                        <a href="product.html">
-                                                            <img src="image/catalog/demo/product/80/1.jpg" style="width:70px" alt="Yutculpa ullamcon" title="Yutculpa ullamco" class="preview">
-                                                        </a>
-                                                    </td>
-                                                    <td class="text-left"> <a class="cart_product_name" href="product.html">Yutculpa ullamco</a> 
-                                                    </td>
-                                                    <td class="text-center">x1</td>
-                                                    <td class="text-center">$80.00</td>
-                                                    <td class="text-right">
-                                                        <a href="product.html" class="fa fa-edit"></a>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <a onclick="cart.remove('2');" class="fa fa-times fa-delete"></a>
-                                                    </td>
-                                                </tr>
+                                                @foreach (auth()->user()->cart->take(5) as $cart_product)
+                                                    <tr>
+                                                        <td class="text-center" style="width:70px">
+                                                            <a href="{{ route('user.products.show', [$cart_product->id, $cart_product->slug]) }}">
+                                                                <img src="{{ $cart_product->images->first()->getUrl('thumb') }}" style="width:70px" alt="{{ $cart_product->name }}" title="{{ $cart_product->name }}" class="preview">
+                                                            </a>
+                                                        </td>
+                                                        <td class="text-left"> <a class="cart_product_name" href="{{ route('user.products.show', [$cart_product->id, $cart_product->slug]) }}">{{ $cart_product->name }}</a> 
+                                                        </td>
+                                                        <td class="text-center">x{{ $cart_product->pivot->quantity }}</td>
+                                                        <td class="text-center">{{ $cart_product->price }} {{ __('LE') }}</td>
+                                                        <td class="text-right">
+                                                            <a href="product.html" class="fa fa-edit"></a>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <form action="{{ route('user.cart.remove', $cart_product->id) }}" method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <a onclick="$(this).parent('form').submit()" class="fa fa-times fa-delete"></a>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </li>
@@ -199,28 +205,13 @@
                                             <table class="table table-bordered">
                                                 <tbody>
                                                     <tr>
-                                                        <td class="text-left"><strong>Sub-Total</strong>
+                                                        <td class="text-left"><strong>{{ __('Total Price') }}</strong>
                                                         </td>
-                                                        <td class="text-right">$140.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-left"><strong>Eco Tax (-2.00)</strong>
-                                                        </td>
-                                                        <td class="text-right">$2.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-left"><strong>VAT (20%)</strong>
-                                                        </td>
-                                                        <td class="text-right">$20.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-left"><strong>Total</strong>
-                                                        </td>
-                                                        <td class="text-right">$162.00</td>
+                                                        <td class="text-right">{{ auth()->user()->cart_total_price }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <p class="text-right"> <a class="btn view-cart" href="cart.html"><i class="fa fa-shopping-cart"></i>View Cart</a>&nbsp;&nbsp;&nbsp; <a class="btn btn-mega checkout-cart" href="checkout.html"><i class="fa fa-share"></i>Checkout</a> 
+                                            <p class="text-right"> <a class="btn view-cart" href="{{ route('user.cart') }}"><i class="fa fa-shopping-cart"></i>View Cart</a>&nbsp;&nbsp;&nbsp; <a class="btn btn-mega checkout-cart" href="checkout.html"><i class="fa fa-share"></i>Checkout</a> 
                                             </p>
                                         </div>
                                     </li>

@@ -81,11 +81,10 @@
                                             @endif
                                         @endif
                                         <div class="button-group so-quickview cartinfo--left">
-                                            <button type="button" class="addToCart btn-button" title="{{ __('Add to cart') }}">  <i class="fa fa-shopping-basket"></i>
-                                                <span>{{ __('Add to cart') }} </span>   
-                                            </button>
-                                            <button type="button" class="wishlist btn-button" title="{{ __('Add to WishList') }}"><i class="fa fa-heart"></i><span>{{ __('Add to WishList') }}</span>
-                                            </button>
+                                            @php
+                                                $product_id = $product->id;
+                                            @endphp
+                                            @include('user.components.productButtons')
                                         </div>
                                     </div>
                                     <div class="right-block">

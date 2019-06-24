@@ -5,7 +5,7 @@
     @include('user.layouts.head')
 <body class="@if (Route::currentRouteName() == 'welcome')
     common-home
-@endif res layout-1 layout-subpage banners-effect-5">
+@endif res layout-1 layout-subpage">
     <div id="wrapper" class="wrapper-fluid banners-effect-5">
 
         @include('user.layouts.header.header')

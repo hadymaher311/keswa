@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\UserPersonalInfo;
 use App\Models\UserAddress;
+use App\Models\Product;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
@@ -88,5 +89,25 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function addresses()
     {
         return $this->hasMany(UserAddress::class);
+    }
+    
+    /**
+     * Get user cart
+     * 
+     */
+    public function cart()
+    {
+        return $this->belongsToMany(Product::class, 'users_carts', 'user_id', 'product_id')->withPivot('quantity')->withTimestamps();
+    }
+
+    /**
+     * The function to return cart total price.
+     *
+     */
+    public function getCartTotalPriceAttribute()
+    {
+        return ($this->cart->count()) ? $this->cart->sum(function($cart) {
+            return $cart->final_price;
+          }) : 0;
     }
 }

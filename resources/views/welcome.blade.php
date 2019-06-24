@@ -104,10 +104,10 @@
                                                                 <img src="{{ $product->images->first()->getUrl('card') }}" alt="{{ $product->name }}" class="img-responsive">
                                                             </a>
                                                             <div class="button-group so-quickview">
-                                                                <button class="btn-button addToCart" title="{{ __('Add to Cart') }}" type="button"><i class="fa fa-shopping-basket"></i>  <span>{{ __('Add to Cart') }}</span>
-                                                                </button>                                                        
-                                                                <button class="btn-button wishlist" type="button" title="{{ __('Add to WishList') }}"><i class="fa fa-heart"></i><span>{{ __('Add to WishList') }}</span>
-                                                                </button>
+                                                                @php
+                                                                    $product_id = $product->id;
+                                                                @endphp
+                                                                @include('user.components.productButtons')
                                                             </div>
                                                         </div>
                                                     </div>
@@ -187,11 +187,10 @@
                                                                     </div>
                                                                     
                                                                     <div class="button-group so-quickview cartinfo--left">
-                                                                        <button type="button" class="addToCart btn-button" title="{{ __('Add to cart') }}">  <i class="fa fa-shopping-basket"></i>
-                                                                            <span>{{ __('Add to cart') }} </span>   
-                                                                        </button>
-                                                                        <button type="button" class="wishlist btn-button" title="{{ __('Add to WishList') }}"><i class="fa fa-heart"></i><span>{{ __('Add to WishList') }}</span>
-                                                                        </button>
+                                                                        @php
+                                                                    $product_id = $product->id;
+                                                                @endphp
+                                                                @include('user.components.productButtons')
                                                                     </div>
                                                                     @if ($product->activeDiscount)
                                                                         @if ($product->activeDiscount->type == 'value')
@@ -241,11 +240,10 @@
                                                                         @endif
                                                                     @endif
                                                                     <div class="button-group so-quickview cartinfo--left">
-                                                                        <button type="button" class="addToCart btn-button" title="{{ __('Add to cart') }}">  <i class="fa fa-shopping-basket"></i>
-                                                                            <span>{{ __('Add to cart') }} </span>   
-                                                                        </button>
-                                                                        <button type="button" class="wishlist btn-button" title="{{ __('Add to WishList') }}"><i class="fa fa-heart"></i><span>{{ __('Add to WishList') }}</span>
-                                                                        </button>
+                                                                        @php
+                                                                    $product_id = $product->id;
+                                                                @endphp
+                                                                @include('user.components.productButtons')
                                                                     </div>
                                                                 </div>
                                                                 <div class="right-block">

@@ -15,6 +15,11 @@ class CreateUsersCartsTable extends Migration
     {
         Schema::create('users_carts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('quantity')->unsigned()->default(1);
+            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('product_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
