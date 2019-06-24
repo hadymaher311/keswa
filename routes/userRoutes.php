@@ -40,7 +40,9 @@ Route::group([
             // profile and account routes
             Route::get('/user/profile', 'ProfileController@index')->name('user.profile');
             Route::PUT('/user/profile/edit/image', 'ProfileController@updateImage')->name('user.profile.edit.image');
-            Route::PUT('/user/profile/edit/info', 'ProfileController@edit')->name('user.info.edit');
+            Route::get('/user/profile/edit/info', 'ProfileController@editInfo')->name('user.info.edit');
+            Route::PUT('/user/profile/info/update', 'ProfileController@updateInfo')->name('user.info.update');
+            Route::PUT('/user/profile/password/update', 'ProfileController@updatePassword')->name('user.password.update');
             Route::get('/user/profile/addresses', 'ProfileController@showAddress')->name('user.addresses');
             Route::POST('/user/profile/addresses/store', 'ProfileController@storeAddress')->name('user.addresses.store');
             Route::get('/user/profile/addresses/{address}/edit', 'ProfileController@editAddress')->name('user.addresses.edit');

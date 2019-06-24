@@ -624,6 +624,10 @@
     "My Addresses": "عناويني",
     "Add new Address": "أضف عنوان جديد",
     "Edit Address": "تعديل العنوان",
+    "Edit Personal Details": "تعديل المعلومات الشخصية",
+    "New Password": "الرقم السري الجديد",
+    "Old Password": "الرقم السري القديم",
+    "Wrong Password": "الرقم السري غير صحيح",
     "Checkout": "الدفع",
     "Search results": "نتائج البحث",
     "Check all": "تحديد الكل"
