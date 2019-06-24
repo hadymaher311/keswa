@@ -4,6 +4,10 @@
     {{ $product->name }} - {{ config('app.name') }}
 @endsection
 
+@section('css')
+<link href="{{ asset('/user_styles/js/lightslider/lightslider.css') }}" rel="stylesheet">
+@endsection
+
 @section('body')
 <!-- Main Container  -->
 <div class="main-container container" style="margin-top: 4rem;">
@@ -30,13 +34,13 @@
                         <div id="thumb-slider-vertical" class="thumb-vertical-outer">
                             <ul class="thumb-vertical">
 
-                                @foreach ($product->images as $image)
-                                    <li class="owl2-item">
-                                        <a data-index="{{ $loop->index }}" class="img thumbnail" data-image="{{ $image->getUrl() }}" title="Canon EOS 5D">
-                                            <img src="{{ $image->getUrl() }}" title="{{ $product->name }}" alt="{{ $product->name }}">
-                                        </a>
-                                    </li>
-                                @endforeach
+                                <div class="owl2-item" id="thumb-slider" class="yt-content-slider full_slider owl-drag" data-rtl="yes" data-autoplay="no" data-autoheight="no" data-delay="4" data-speed="0.6" data-margin="10" data-items_column0="4" data-items_column1="3" data-items_column2="4"  data-items_column3="1" data-items_column4="1" data-arrows="yes" data-pagination="no" data-lazyload="yes" data-loop="no" data-hoverpause="yes">
+                                    @foreach ($product->images as $image)
+                                            <a data-index="{{ $loop->index }}" class="img thumbnail" data-image="{{ $image->getUrl() }}" title="{{ $product->name }}">
+                                                <img src="{{ $image->getUrl() }}" title="{{ $product->name }}" alt="{{ $product->name }}">
+                                            </a>
+                                    @endforeach
+                                </div>
                             </ul>
                             
                             
@@ -372,4 +376,8 @@
     </div>
     <!--Middle Part End-->
 </div>
+@endsection
+
+@section('js')
+<script type="text/javascript" src="{{ asset('/user_styles/js/lightslider/lightslider.js') }}"></script>
 @endsection
