@@ -30,6 +30,12 @@ Route::group([
             Route::post('/user/cart/{product}', 'CartController@store')->name('user.cart.store');
             Route::PUT('/user/cart/{product}/update', 'CartController@update')->name('user.cart.update');
             Route::DELETE('/user/cart/{product}/destroy', 'CartController@destroy')->name('user.cart.remove');
+            
+            // WishList routes
+            Route::get('/user/wishlist', 'WishListController@show')->name('user.wishlist');
+            Route::post('/user/wishlist/{product}', 'WishListController@store')->name('user.wishlist.store');
+            Route::DELETE('/user/wishlist/{product}/destroy', 'WishListController@destroy')->name('user.wishlist.remove');
+
 
             // profile and account routes
             Route::get('/home', 'HomeController@index')->name('home');

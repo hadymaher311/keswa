@@ -10,7 +10,7 @@
     
     <div class="row">
         <!--Middle Part Start-->
-    <div id="content" class="col-sm-12">
+    <div id="content" class="col-sm-9">
         <h2 class="title">{{ __('Shopping Cart') }}</h2>
         <div class="table-responsive form-group">
             <table class="table table-bordered">
@@ -83,6 +83,8 @@
         <div class="pull-right"><a href="checkout.html" class="btn btn-primary">{{ __('Checkout') }}</a></div>
         </div>
     </div>
+
+    @include('user.components.accountSideLinks')
     <!--Middle Part End -->
         
     </div>

@@ -222,7 +222,7 @@
                         <!--//cart-->
 
                         <ul class="wishlist-comp hidden-md hidden-sm hidden-xs">
-                            <li class="wishlist hidden-xs"><a href="#" id="wishlist-total" class="top-link-wishlist" title="Wish List (0) "><i class="fa fa-heart"></i></a>
+                            <li class="wishlist hidden-xs"><a href="{{ route('user.wishlist') }}" id="wishlist-total" class="top-link-wishlist" title="Wish List (0) "><i class="fa fa-heart"></i></a>
                             </li>
                         </ul>
                     </div>

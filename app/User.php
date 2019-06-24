@@ -97,7 +97,16 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
      */
     public function cart()
     {
-        return $this->belongsToMany(Product::class, 'users_carts', 'user_id', 'product_id')->withPivot('quantity')->withTimestamps();
+        return $this->belongsToMany(Product::class, 'users_carts', 'user_id', 'product_id')->active()->withPivot('quantity')->withTimestamps();
+    }
+    
+    /**
+     * Get user wishlist
+     * 
+     */
+    public function wishlist()
+    {
+        return $this->belongsToMany(Product::class, 'users_wishlists', 'user_id', 'product_id')->active()->withTimestamps();
     }
 
     /**

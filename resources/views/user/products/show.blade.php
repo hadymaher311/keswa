@@ -142,9 +142,10 @@
                                 <div class="add-to-links wish_comp">
                                     <ul class="blank list-inline">
                                         <li class="wishlist">
-                                            <a class="icon" data-toggle="tooltip" title=""
-                                            data-original-title="{{ __('Add to WishList') }}"><i class="fa fa-heart"></i>
-                                            </a>
+                                            <form action="{{ route('user.wishlist.store', $product->id) }}" method="post">
+                                                @csrf
+                                                <a class="icon" data-toggle="tooltip" title="" onclick="$(this).parent('form').submit()" data-original-title="{{ __('Add to WishList') }}"><i class="fa fa-heart"></i></a>
+                                            </form>
                                         </li>
                                     </ul>
                                 </div>

@@ -4,5 +4,8 @@
         <span>{{ __('Add to cart') }} </span>
     </button>
 </form>
-<button type="button" class="wishlist btn-button" title="{{ __('Add to WishList') }}"><i class="fa fa-heart"></i><span>{{ __('Add to WishList') }}</span>
+<form action="{{ route('user.wishlist.store', $product_id) }}" method="post">
+    @csrf
+    <button type="submit" class="wishlist btn-button" title="{{ __('Add to WishList') }}"><i class="fa fa-heart"></i><span>{{ __('Add to WishList') }}</span>
+</form>
 </button>
