@@ -1,6 +1,17 @@
 <?php
 
+use App\User;
+use App\Models\Tag;
 use App\Models\Admin;
+use App\Models\Brand;
+use App\Models\Feature;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Discount;
+use App\Models\warehouse;
+use App\Models\SubCategory;
+use App\Models\UserAddress;
+use App\Models\SubSubCategory;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -82,5 +93,17 @@ class DatabaseSeeder extends Seeder
         $role = Role::create(['name' => 'super', 'guard_name' => 'admin']);
         $role->givePermissionTo(Permission::all());
         $admin->syncRoles($role);
+        factory(Admin::class, 10)->create();
+        factory(Feature::class, 20)->create();
+        factory(Brand::class, 30)->create();
+        factory(warehouse::class, 30)->create();
+        factory(Category::class, 10)->create();
+        factory(SubCategory::class, 15)->create();
+        factory(SubSubCategory::class, 50)->create();
+        factory(Product::class, 100)->create();
+        factory(Tag::class, 1000)->create();
+        factory(Discount::class, 50)->create();
+        factory(User::class, 20)->create();
+        factory(UserAddress::class, 50)->create();
     }
 }
