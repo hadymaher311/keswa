@@ -4,6 +4,7 @@ use App\User;
 use App\Models\Tag;
 use App\Models\Admin;
 use App\Models\Brand;
+use App\Models\Review;
 use App\Models\Feature;
 use App\Models\Product;
 use App\Models\Category;
@@ -105,5 +106,6 @@ class DatabaseSeeder extends Seeder
         factory(Discount::class, 50)->create();
         factory(User::class, 20)->create();
         factory(UserAddress::class, 50)->create();
+        factory(Review::class, 300)->create();
     }
 }
