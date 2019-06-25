@@ -139,7 +139,7 @@ class Product extends LocalizableModel implements HasMedia
     {
         if ($this->activeDiscount) {
             if ($this->activeDiscount->type == 'value') {
-                return (1 - ($this->price - $this->activeDiscount->amount)) * 100;
+                return ceil(($this->activeDiscount->amount / $this->price) * 100);
             } else {
                 return $this->activeDiscount->amount;
             }

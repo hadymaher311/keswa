@@ -74,11 +74,7 @@
                                             </a>
                                         </div>
                                         @if ($product->activeDiscount)
-                                            @if ($product->activeDiscount->type == 'value')
-                                                <div class="box-label"> <span class="label-product label-sale"> -{{ (1 - ($product->price / $product->activeDiscount->amount)) *100 }}% </span></div>
-                                            @else
-                                                <div class="box-label"> <span class="label-product label-sale"> -{{ $product->activeDiscount->amount }}% </span></div>
-                                            @endif
+                                            <div class="box-label"> <span class="label-product label-sale"> -{{ $product->discount_percentage }}% </span></div>
                                         @endif
                                         <div class="button-group so-quickview cartinfo--left">
                                             @php

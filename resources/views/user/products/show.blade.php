@@ -260,11 +260,7 @@
                                                 </a>
                                             </div>
                                             @if ($related->activeDiscount)
-                                                @if ($related->activeDiscount->type == 'value')
-                                                    <div class="box-label"> <span class="label-product label-sale"> -{{ (1 - ($related->price / $related->activeDiscount->amount)) *100 }}% </span></div>
-                                                @else
-                                                    <div class="box-label"> <span class="label-product label-sale"> -{{ $related->activeDiscount->amount }}% </span></div>
-                                                @endif
+                                                <div class="box-label"> <span class="label-product label-sale"> -{{ $related->discount_percentage }}% </span></div>
                                             @endif
                                             <div class="button-group so-quickview cartinfo--left">
                                                 @php
@@ -326,11 +322,7 @@
                                                 </a>
                                             </div>
                                             @if ($accessory->activeDiscount)
-                                                @if ($accessory->activeDiscount->type == 'value')
-                                                    <div class="box-label"> <span class="label-product label-sale"> -{{ (1 - ($accessory->price / $accessory->activeDiscount->amount)) *100 }}% </span></div>
-                                                @else
-                                                    <div class="box-label"> <span class="label-product label-sale"> -{{ $accessory->activeDiscount->amount }}% </span></div>
-                                                @endif
+                                                <div class="box-label"> <span class="label-product label-sale"> -{{ $accessory->discount_percentage }}% </span></div>
                                             @endif
                                             <div class="button-group so-quickview cartinfo--left">
                                                 @php
