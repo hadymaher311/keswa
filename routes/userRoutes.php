@@ -36,6 +36,9 @@ Route::group([
             Route::get('/user/wishlist', 'WishListController@show')->name('user.wishlist');
             Route::post('/user/wishlist/{product}', 'WishListController@store')->name('user.wishlist.store');
             Route::DELETE('/user/wishlist/{product}/destroy', 'WishListController@destroy')->name('user.wishlist.remove');
+            
+            // product reviews
+            Route::post('/user/reviews/{product}', 'ProductsController@storeReview')->name('user.review.store');
 
 
             // profile and account routes

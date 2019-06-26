@@ -30,6 +30,7 @@ class ProductsController extends Controller
     /**
      * Display the products with category.
      *
+     * @param  \Illuminate\Http\Request $request
      * @param  App\Models\SubSubCategory  $category
      * @return \Illuminate\Http\Response
      */
@@ -54,7 +55,8 @@ class ProductsController extends Controller
     /**
      * Display the products with brand.
      *
-     * @param  App\Models\SubSubCategory  $category
+     * @param  \Illuminate\Http\Request $request
+     * @param  App\Models\Brand  $category
      * @return \Illuminate\Http\Response
      */
     public function brand(Request $request, Brand $brand)
@@ -75,6 +77,12 @@ class ProductsController extends Controller
         abort(404);
     }
 
+    /**
+     * Display the products in the search.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function search(Request $request)
     {
         $this->validate($request, [
@@ -93,5 +101,26 @@ class ProductsController extends Controller
             $searchResults = $searchResults->intersect($category_products);
         }
         return view('user.products.search', compact('searchResults', 'latest_products'));
+    }
+
+    /**
+     * Store Product review.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\Product $product
+     * @return \Illuminate\Http\Response
+     */
+    public function storeReview(Request $request, Product $product)
+    {
+        $this->validate($request, [
+            'content' => 'required|string',
+            'rate' => 'required|integer|min:1|max:5'
+        ]);
+        $request['content'] = str_replace('<', '&lt;', $request->content);
+        $request['content'] = str_replace('>', '&gt;', $request->content);
+        $request['content'] = nl2br($request->content);
+        $request['user_id'] = auth()->id();
+        $product->reviews()->create($request->all());
+        return back()->with('status', trans('Added Successfully'));        
     }
 }

@@ -167,63 +167,69 @@
                             {!! $product->description !!}
                         </div>
                         <div id="tab-review" class="tab-pane fade">
-                            <form>
-                                <div id="review">
-                                    <table class="table table-striped table-bordered">
-                                        <tbody>
-                                            @foreach ($product->approvedReviews as $review)
-                                                <tr>
-                                                    <td style="width: 50%;"><strong>{{ $review->author->name }}</strong></td>
-                                                    <td class="text-right">{{ $review->created_at->format('Y/m/d') }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2">
-                                                        <p>{!! $review->content !!}</p>
-                                                        <div class="ratings">
-                                                            <div class="rating-box">
-                                                                @php $rating = $review->rate; @endphp  
+                            <div id="review">
+                                <table class="table table-striped table-bordered">
+                                    <tbody>
+                                        @foreach ($product->approvedReviews as $review)
+                                            <tr>
+                                                <td style="width: 50%;"><strong>{{ $review->author->name }}</strong></td>
+                                                <td class="text-right">{{ $review->created_at->format('Y/m/d') }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <p>{!! $review->content !!}</p>
+                                                    <div class="ratings">
+                                                        <div class="rating-box">
+                                                            @php $rating = $review->rate; @endphp  
 
-                                                                @include('user.components.rating')
-                                                            </div>
+                                                            @include('user.components.rating')
                                                         </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    <div class="text-right"></div>
-                                </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <div class="text-right"></div>
+                            </div>
 
-                                @auth
-                                    <h2 id="review-title">{{ __('Write a review') }}</h2>
+                            @auth
+                                <h2 id="review-title">{{ __('Write a review') }}</h2>
+                                <form action="{{ route('user.review.store', $product->id) }}" method="post">
+                                    @csrf
                                     <div class="contacts-form">
-                                        <div class="form-group"> <span class="icon icon-user"></span>
-                                            <input type="text" name="name" class="form-control" value="Your Name" onblur="if (this.value == '') {this.value = 'Your Name';}" onfocus="if(this.value == 'Your Name') {this.value = '';}"> 
-                                        </div>
                                         <div class="form-group"> <span class="icon icon-bubbles-2"></span>
-                                            <textarea class="form-control" name="text" onblur="if (this.value == '') {this.value = 'Your Review';}" onfocus="if(this.value == 'Your Review') {this.value = '';}">Your Review</textarea>
+                                            <textarea class="form-control @error('content') is-invalid @enderror" placeholder="{{ __('Your Review') }}" name="content" required>{{ old('content') }}</textarea>
+                                            @error('content')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div> 
-                                        <span style="font-size: 11px;"><span class="text-danger">Note:</span>						HTML is not translated!</span>
-                                        
                                         <div class="form-group">
-                                            <b>Rating</b> <span>Bad</span>&nbsp;
-                                        <input type="radio" name="rating" value="1"> &nbsp;
-                                        <input type="radio" name="rating"
-                                        value="2"> &nbsp;
-                                        <input type="radio" name="rating"
-                                        value="3"> &nbsp;
-                                        <input type="radio" name="rating"
-                                        value="4"> &nbsp;
-                                        <input type="radio" name="rating"
-                                        value="5"> &nbsp;<span>Good</span>
+                                            <b>{{ __('Rating') }}</b> <span>{{ __('Bad') }}</span>&nbsp;
+                                            <input type="radio" name="rate" value="1"> &nbsp;
+                                            <input type="radio" name="rate"
+                                            value="2"> &nbsp;
+                                            <input type="radio" name="rate"
+                                            value="3"> &nbsp;
+                                            <input type="radio" name="rate"
+                                            value="4"> &nbsp;
+                                            <input type="radio" name="rate"
+                                            value="5"> &nbsp;<span>{{ __('Good') }}</span>
+                                            @error('rating')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         
                                         </div>
-                                        <div class="buttons clearfix"><a id="button-review" class="btn buttonGray">Continue</a></div>
+                                        <div class="buttons clearfix"><button type="submit" class="btn buttonGray">{{ __('Continue') }}</button></div>
                                     </div>
-                                @else
-                                    <a href="{{ route('login') }}" class="btn btn-primary">{{ __('Login to add review') }}</a>
-                                @endauth
-                            </form>
+                                </form>
+                            @else
+                                <a href="{{ route('login') }}" class="btn btn-primary">{{ __('Login to add review') }}</a>
+                            @endauth
                         </div>
                         <div id="tab-4" class="tab-pane fade">
                             @foreach ($product->tags as $tag)
@@ -358,4 +364,23 @@
 
 @section('js')
 <script type="text/javascript" src="{{ asset('/user_styles/js/lightslider/lightslider.js') }}"></script>
+<script>
+    $(function() {
+        @if (count($errors->all()))
+            @if (app()->getLocale() == 'ar')
+                iziToast.error({
+                    title: '{{ __("Whooops") }}!',
+                    message: '{{ __("Something worng happened") }}',
+                    position: 'topRight'
+                });
+            @else
+                iziToast.error({
+                    title: '{{ __("Whooops") }}!',
+                    message: '{{ __("Something worng happened") }}',
+                    position: 'topLeft'
+                });
+            @endif
+        @endif
+    })
+</script>
 @endsection
