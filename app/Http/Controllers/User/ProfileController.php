@@ -199,4 +199,17 @@ class ProfileController extends Controller
         $review->update($request->all());
         return redirect()->route('user.reviews')->with('status', trans('Updated Successfully'));        
     }
+    
+    /**
+     * delete review.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\Review $review
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyReviews(Request $request, Review $review)
+    {
+        $review->delete();
+        return redirect()->route('user.reviews')->with('status', trans('Deleted Successfully'));        
+    }
 }
