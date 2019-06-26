@@ -18,7 +18,9 @@ class HomeController extends Controller
      */
     public function welcome()
     {
-        $categories_with_latest_products = SubSubCategory::active()->take(5)->get();
+        $categories_with_latest_products = SubSubCategory::whereHas('products', function ($query) {
+                                                                    $query->active();
+                                                                })->active()->take(5)->get();
         foreach ($categories_with_latest_products as $cat) {
             $cat->load('latestProducts');
         }
