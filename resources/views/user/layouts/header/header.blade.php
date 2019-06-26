@@ -43,9 +43,9 @@
                 </div>
                 <!-- //end Main menu -->
 
-                <div class="middle-right col-lg-4 col-md-3 col-sm-6 col-xs-8">
+                <div class="middle-right col-lg-4 col-md-3 col-sm-6 col-xs-8" style="top: auto;">
                     @guest
-                        <div class="signin-w  hidden-sm hidden-xs">
+                        <div class="signin-w  hidden-sm hidden-xs" style="padding-top: 7px;">
                             <ul class="signin-link blank">                            
                                 <li class="log login"><i class="fa fa-lock"></i> <a class="link-lg" href="{{ route('login') }}">{{ __('Login') }} </a> or <a href="{{ route('register') }}">{{ __('Register') }}</a></li>                                
                             </ul>                       
@@ -88,7 +88,7 @@
     
                         </div>
                     @endguest
-                    <div class="telephone hidden-xs hidden-sm hidden-md">
+                    <div class="telephone hidden-xs hidden-sm hidden-md" style="padding-top: 9px;">
                         <ul class="blank"> <li><a href="#"><i class="fa fa-truck"></i>{{ __('Track your order') }}</a></li> <li><a href="#"><i class="fa fa-phone-square"></i>{{ __('Contact US') }}</a></li> </ul>
                     </div>
                                         

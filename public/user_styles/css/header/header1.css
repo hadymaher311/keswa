@@ -650,8 +650,8 @@
       top: 60px; } }
 
 @media (min-width: 1200px) and (max-width: 1649px) {
-  .typeheader-1 .bottom1 {
-    width: 21%; }
+  /* .typeheader-1 .bottom1 {
+    width: 21%; } */
     .typeheader-1 .bottom2 {
       width: 49%; }
     .typeheader-1 .bottom3 {
