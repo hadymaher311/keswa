@@ -80,9 +80,53 @@
                                             <div class="col-sm-3">
                                                 {{ __('Role') }}
                                             </div>
-                                            <div class="col sm-3">
+                                            <div class="col-sm-9">
                                                 {{ auth()->user()->roles->first()->name }}
                                             </div>
+                                            <div class="col-sm-3">
+                                                {{ __('Date of birth') }}
+                                            </div>
+                                            <div class="col-sm-9">
+                                                {{ (auth()->user()->personalInfo) ? Carbon\Carbon::create(auth()->user()->personalInfo->birth_date)->format('Y-m-d') : '' }}
+                                            </div>
+                                            <div class="col-sm-3">
+                                                {{ __('Mobile') }}
+                                            </div>
+                                            <div class="col-sm-9">
+                                                {{ (auth()->user()->personalInfo) ? auth()->user()->personalInfo->phone : '' }}
+                                            </div>
+                                            <div class="col-sm-3">
+                                                {{ __('Gender') }}
+                                            </div>
+                                            <div class="col-sm-9">
+                                                {{ (auth()->user()->personalInfo) ? ucfirst(auth()->user()->personalInfo->gender) : '' }}
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <br>
+                                        <h5>{{ __('Location') }}</h5>
+                                        <div class="row">
+                                            <div class="col-sm-3"><b>{{ (auth()->user()->address) ? auth()->user()->address->country : '' }}, {{ (auth()->user()->address) ? auth()->user()->address->city : '' }}</b></div>
+                                            <div class="col-sm-9"></div>
+    
+                                            <div class="col-sm-3"><b>{{ __('Location') }}: </b></div>
+                                            <div class="col-sm-9">{{ (auth()->user()->address) ? ucfirst(auth()->user()->address->location_type) : '' }}</div>
+    
+                                            <div class="col-sm-3"><b>{{ __('Street Name/No') }}: </b></div>
+                                            <div class="col-sm-9">{{ (auth()->user()->address) ? auth()->user()->address->street : '' }}</div>
+    
+                                            <div class="col-sm-3"><b>{{ __('Building Name/No') }}: </b></div>
+                                            <div class="col-sm-9">{{ (auth()->user()->address) ? auth()->user()->address->building : '' }}</div>
+    
+                                            <div class="col-sm-3"><b>{{ __('Floor No') }}: </b></div>
+                                            <div class="col-sm-9">{{ (auth()->user()->address) ? auth()->user()->address->floor : '' }}</div>
+    
+                                            <div class="col-sm-3"><b>{{ __('Apartment No') }}: </b></div>
+                                            <div class="col-sm-9">{{ (auth()->user()->address) ? auth()->user()->address->apartment : '' }}</div>
+    
+                                            <div class="col-sm-3"><b>{{ __('Nearest Landmark') }}: </b></div>
+                                            <div class="col-sm-9">{{ (auth()->user()->address) ? auth()->user()->address->nearest_landmark : '' }}</div>
                                         </div>
                                     </div>
                                 </div>

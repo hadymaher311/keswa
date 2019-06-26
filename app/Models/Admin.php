@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\AdminAddress;
+use App\Models\AdminSetting;
+use App\Models\AdminPersonalInfo;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -9,7 +12,6 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use App\Notifications\AdminResetPasswordNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Models\AdminSetting;
 
 class Admin extends Authenticatable implements HasMedia
 {
@@ -93,6 +95,24 @@ class Admin extends Authenticatable implements HasMedia
         $this->addMediaConversion('thumb')
               ->width(100)
               ->height(100);
+    }
+
+    /**
+     * Get admin personal info
+     * 
+     */
+    public function personalInfo()
+    {
+        return $this->hasOne(AdminPersonalInfo::class);
+    }
+    
+    /**
+     * Get admin addresses
+     * 
+     */
+    public function address()
+    {
+        return $this->hasone(AdminAddress::class);
     }
 
     /**

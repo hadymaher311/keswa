@@ -92,6 +92,8 @@ Route::group([
         Route::get('/admin/profile', 'ProfileController@index')->name('admin.profile');
         Route::get('/admin/profile/edit', 'ProfileController@edit')->name('admin.profile.edit');
         Route::put('/admin/profile/edit', 'ProfileController@update')->name('admin.profile.edit');
+        Route::get('/admin/profile/edit/address', 'ProfileController@editAddress')->name('admin.profile.address.edit');
+        Route::PUT('/admin/profile/edit/address', 'ProfileController@updateAddress')->name('admin.profile.address.edit');
         Route::get('/admin/profile/edit/password', 'ProfileController@editPassword')->name('admin.profile.edit.password');
         Route::PUT('/admin/profile/edit/password', 'ProfileController@updatePassword')->name('admin.profile.edit.password');
         Route::PUT('/admin/profile/edit/image', 'ProfileController@updateImage')->name('admin.profile.edit.image');

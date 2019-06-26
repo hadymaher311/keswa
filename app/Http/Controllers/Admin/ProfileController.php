@@ -7,6 +7,8 @@ use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Models\AdminSetting;
+use App\Models\AdminAddress;
+use App\Models\AdminPersonalInfo;
 
 class ProfileController extends Controller
 {
@@ -48,12 +50,16 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-        // return $request->all();
         $this->ValidateUpdateRequest($request);
         auth()->user()->first_name = $request->first_name;
         auth()->user()->last_name = $request->last_name;
         auth()->user()->email = $request->email;
         auth()->user()->save();
+        $request['admin_id'] = auth()->id();
+        AdminPersonalInfo::updateOrCreate(
+            ['admin_id' => auth()->id()],
+            $request->all()
+        );
         return redirect()->route('admin.profile')->with('status', trans('Updated Successfully'));
     }
 
@@ -69,8 +75,11 @@ class ProfileController extends Controller
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 
-                        Rule::unique('admins')->ignore(auth()->id())
-                        ],
+                Rule::unique('admins')->ignore(auth()->id())
+            ],
+            'birth_date' => ['required', 'date', 'before:today'],
+            'phone' => ['required', 'string', 'max:11', 'min:11'],
+            'gender' => ['required', 'string', 'in:male,female'],
         ]);
     }
     
@@ -152,5 +161,41 @@ class ProfileController extends Controller
         }
         $settings->save();
         return redirect($settings->language.'/admin/profile')->with('status', trans('Updated Successfully'));
+    }
+
+    /**
+     * Show the form for editing admin address.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function editAddress()
+    {
+        return view('admin.profile.editAddress');
+    }
+    
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateAddress(Request $request)
+    {
+        $this->validate($request, [
+            'country' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'street' => ['required', 'string', 'max:255'],
+            'building' => ['required', 'string', 'max:255'],
+            'floor' => ['required', 'string', 'max:255'],
+            'apartment' => ['required', 'string', 'max:255'],
+            'nearest_landmark' => ['nullable', 'string', 'max:255'],
+            'location_type' => ['required', 'string', 'in:home,business'],
+        ]);
+        $request['admin_id'] = auth()->id();
+        AdminAddress::updateOrCreate(
+            ['admin_id' => auth()->id()],
+            $request->all()
+        );
+        return redirect()->route('admin.profile')->with('status', trans('Updated Successfully'));
     }
 }
