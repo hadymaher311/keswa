@@ -42,7 +42,7 @@ class ProductsController extends Controller
             $sort_list = explode('-', $request->sort);
         }
         $searched_category = $category;
-        $category_products = $category->active()->firstOrFail()->products()->orderBy($sort_list[0], $sort_list[1])->active()->paginate(15);
+        $category_products = $category->products()->orderBy($sort_list[0], $sort_list[1])->active()->paginate(15);
         if ($category_products) {
             $latest_products = Product::orderBy('created_at', 'desc')->active()->get()->take(5);
             return view('user.products.categoryProducts', compact('searched_category', 'category_products', 'latest_products'));

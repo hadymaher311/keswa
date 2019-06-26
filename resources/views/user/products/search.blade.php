@@ -4,6 +4,16 @@
     {{ __('Products') }} - {{ config('app.name') }}
 @endsection
 
+@section('css')
+    <style>
+        .products-list.grid .product-layout{
+            height: 324px !important;
+        }
+        .products-list.grid .product-layout .product-image-container{
+            height: 170px !important;
+        }
+    </style>
+@endsection
 @section('body')
 <div class="main-container container" style="margin-top: 4rem;">
     <div id="content">
@@ -43,7 +53,7 @@
                             <div class="product-layout col-lg-15 col-md-4 col-sm-6 col-xs-12">
                                 <div class="product-item-container">
                                     <div class="left-block">
-                                        <div class="product-image-container second_img" style="height: 170px;">
+                                        <div class="product-image-container second_img">
                                             <a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" target="_self" title="{{ $product->name }}">
                                                 <img src="{{ $product->images->first()->getUrl('card') }}" class="img-1 img-responsive" alt="{{ $product->name }}">
                                                 @if (count($product->images) > 1)
