@@ -25,6 +25,7 @@ class HomeController extends Controller
         $top_rated_products = Product::active()->get()->sortByDesc('rating')->take(5);
         $best_discount_products = Product::active()->get()->sortByDesc('discount_percentage')->take(5);
         $home_brands = Brand::active()->get()->take(10);
-        return view('welcome', compact('top_rated_products', 'best_discount_products', 'categories_with_latest_products', 'home_brands'));
+        $all_products = Product::orderBy('created_at', 'desc')->active()->paginate(15);
+        return view('welcome', compact('top_rated_products', 'best_discount_products', 'categories_with_latest_products', 'home_brands', 'all_products'));
     }
 }

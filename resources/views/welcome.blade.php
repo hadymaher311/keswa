@@ -255,6 +255,61 @@
                     </div>
                 </div>
                 <!-- end Listing tabs custom -->
+
+                <!-- Listing tabs custom -->
+                <div class="module listingtab1-custom listingtab-layout1">
+                    <h3 class="modtitle"><span>{{ __('Latest items') }}</span></h3>
+                    <div class="row">
+                        <div class="products-list grid row nopadding-xs so-filter-gird" style="margin-bottom: 4rem">
+                
+                            @foreach ($all_products as $product)
+                                <div class="product-layout col-lg-15 col-md-4 col-sm-6 col-xs-12" style="height: 324px">
+                                    <div class="product-item-container">
+                                        <div class="left-block">
+                                            <div class="product-image-container second_img" style="height: 170px;">
+                                                <a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" target="_self" title="{{ $product->name }}">
+                                                    <img src="{{ $product->images->first()->getUrl('card') }}" class="img-1 img-responsive" alt="{{ $product->name }}">
+                                                    @if (count($product->images) > 1)
+                                                        <img src="{{ $product->images[1]->getUrl('card') }}" class="img-2 img-responsive" alt="{{ $product->name }}">
+                                                    @endif
+                                                </a>
+                                            </div>
+                                            @if ($product->activeDiscount)
+                                                <div class="box-label"> <span class="label-product label-sale"> -{{ $product->discount_percentage }}% </span></div>
+                                            @endif
+                                            <div class="button-group so-quickview cartinfo--left">
+                                                @php
+                                                    $product_id = $product->id;
+                                                @endphp
+                                                @include('user.components.productButtons')
+                                            </div>
+                                        </div>
+                                        <div class="right-block">
+                                            <div class="caption">
+                                                <div class="rating">
+                                                    @php
+                                                        $rating = $product->rating;
+                                                    @endphp
+                                                    @include('user.components.rating')
+                                                </div>
+                                                <h4><a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" title="{{ $product->name }} " target="_self">{{ $product->name }} </a></h4>
+                                                <div class="price">
+                                                    @php
+                                                        $activeDiscount = $product->activeDiscount;
+                                                        $price = $product->price;
+                                                    @endphp
+                                                    @include('user.components.pricing')
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                            
+                        </div>
+                        {{ $all_products->links() }}
+                    </div>
+                </div>
                             
             </div>
             <div class="slider-brands col-lg-12 col-md-12 col-sm-12 col-xs-12">
