@@ -41,16 +41,11 @@
                                     @endforeach
                                 </div>
                                 <div class="content_price price">
-                                    @if ($pro->activeDiscount)
-                                        <span class="price-old">{{ $pro->price }} {{ __('LE') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        @if ($pro->activeDiscount->type == 'value')
-                                            <span class="price-new">{{ $pro->price - $pro->activeDiscount->amount }} {{ __('LE') }}</span>
-                                        @elseif ($pro->activeDiscount->type == 'percentage')
-                                            <span class="price-new">{{ ($pro->price * (100 - $pro->activeDiscount->amount) / 100) }} {{ __('LE') }}</span>
-                                        @endif
-                                    @else
-                                        <span>{{ $pro->price }} {{ __('LE') }}</span>
-                                    @endif
+                                    @php
+                                        $activeDiscount = $pro->activeDiscount;
+                                        $price = $pro->price;
+                                    @endphp
+                                    @include('user.components.pricing')
                                 </div>
                             </div>
                             <!-- End item-info -->

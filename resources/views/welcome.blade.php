@@ -55,16 +55,11 @@
                                                     @endforeach
                                                 </div>
                                                 <div class="content_price price">
-                                                    @if ($product->activeDiscount)
-                                                        <span class="price-old">{{ $product->price }} {{ __('LE') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        @if ($product->activeDiscount->type == 'value')
-                                                            <span class="price-new">{{ $product->price - $product->activeDiscount->amount }} {{ __('LE') }}</span>
-                                                        @elseif ($product->activeDiscount->type == 'percentage')
-                                                            <span class="price-new">{{ ceil($product->price * (100 - $product->activeDiscount->amount) / 100) }} {{ __('LE') }}</span>
-                                                        @endif
-                                                    @else
-                                                        <span>{{ $product->price }} {{ __('LE') }}</span>
-                                                    @endif
+                                                    @php
+                                                        $activeDiscount = $product->activeDiscount;
+                                                        $price = $product->price;
+                                                    @endphp
+                                                    @include('user.components.pricing')
                                                 </div>
                                             </div>
                                             <!-- End item-info -->
@@ -115,16 +110,11 @@
                                                         <div class="caption">
                                                             <h4><a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" target="_self" title="{{ $product->name }}">{{ $product->name }}</a></h4>
                                                             <p class="price">
-                                                                @if ($product->activeDiscount)
-                                                                    <span class="price-old">{{ $product->price }} {{ __('LE') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                    @if ($product->activeDiscount->type == 'value')
-                                                                        <span class="price-new">{{ $product->price - $product->activeDiscount->amount }} {{ __('LE') }}</span>
-                                                                    @elseif ($product->activeDiscount->type == 'percentage')
-                                                                        <span class="price-new">{{ ($product->price * (100 - $product->activeDiscount->amount) / 100) }} {{ __('LE') }}</span>
-                                                                    @endif
-                                                                @else
-                                                                    <span>{{ $product->price }} {{ __('LE') }}</span>
-                                                                @endif
+                                                                @php
+                                                                    $activeDiscount = $product->activeDiscount;
+                                                                    $price = $product->price;
+                                                                @endphp
+                                                                @include('user.components.pricing')
                                                             </p>
                                                             <p class="desc">{!! $product->short_description !!}</p>
                                                         </div>
@@ -188,9 +178,9 @@
                                                                     
                                                                     <div class="button-group so-quickview cartinfo--left">
                                                                         @php
-                                                                    $product_id = $product->id;
-                                                                @endphp
-                                                                @include('user.components.productButtons')
+                                                                            $product_id = $product->id;
+                                                                        @endphp
+                                                                        @include('user.components.productButtons')
                                                                     </div>
                                                                     @if ($product->activeDiscount)
                                                                         <div class="box-label"> <span class="label-product label-sale"> -{{ $product->discount_percentage }}% </span></div>
@@ -199,16 +189,11 @@
                                                                 <div class="right-block">
                                                                     <div class="caption">
                                                                         <div class="price">
-                                                                            @if ($product->activeDiscount)
-                                                                                <span class="price-old">{{ $product->price }} {{ __('LE') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                                @if ($product->activeDiscount->type == 'value')
-                                                                                    <span class="price-new">{{ $product->price - $product->activeDiscount->amount }} {{ __('LE') }}</span>
-                                                                                @elseif ($product->activeDiscount->type == 'percentage')
-                                                                                    <span class="price-new">{{ ($product->price * (100 - $product->activeDiscount->amount) / 100) }} {{ __('LE') }}</span>
-                                                                                @endif
-                                                                            @else
-                                                                                <span>{{ $product->price }} {{ __('LE') }}</span>
-                                                                            @endif
+                                                                            @php
+                                                                                $activeDiscount = $product->activeDiscount;
+                                                                                $price = $product->price;
+                                                                            @endphp
+                                                                            @include('user.components.pricing')
                                                                         </div>
                                                                         <h4><a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" title="{{ $product->name }}" target="_self">{{ $product->name }}</a></h4>
                                                                         
@@ -241,16 +226,11 @@
                                                                 <div class="right-block">
                                                                     <div class="caption">
                                                                         <div class="price">
-                                                                            @if ($product->activeDiscount)
-                                                                                <span class="price-old">{{ $product->price }} {{ __('LE') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                                @if ($product->activeDiscount->type == 'value')
-                                                                                    <span class="price-new">{{ $product->price - $product->activeDiscount->amount }} {{ __('LE') }}</span>
-                                                                                @elseif ($product->activeDiscount->type == 'percentage')
-                                                                                    <span class="price-new">{{ ($product->price * (100 - $product->activeDiscount->amount) / 100) }} {{ __('LE') }}</span>
-                                                                                @endif
-                                                                            @else
-                                                                                <span>{{ $product->price }} {{ __('LE') }}</span>
-                                                                            @endif
+                                                                            @php
+                                                                                $activeDiscount = $product->activeDiscount;
+                                                                                $price = $product->price;
+                                                                            @endphp
+                                                                            @include('user.components.pricing')
                                                                         </div>
                                                                         <h4><a href="{{ route('user.products.show', ['product'=> $product->id, 'slug' => $product->slug]) }}" title="{{ $product->name }}" target="_self">{{ $product->name }}</a></h4>
                                                                         

@@ -45,16 +45,11 @@
                         </span></div>
                         </td>
                         <td class="price">
-                            @if ($cart->activeDiscount)
-                                <span class="price-old">{{ $cart->price }} {{ __('LE') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                @if ($cart->activeDiscount->type == 'value')
-                                    <span class="price-new">{{ $cart->price - $cart->activeDiscount->amount }} {{ __('LE') }}</span>
-                                @elseif ($cart->activeDiscount->type == 'percentage')
-                                    <span class="price-new">{{ ($cart->price * (100 - $cart->activeDiscount->amount) / 100) }} {{ __('LE') }}</span>
-                                @endif
-                            @else
-                                <span>{{ $cart->price }} {{ __('LE') }}</span>
-                            @endif
+                            @php
+                                $activeDiscount = $cart->activeDiscount;
+                                $price = $cart->price;
+                            @endphp
+                            @include('user.components.pricing')
                         </td>
                         <td class="">{{ $cart->pivot->quantity * $cart->final_price }} {{ __('LE') }}</td>
                     </tr>

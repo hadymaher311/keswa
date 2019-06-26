@@ -41,16 +41,11 @@
                                 </td>
                                 <td class="">
                                     <div class="price"> 
-                                        @if ($wishlist_product->activeDiscount)
-                                            <span class="price-old">{{ $wishlist_product->price }} {{ __('LE') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                            @if ($wishlist_product->activeDiscount->type == 'value')
-                                                <span class="price-new">{{ $wishlist_product->price - $wishlist_product->activeDiscount->amount }} {{ __('LE') }}</span>
-                                            @elseif ($wishlist_product->activeDiscount->type == 'percentage')
-                                                <span class="price-new">{{ ($wishlist_product->price * (100 - $wishlist_product->activeDiscount->amount) / 100) }} {{ __('LE') }}</span>
-                                            @endif
-                                        @else
-                                            <span>{{ $wishlist_product->price }} {{ __('LE') }}</span>
-                                        @endif
+                                        @php
+                                            $activeDiscount = $wishlist_product->activeDiscount;
+                                            $price = $wishlist_product->price;
+                                        @endphp
+                                        @include('user.components.pricing')
                                     </div>
                                 
                                 </td>
