@@ -208,14 +208,14 @@
                                         </div> 
                                         <div class="form-group">
                                             <b>{{ __('Rating') }}</b> <span>{{ __('Bad') }}</span>&nbsp;
-                                            <input type="radio" name="rate" value="1"> &nbsp;
-                                            <input type="radio" name="rate"
+                                            <input type="radio" required name="rate" value="1"> &nbsp;
+                                            <input type="radio" required name="rate"
                                             value="2"> &nbsp;
-                                            <input type="radio" name="rate"
+                                            <input type="radio" required name="rate"
                                             value="3"> &nbsp;
-                                            <input type="radio" name="rate"
+                                            <input type="radio" required name="rate"
                                             value="4"> &nbsp;
-                                            <input type="radio" name="rate"
+                                            <input type="radio" required name="rate"
                                             value="5"> &nbsp;<span>{{ __('Good') }}</span>
                                             @error('rating')
                                                 <span class="invalid-feedback" role="alert">

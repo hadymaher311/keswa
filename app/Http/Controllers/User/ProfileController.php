@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Review;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -155,5 +156,47 @@ class ProfileController extends Controller
             return redirect()->route('user.addresses')->with('status', trans('Updated Successfully'));
         }
         return back()->with(['password' => trans('Wrong Password')]);
+    }
+
+    /**
+     * Display user reviews.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showReviews()
+    {
+        $pending_reviews = auth()->user()->notApprovedReviews()->paginate(10);
+        $approved_reviews = auth()->user()->approvedReviews()->paginate(10);
+        return view('user.profile.reviews', compact('pending_reviews', 'approved_reviews'));
+    }
+
+    /**
+     * Display user edit review.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function editReviews(Review $review)
+    {
+        return view('user.profile.reviewEdit', compact('review'));
+    }
+
+    /**
+     * update review.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\Review $review
+     * @return \Illuminate\Http\Response
+     */
+    public function updateReviews(Request $request, Review $review)
+    {
+        $this->validate($request, [
+            'content' => 'required|string',
+            'rate' => 'required|integer|min:1|max:5'
+        ]);
+        $request['content'] = str_replace('<', '&lt;', $request->content);
+        $request['content'] = str_replace('>', '&gt;', $request->content);
+        $request['content'] = nl2br($request->content);
+        $review->update($request->all());
+        return redirect()->route('user.reviews')->with('status', trans('Updated Successfully'));        
     }
 }

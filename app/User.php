@@ -2,15 +2,16 @@
 
 namespace App;
 
+use App\Models\Review;
+use App\Models\Product;
+use App\Models\UserAddress;
+use App\Models\UserPersonalInfo;
 use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Models\UserPersonalInfo;
-use App\Models\UserAddress;
-use App\Models\Product;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
@@ -118,5 +119,32 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         return ($this->cart->count()) ? $this->cart->sum(function($cart) {
             return $cart->final_price * $cart->pivot->quantity;
           }) : 0;
+    }
+
+    /**
+     * Get user reviews
+     * 
+     */
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+    
+    /**
+     * Get user approved reviews
+     * 
+     */
+    public function approvedReviews()
+    {
+        return $this->hasMany(Review::class)->approved();
+    }
+    
+    /**
+     * Get user not approved reviews
+     * 
+     */
+    public function notApprovedReviews()
+    {
+        return $this->hasMany(Review::class)->where('approved', 0);
     }
 }

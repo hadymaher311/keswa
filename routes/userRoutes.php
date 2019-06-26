@@ -39,19 +39,26 @@ Route::group([
             
             // product reviews
             Route::post('/user/reviews/{product}', 'ProductsController@storeReview')->name('user.review.store');
-
-
+            
+            
             // profile and account routes
             Route::get('/user/profile', 'ProfileController@index')->name('user.profile');
+            
             Route::PUT('/user/profile/edit/image', 'ProfileController@updateImage')->name('user.profile.edit.image');
             Route::get('/user/profile/edit/info', 'ProfileController@editInfo')->name('user.info.edit');
             Route::PUT('/user/profile/info/update', 'ProfileController@updateInfo')->name('user.info.update');
             Route::PUT('/user/profile/password/update', 'ProfileController@updatePassword')->name('user.password.update');
+            
             Route::get('/user/profile/addresses', 'ProfileController@showAddress')->name('user.addresses');
             Route::POST('/user/profile/addresses/store', 'ProfileController@storeAddress')->name('user.addresses.store');
             Route::get('/user/profile/addresses/{address}/edit', 'ProfileController@editAddress')->name('user.addresses.edit');
             Route::PUT('/user/profile/addresses/{address}/update', 'ProfileController@updateAddress')->name('user.addresses.update');
 
+            Route::get('/user/profile/reviews', 'ProfileController@showReviews')->name('user.reviews');
+            Route::get('/user/profile/reviews/{review}/edit', 'ProfileController@editReviews')->name('user.reviews.edit');
+            Route::Put('/user/profile/reviews/{review}/update', 'ProfileController@updateReviews')->name('user.reviews.update');
+            Route::DELETE('/user/profile/reviews/{review}/destroy', 'ProfileController@destroyReviews')->name('user.reviews.destroy');
+            
 
             Route::get('/home', 'HomeController@welcome')->name('home');
         });

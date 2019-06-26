@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\User;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
@@ -34,5 +35,14 @@ class Review extends Model
     public function scopeApproved($query)
     {
         return $query->where('approved', 1);
+    }
+
+    /**
+     * Get product
+     * 
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }
