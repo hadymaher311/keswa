@@ -317,7 +317,7 @@
                         data-pagination="no" data-lazyload="yes" data-loop="no">
                     @foreach ($home_brands as $brand)
                         <div class="item">
-                            <a href="#">
+                            <a href="{{ route('user.products.brand.show', $brand->id) }}">
                                 <img src="{{ $brand->image->getUrl('thumb') }}" alt="{{ $brand->name }}">
                             </a>
                         </div>

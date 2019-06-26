@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Product;
 use App\Helpers\LocalizableModel;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -59,6 +60,11 @@ class Brand  extends LocalizableModel implements HasMedia
     public function scopeActive($query)
     {
         return $query->where('active', 1);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 
 }
