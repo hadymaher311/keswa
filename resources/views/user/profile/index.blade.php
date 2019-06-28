@@ -60,7 +60,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">{{ __('Change image') }}</h4>
                     </div>
-                    <form method="POST" class="image-form" id="image-form" action="{{ route("user.profile.edit.image") }}" enctype="multipart/form-data">
+                    <form class="image-form" id="image-form" action="{{ route("user.profile.image.edit") }}" enctype="multipart/form-data"  method="POST">
                         <div class="modal-body">
                         
                             @csrf
