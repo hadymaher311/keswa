@@ -27,7 +27,7 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function updateImage(Request $request)
+    public function editImage(Request $request)
     {
         $this->validate($request, [
         'image' => ['required', 'base64image']
