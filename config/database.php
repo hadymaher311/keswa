@@ -46,10 +46,10 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '199.188.200.47'),
+            'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'noritssg_7agty'),
-            'username' => env('DB_USERNAME', 'noritssg_7agty_user'),
+            'username' => env('DB_USERNAME', 'noritssg'),
             'password' => env('DB_PASSWORD', '@cPanel2016'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
