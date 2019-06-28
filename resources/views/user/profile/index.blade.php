@@ -60,12 +60,12 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">{{ __('Change image') }}</h4>
                     </div>
-                    <form class="image-form" id="image-form" action="{{ route("user.profile.image.edit") }}" enctype="multipart/form-data"  method="POST">
+                    <form class="image-form" id="image-form" action="{{ route("user.profile.image.edit") }}" method="POST">
                         <div class="modal-body">
                         
                             @csrf
                             <div class="image-preview-demo"></div>
-                            <input type="hidden" name="image" class="image-data">
+                            <input type="hidden" name="image" class="image-data" />
                             <input type="file" accept="image/*" class="form-control file-input @error("image") is-invalid @enderror" />
                         </div>
                         <div class="modal-footer">
