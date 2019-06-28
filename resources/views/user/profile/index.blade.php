@@ -55,7 +55,7 @@
 
         <div class="modal fade" id="ImageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
-                <form action="{{ route("user.profile.edit.image") }}" method="post" enctype="multipart/form-data">
+                <form class="image-form" action="{{ route("user.profile.edit.image") }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method("PUT")
                     <div class="modal-content">
@@ -110,7 +110,7 @@
             event.preventDefault();
             
             $(".image-data").val($Image.cropper('getCroppedCanvas').toDataURL());
-            $(this).parents('form').submit();
+            $(this).parents('form.image-form').submit();
             
             
         })
