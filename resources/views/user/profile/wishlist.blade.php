@@ -27,10 +27,10 @@
                         @foreach (auth()->user()->wishlist as $wishlist_product)
                             <tr>
                                 <td class="text-center">
-                                    <a  href="{{ route('user.wishlist.store', $wishlist_product->id) }}"><img width="70px" src="{{ $wishlist_product->images->first()->getUrl('thumb') }}" alt="{{ $wishlist_product->name }}" title="{{ $wishlist_product->name }}">
+                                    <a  href="{{ route('user.products.show', ['product'=> $wishlist_product->id, 'slug' => $wishlist_product->slug]) }}"><img width="70px" src="{{ $wishlist_product->images->first()->getUrl('thumb') }}" alt="{{ $wishlist_product->name }}" title="{{ $wishlist_product->name }}">
                                     </a>
                                 </td>
-                                <td class=""><a href="{{ route('user.wishlist.store', $wishlist_product->id) }}">{{ $wishlist_product->name }}</a>
+                                <td class=""><a href="{{ route('user.products.show', ['product'=> $wishlist_product->id, 'slug' => $wishlist_product->slug]) }}">{{ $wishlist_product->name }}</a>
                                 </td>
                                 <td class="">
                                     @if ($wishlist_product->isAvailable())
