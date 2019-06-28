@@ -46,7 +46,7 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'norisolutions.com'),
+            'host' => env('DB_HOST', '199.188.200.47'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'noritssg_7agty'),
             'username' => env('DB_USERNAME', 'noritssg_7agty_user'),
