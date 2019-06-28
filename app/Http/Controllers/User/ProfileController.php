@@ -29,7 +29,6 @@ class ProfileController extends Controller
      */
     public function updateImage(Request $request)
     {
-        return $request->all();
         $this->validate($request, [
         'image' => ['required', 'base64image']
         ]);

@@ -108,8 +108,15 @@
             event.preventDefault();
             
             $(".image-data").val($Image.cropper('getCroppedCanvas').toDataURL());
-            console.log($("#ImageModal").find('form.image-form').attr('method'))
-            $("#ImageModal").find('form.image-form').submit();
+            // console.log($("#ImageModal").find('form.image-form').attr('method'))
+            // $("#ImageModal").find('form.image-form').submit();
+            $.post( "{{ route('user.profile.image.edit') }}", { 
+                image: $(".image-data").val(),
+                _token: $("input[name='_token']").val()                
+            }).done(function( data ) {
+                    console.log( "Data Loaded: " + data );
+                    location.reload();
+                });
             
             
         })
