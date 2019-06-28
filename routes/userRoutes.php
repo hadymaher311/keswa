@@ -45,7 +45,6 @@ Route::group([
             Route::get('/user/profile', 'ProfileController@index')->name('user.profile');
             
             Route::POST('/user/profile/image/edit', 'ProfileController@updateImage')->name('user.profile.image.edit');
-            Route::GET('/user/profile/image/edit', 'ProfileController@updateImage')->name('user.profile.image.edit');
             Route::get('/user/profile/edit/info', 'ProfileController@editInfo')->name('user.info.edit');
             Route::PUT('/user/profile/info/update', 'ProfileController@updateInfo')->name('user.info.update');
             Route::PUT('/user/profile/password/update', 'ProfileController@updatePassword')->name('user.password.update');
