@@ -52,9 +52,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://7agty.norisolutions.com/public/'),
+    'url' => env('APP_URL', 'http://7agty.norisolutions.com/'),
 
-    'asset_url' => env('ASSET_URL', 'http://7agty.norisolutions.com/public/'),
+    'asset_url' => env('ASSET_URL', 'http://7agty.norisolutions.com/'),
     'default_avatar' => '/admin_styles/img/avatar/avatar-1.png',
 
     /*
