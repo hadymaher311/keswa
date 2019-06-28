@@ -55,26 +55,25 @@
 
         <div class="modal fade" id="ImageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
-                <form class="image-form" action="{{ route("user.profile.edit.image") }}" method="post" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">{{ __('Change image') }}</h4>
-                        </div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{{ __('Change image') }}</h4>
+                    </div>
+                    <form class="image-form" id="image-form" action="{{ route("user.profile.edit.image") }}" method="post" enctype="multipart/form-data">
                         <div class="modal-body">
-                            
-                            <div class="image-preview-demo">
-                            </div>
+                        
+                            @csrf
+                            <div class="image-preview-demo"></div>
                             <input type="hidden" name="image" class="image-data">
                             <input type="file" accept="image/*" class="form-control file-input @error("image") is-invalid @enderror" />
                         </div>
                         <div class="modal-footer">
-                            <button class="submit-form btn btn-primary">{{ __("Submit") }}</button>
+                            <button type="submit" form="image-form" class="submit-form btn btn-primary">{{ __("Submit") }}</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
 
