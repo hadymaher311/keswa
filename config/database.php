@@ -50,7 +50,7 @@ return [
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'noritssg_7agty'),
             'username' => env('DB_USERNAME', 'noritssg_7agty_user'),
-            'password' => env('DB_PASSWORD', '7agty123'),
+            'password' => env('DB_PASSWORD', '@cPanel2016'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
