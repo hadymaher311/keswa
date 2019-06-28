@@ -515,14 +515,12 @@ $(document).ready(function() {
 		loadingIcon: 'image/theme/lazy-loader.gif',
 		galleryActiveClass: "active"
 	});
+	var images = []
+	$("#thumb-slider img").each(function() {
+		images.push({src:  $(this).attr('src')})
+	})
 	$('.large-image').magnificPopup({
-		items: [
-			{src: 'image/catalog/demo/product/funiture/1.jpg' },
-			{src: 'image/catalog/demo/product/funiture/2.jpg' },
-			{src: 'image/catalog/demo/product/funiture/3.jpg' },
-			{src: 'image/catalog/demo/product/funiture/4.jpg' },
-			{src: 'image/catalog/demo/product/funiture/5.jpg' },
-		],
+		items: images,
 		gallery: { enabled: true, preload: [0,2] },
 		type: 'image',
 		mainClass: 'mfp-fade',
