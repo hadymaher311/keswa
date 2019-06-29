@@ -194,6 +194,24 @@ class Product extends LocalizableModel implements HasMedia
     }
     
     /**
+     * Get active related products
+     * 
+     */
+    public function active_related_products()
+    {
+        return $this->related_products()->active();
+    }
+    
+    /**
+     * Get active product accessories
+     * 
+     */
+    public function active_accessories()
+    {
+        return $this->accessories()->active();
+    }
+    
+    /**
      * Get product Tags
      * 
      */

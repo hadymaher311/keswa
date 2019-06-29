@@ -241,13 +241,13 @@
             </div>
             <!-- //Product Tabs -->
 
-            @if ($product->related_products->count())
+            @if ($product->active_related_products->count())
                 <!-- Related Products -->
                 <div class="related titleLine products-list grid module ">
                     <h3 class="modtitle">{{ __('Related products') }}  </h3>
             
                     <div class="releate-products yt-content-slider products-list" data-rtl="yes" data-loop="yes" data-autoplay="no" data-autoheight="no" data-autowidth="no" data-delay="4" data-speed="0.6" data-margin="30" data-items_column0="5" data-items_column1="3" data-items_column2="3" data-items_column3="2" data-items_column4="1" data-arrows="yes" data-pagination="no" data-lazyload="yes" data-hoverpause="yes">
-                        @foreach ($product->related_products as $related)
+                        @foreach ($product->active_related_products as $related)
                             <div class="item">
                                 <div class="item-inner product-layout transition product-grid">
                                     <div class="product-item-container">
@@ -298,13 +298,13 @@
                 </div>
             @endif
 
-            @if ($product->accessories->count())
+            @if ($product->active_accessories->count())
                 <!-- Accessories -->
                 <div class="related titleLine products-list grid module ">
                     <h3 class="modtitle">{{ __('Accessories') }}  </h3>
             
                     <div class="releate-products yt-content-slider products-list" data-rtl="yes" data-loop="yes" data-autoplay="no" data-autoheight="no" data-autowidth="no" data-delay="4" data-speed="0.6" data-margin="30" data-items_column0="5" data-items_column1="3" data-items_column2="3" data-items_column3="2" data-items_column4="1" data-arrows="yes" data-pagination="no" data-lazyload="yes" data-hoverpause="yes">
-                        @foreach ($product->accessories as $accessory)
+                        @foreach ($product->active_accessories as $accessory)
                             <div class="item">
                                 <div class="item-inner product-layout transition product-grid">
                                     <div class="product-item-container">
