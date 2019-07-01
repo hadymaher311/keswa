@@ -93,8 +93,14 @@ class DatabaseSeeder extends Seeder
 
         $role = Role::create(['name' => 'super', 'guard_name' => 'admin']);
         $role->givePermissionTo(Permission::all());
-        $admin->syncRoles($role);
+        $role = Role::create(['name' => 'worker', 'guard_name' => 'admin']);
         factory(Admin::class, 10)->create();
+        $admins = Admin::all();
+        foreach ($admins as $admin) {
+            if ($admin->email != "hadymaher311@gmail.com") {
+                $admin->syncRoles($role);
+            }
+        }
         factory(Feature::class, 20)->create();
         factory(Brand::class, 30)->create();
         factory(warehouse::class, 30)->create();

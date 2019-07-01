@@ -43,7 +43,7 @@
                     <div class="card author-box card-primary">
                         <div class="card-body">
                             <div class="author-box-left">
-                                <img alt="image" src="{{ $admin->image->getUrl('thumb') }}" class="rounded-circle author-box-picture">
+                                <img alt="image" src="{{ ($admin->image) ? $admin->image->getUrl('thumb') : asset(config('app.default_avatar')) }}" class="rounded-circle author-box-picture">
                             </div>
                             <div class="author-box-details">
                             <div class="author-box-name">
@@ -55,10 +55,56 @@
                                     <div class="col-sm-3">
                                         <b>{{ __('Email') }}</b>
                                     </div>
-                                    <div class="col sm-3">
+                                    <div class="col-sm-9">
                                         {{ $admin->email }}
                                     </div>
+                                    <div class="col-sm-3">
+                                        {{ __('Date of birth') }}
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ ($admin->personalInfo) ? Carbon\Carbon::create($admin->personalInfo->birth_date)->format('Y-m-d') : '' }}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{ __('Mobile') }}
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ ($admin->personalInfo) ? $admin->personalInfo->phone : '' }}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{ __('Gender') }}
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ ($admin->personalInfo) ? ucfirst($admin->personalInfo->gender) : '' }}
+                                    </div>
                                 </div>
+
+                                <br>
+                                <h5>{{ __('Location') }}</h5>
+                                <div class="row">
+                                    <div class="col-sm-3"><b>{{ ($admin->address) ? $admin->address->country : '' }}, {{ ($admin->address) ? $admin->address->city : '' }}</b></div>
+                                    <div class="col-sm-9"></div>
+
+                                    <div class="col-sm-3"><b>{{ __('Location') }}: </b></div>
+                                    <div class="col-sm-9">{{ ($admin->address) ? ucfirst($admin->address->location_type) : '' }}</div>
+
+                                    <div class="col-sm-3"><b>{{ __('Street Name/No') }}: </b></div>
+                                    <div class="col-sm-9">{{ ($admin->address) ? $admin->address->street : '' }}</div>
+
+                                    <div class="col-sm-3"><b>{{ __('Building Name/No') }}: </b></div>
+                                    <div class="col-sm-9">{{ ($admin->address) ? $admin->address->building : '' }}</div>
+
+                                    <div class="col-sm-3"><b>{{ __('Floor No') }}: </b></div>
+                                    <div class="col-sm-9">{{ ($admin->address) ? $admin->address->floor : '' }}</div>
+
+                                    <div class="col-sm-3"><b>{{ __('Apartment No') }}: </b></div>
+                                    <div class="col-sm-9">{{ ($admin->address) ? $admin->address->apartment : '' }}</div>
+
+                                    <div class="col-sm-3"><b>{{ __('Nearest Landmark') }}: </b></div>
+                                    <div class="col-sm-9">{{ ($admin->address) ? $admin->address->nearest_landmark : '' }}</div>
+                                </div>
+
+                                <br>
+                                <h5>{{ __('Permissions') }}</h5>
                                 <div class="row">
                                     <div class="col-sm-3"><b>{{ __('Permissions') }}:</b></div>
                                     <div class="col-sm-9">
