@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\GeneralSetting;
 use App\Models\SubSubCategory;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
@@ -37,10 +38,12 @@ class AppServiceProvider extends ServiceProvider
             $visible_categories = Category::where('navbar_visibility', '1')->active()->get();
             $all_categories = Category::active()->get();
             $all_sub_sub_categories = SubSubCategory::active()->get();
+            $price_tax = GeneralSetting::priceTax();
             $view->with([
                 'visible_categories' => $visible_categories,
                 'all_categories' => $all_categories,
                 'all_sub_sub_categories' => $all_sub_sub_categories,
+                'price_tax' => $price_tax,
             ]);
         });
 

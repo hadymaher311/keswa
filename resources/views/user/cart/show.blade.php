@@ -64,9 +64,21 @@
                     <tbody>
                         <tr>
                             <td class="text-right">
+                                <strong>{{ __('Sub-Total Price') }}:</strong>
+                            </td>
+                            <td class="text-right">{{ ceil(auth()->user()->cart_total_price) }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <strong>{{ __('Price Tax') }} ({{ $price_tax->value }}%):</strong>
+                            </td>
+                            <td class="text-right">{{ ceil(auth()->user()->cart_total_price * ($price_tax->value / 100)) }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
                                 <strong>{{ __('Total Price') }}:</strong>
                             </td>
-                            <td class="text-right">{{ auth()->user()->cart_total_price }}</td>
+                            <td class="text-right">{{ ceil(auth()->user()->cart_total_price + ceil(auth()->user()->cart_total_price * ($price_tax->value / 100))) }}</td>
                         </tr>
                     </tbody>
                 </table>

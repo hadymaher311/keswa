@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->integer('total_price')->unsigned();
             $table->integer('shipping_price')->unsigned();
+            $table->integer('points')->unsigned()->default(0);
             $table->timestamp('shipping_date');
             // pay on deleviry
             $table->string('payment_method')->default('POD');

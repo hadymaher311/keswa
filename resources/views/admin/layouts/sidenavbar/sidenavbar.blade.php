@@ -22,6 +22,10 @@
         @if (auth()->user()->can('view admins') || auth()->user()->can('view permissions') || auth()->user()->can('view roles'))
           @include('admin.layouts.sidenavbar.adminmenu')
         @endif
+
+        @can('general settings')
+          <li><a class="nav-link" href="{{ route('general.settings') }}"><i class="fas fa-pencil-ruler"></i> <span>{{ __('General Settings') }}</span></a></li>
+        @endcan
       </ul>
     </aside>
   </div>

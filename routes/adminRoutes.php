@@ -108,6 +108,11 @@ Route::group([
         Route::PUT('/admin/users/{user}/edit/password', 'UsersController@updatePassword')->name('users.edit.password');
         Route::PUT('/admin/users/{user}/active', 'UsersController@active')->name('users.active');
         /*********************************************** Users CRUD routes *******************************************/
+        
+        /*********************************************** General Settings routes *******************************************/
+        Route::get('/admin/general/settings', 'GeneralSettingsController@index')->name('general.settings');
+        Route::post('/admin/general/settings/price/tax', 'GeneralSettingsController@storePriceTax')->name('admin.general.settings.price.tax');
+        /*********************************************** General Settings routes *******************************************/
 
         /**
          * All Admin Auth Controllers will be in Admin\Auth Folder
