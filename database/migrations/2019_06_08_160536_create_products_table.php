@@ -38,6 +38,7 @@ class CreateProductsTable extends Migration
             $table->boolean('active')->default(1);
             $table->boolean('free_shipping')->default(0);
             $table->boolean('allow_review')->default(1);
+            $table->boolean('allow_points')->default(1);
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('warehouse_id')->references('id')->on('warehouses')->onDelete('set null')->onUpdate('cascade');
             $table->timestamps();

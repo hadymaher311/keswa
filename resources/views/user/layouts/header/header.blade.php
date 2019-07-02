@@ -221,7 +221,7 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <p class="text-right"> <a class="btn view-cart" href="{{ route('user.cart') }}"><i class="fa fa-shopping-cart"></i>{{ __('View Cart') }}</a>&nbsp;&nbsp;&nbsp; <a class="btn btn-mega checkout-cart" href="checkout.html"><i class="fa fa-share"></i>{{ __('Checkout') }}</a> 
+                                            <p class="text-right"> <a class="btn view-cart" href="{{ route('user.cart') }}"><i class="fa fa-shopping-cart"></i>{{ __('View Cart') }}</a>&nbsp;&nbsp;&nbsp; <a class="btn btn-mega checkout-cart" href="{{ route('user.orders.checkout') }}"><i class="fa fa-share"></i>{{ __('Checkout') }}</a> 
                                             </p>
                                         </div>
                                     </li>
@@ -232,7 +232,7 @@
                         <!--//cart-->
 
                         <ul class="wishlist-comp hidden-md hidden-sm hidden-xs">
-                            <li class="wishlist hidden-xs"><a href="{{ route('user.wishlist') }}" id="wishlist-total" class="top-link-wishlist" title="Wish List (0) "><i class="fa fa-heart"></i></a>
+                            <li class="wishlist hidden-xs"><a href="{{ route('user.wishlist') }}" id="wishlist-total" class="top-link-wishlist" title="Wish List"><i class="fa fa-heart"></i></a>
                             </li>
                         </ul>
                     </div>

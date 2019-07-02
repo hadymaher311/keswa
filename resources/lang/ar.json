@@ -385,7 +385,8 @@
     "Notifications": "الإشعارات",
     "Hi": "أهلا",
     "Settings": "الاعدادات",
-    "Home": "الصفحة الرئيسية",
+    "Homepage": "الصفحة الرئيسية",
+    "Home": "منزل",
     "Admin Send Password Reset Mail": "ارسال بريد الكتروني لاعادة ضبط الرقم السري",
     "Forgot Password": "نسيت كلمة المرور",
     "Admin Reset Password": "استعادة كلمة مرور المشرف",
@@ -648,5 +649,11 @@
     "Percentage": "نسبة",
     "Price Tax": "الضريبة السعرية",
     "Sub-Total Price": "السعر الاجمالي",
+    "Product Name": "اسم المنتج",
+    "Write Comment here": "اكتب تعليقك هنا",
+    "Add Comments About Your Order": "اكتب تعليقك علي طلبك",
+    "Add your data": "اكتب بياناتك",
+    "Choose Address": "اختر عنوانك",
+    "or": "أو",
     "Check all": "تحديد الكل"
 }

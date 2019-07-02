@@ -16,11 +16,11 @@
             <table class="table table-bordered">
             <thead>
                 <tr>
-                    <td class="text-center">{{ __('Image') }}</td>
-                    <td class="">{{ __('Product Name') }}</td>
-                    <td class="">{{ __('Quantity') }}</td>
-                    <td class="">{{ __('Unit Price') }}</td>
-                    <td class="">{{ __('Total Price') }}</td>
+                <td class="text-center">{{ __('Image') }}</td>
+                <td class="">{{ __('Product Name') }}</td>
+                <td class="">{{ __('Quantity') }}</td>
+                <td class="">{{ __('Unit Price') }}</td>
+                <td class="">{{ __('Total Price') }}</td>
                 </tr>
             </thead>
             <tbody>
@@ -40,7 +40,7 @@
                         <td class="" width="200px"><div class="input-group btn-block quantity">
                             <input type="text" name="quantity" value="{{ $cart->pivot->quantity }}" size="1" class="form-control" form="update-form-{{ $loop->index }}" />
                             <span class="input-group-btn">
-                            <button type="submit" data-toggle="tooltip" title="{{ __('Update') }}" form="update-form-{{ $loop->index }}" class="btn btn-primary"><i class="fa fa-refresh"></i></button>
+                            <button type="submit" data-toggle="tooltip" title="{{ __('Update') }}" form="update-form-{{ $loop->index }}" class="btn btn-primary"><i class="fa fa-clone"></i></button>
                             <button type="submit" data-toggle="tooltip" title="{{ __('Delete') }}" form="delete-form-{{ $loop->index }}" class="btn btn-danger"><i class="fa fa-times-circle"></i></button>
                         </span></div>
                         </td>
@@ -87,7 +87,7 @@
 
         <div class="buttons">
         <div class="pull-left"><a href="{{ url('/'.app()->getLocale() ) }}" class="btn btn-primary">{{ __('Continue Shopping') }}</a></div>
-        <div class="pull-right"><a href="{{ route('user.orders.checkout') }}" class="btn btn-primary">{{ __('Checkout') }}</a></div>
+        <div class="pull-right"><a href="checkout.html" class="btn btn-primary">{{ __('Checkout') }}</a></div>
         </div>
     </div>
 

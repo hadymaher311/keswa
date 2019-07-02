@@ -13,7 +13,7 @@
             </li>
             <li><a href="{{ route('user.reviews') }}">{{ __('Reviews') }}</a>
             </li>
-            <li><a href="#">{{ __('Order History') }}</a>
+            <li><a href="{{ route('user.orders') }}">{{ __('Order History') }}</a>
             </li>
             <li><a href="#">{{ __('Reward Points') }}</a>
             </li>

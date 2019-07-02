@@ -32,6 +32,9 @@ class GeneralSettingsController extends Controller
 
     /**
      * Store Price Tax in database
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
     public function storePriceTax(Request $request)
     {

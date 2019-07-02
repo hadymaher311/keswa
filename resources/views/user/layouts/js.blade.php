@@ -69,6 +69,21 @@
                 });
             @endif
         @endif
+        @if (session('error'))
+            @if (app()->getLocale() == 'ar')
+                iziToast.error({
+                    title: '{{ __("Whooops") }}!',
+                    message: '{{ __(session("error")) }}',
+                    position: 'topRight'
+                });
+            @else
+                iziToast.error({
+                    title: '{{ __("Whooops") }}!',
+                    message: '{{ __(session("error")) }}',
+                    position: 'topLeft'
+                });
+            @endif
+        @endif
     })
 </script>
 

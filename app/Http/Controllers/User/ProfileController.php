@@ -212,4 +212,21 @@ class ProfileController extends Controller
         $review->delete();
         return redirect()->route('user.reviews')->with('status', trans('Deleted Successfully'));        
     }
+    
+    /**
+     * delete address.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\UserAddress $address
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyAddress(Request $request, UserAddress $address)
+    {
+        // don't delete the last address
+        if (auth()->user()->addresses->count() <= 1) {
+            return back()->with(['error' => trans('Something worng happened')]);
+        }
+        $address->delete();
+        return back()->with('status', trans('Deleted Successfully'));        
+    }
 }

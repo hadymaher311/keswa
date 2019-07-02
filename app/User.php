@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Order;
 use App\Models\Review;
 use App\Models\Product;
 use App\Models\UserAddress;
@@ -146,5 +147,14 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function notApprovedReviews()
     {
         return $this->hasMany(Review::class)->where('approved', 0);
+    }
+
+    /**
+     * Get user orders
+     * 
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

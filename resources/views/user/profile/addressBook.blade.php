@@ -21,7 +21,12 @@
                     <div class="col-sm-12">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <a href="{{ route('user.addresses.edit', $address->id) }}" class="btn btn-link pull-right"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
+                                <form action="{{ route('user.addresses.delete', $address->id) }}" id="delete-form-{{ $loop->index }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                                <a href="{{ route('user.addresses.edit', $address->id) }}" class="btn btn-link btn-xs pull-right"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
+                                <button class="btn btn-danger btn-xs pull-right" type="submit" form="delete-form-{{ $loop->index }}"><i class="fa fa-times"></i> {{ __('Delete') }}</button>
                                 <div>
                                     <b>{{ $address->country }}, {{ $address->city }}</b>
                                 </div>

@@ -53,6 +53,7 @@ Route::group([
             Route::POST('/user/profile/addresses/store', 'ProfileController@storeAddress')->name('user.addresses.store');
             Route::get('/user/profile/addresses/{address}/edit', 'ProfileController@editAddress')->name('user.addresses.edit');
             Route::PUT('/user/profile/addresses/{address}/update', 'ProfileController@updateAddress')->name('user.addresses.update');
+            Route::DELETE('/user/profile/addresses/{address}/delete', 'ProfileController@destroyAddress')->name('user.addresses.delete');
 
             Route::get('/user/profile/reviews', 'ProfileController@showReviews')->name('user.reviews');
             Route::get('/user/profile/reviews/{review}/edit', 'ProfileController@editReviews')->name('user.reviews.edit');
@@ -60,6 +61,11 @@ Route::group([
             Route::DELETE('/user/profile/reviews/{review}/destroy', 'ProfileController@destroyReviews')->name('user.reviews.destroy');
             
 
+            /*********************************************** Orders routes *******************************************/
+            Route::get('/user/orders', 'OrdersController@index')->name('user.orders');
+            Route::get('/user/orders/checkout', 'OrdersController@checkout')->name('user.orders.checkout');
+            Route::post('/user/orders/confirm', 'OrdersController@confirm')->name('user.orders.confirm');
+            /*********************************************** Orders routes *******************************************/
             Route::get('/home', 'HomeController@welcome')->name('home');
         });
     });
