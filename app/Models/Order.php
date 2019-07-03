@@ -34,4 +34,13 @@ class Order extends Model
     {
         return $this->hasMany(OrderStatus::class);
     }
+    
+    /**
+     * Get order address
+     * 
+     */
+    public function address()
+    {
+        return $this->belongsTo(UserAddress::class, 'user_address_id');
+    }
 }

@@ -105,4 +105,16 @@ class OrdersController extends Controller
         $this->addOrderProducts($order);
         return redirect()->route('user.orders')->with(['status' => trans('Added Successfully')]);
     }
+
+    /**
+     * Get order details
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Order $order
+     * @return \Illuminate\Http\Response
+     */
+    public function details(Request $request, Order $order)
+    {
+        return view('user.orders.details', compact('order'));
+    }
 }

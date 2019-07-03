@@ -31,7 +31,7 @@
                                     <b>{{ $address->country }}, {{ $address->city }}</b>
                                 </div>
                                 <div>
-                                    <b>{{ __('Location') }}: </b>{{ ucfirst($address->location_type) }}
+                                    <b>{{ __('Location') }}: </b>{{ __(ucfirst($address->location_type)) }}
                                 </div>
                                 <div>
                                     <b>{{ __('Street Name/No') }}: </b>{{ $address->street }}

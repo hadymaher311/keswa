@@ -664,5 +664,12 @@
     "Completed": "اكتمل",
     "Canceled": "تم الالغاء",
     "Pending": "في الانتظار",
+    "Order Information": "معلومات الطلب",
+    "Order Details": "تفاصيل الطلب",
+    "Payment Method": "طريقة الدفع",
+    "Cash On Delivery": "الدفع عند الاستلام",
+    "Comment": "تعليق",
+    "Address": "العنوان",
+    "Notes": "ملاحظات",
     "Check all": "تحديد الكل"
 }
