@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 
 @section('title')
-    {{ __('Shopping Cart') }} - {{ config('app.name') }}
+    {{ __('Orders') }} - {{ config('app.name') }}
 @endsection
 
 @section('body')
@@ -11,83 +11,44 @@
     <div class="row">
         <!--Middle Part Start-->
     <div id="content" class="col-sm-9">
-        <h2 class="title">{{ __('Shopping Cart') }}</h2>
+        <h2 class="title">{{ __('Orders') }}</h2>
         <div class="table-responsive form-group">
             <table class="table table-bordered">
             <thead>
                 <tr>
-                <td class="text-center">{{ __('Image') }}</td>
-                <td class="">{{ __('Product Name') }}</td>
-                <td class="">{{ __('Quantity') }}</td>
-                <td class="">{{ __('Unit Price') }}</td>
+                <td class="text-center">{{ __('Order ID') }}</td>
+                <td class="">{{ __('Status') }}</td>
+                <td class="">{{ __('Date Added') }}</td>
                 <td class="">{{ __('Total Price') }}</td>
+                <td class="">{{ __('View') }}</td>
                 </tr>
             </thead>
             <tbody>
-                @foreach (auth()->user()->cart as $cart)
+                @foreach (auth()->user()->orders as $order)
                     <tr>
-                        <td class="text-center"><a href="{{ route('user.products.show', [$cart->id, $cart->slug]) }}"><img width="70px" src="{{ $cart->images->first()->getUrl('thumb') }}" alt="{{ $cart->name }}" title="{{ $cart->name }}" class="img-thumbnail" /></a></td>
-                        <td class=""><a href="{{ route('user.products.show', [$cart->id, $cart->slug]) }}">{{ $cart->name }}</a><br />
-                            </td>
-                        <form action="{{ route('user.cart.update', $cart->id) }}" id="update-form-{{ $loop->index }}" method="post">
-                            @csrf
-                            @method('PUT')
-                        </form>
-                        <form action="{{ route('user.cart.remove', $cart->id) }}" id="delete-form-{{ $loop->index }}" method="post">
-                            @csrf
-                            @method('DELETE')
-                        </form>
-                        <td class="" width="200px"><div class="input-group btn-block quantity">
-                            <input type="text" name="quantity" value="{{ $cart->pivot->quantity }}" size="1" class="form-control" form="update-form-{{ $loop->index }}" />
-                            <span class="input-group-btn">
-                            <button type="submit" data-toggle="tooltip" title="{{ __('Update') }}" form="update-form-{{ $loop->index }}" class="btn btn-primary"><i class="fa fa-clone"></i></button>
-                            <button type="submit" data-toggle="tooltip" title="{{ __('Delete') }}" form="delete-form-{{ $loop->index }}" class="btn btn-danger"><i class="fa fa-times-circle"></i></button>
-                        </span></div>
-                        </td>
+                        <td class="text-center">#{{ $order->id }}</td>
+                        @php
+                            $status_colors = [
+                                'Waiting for confirmation' => 'primary',
+                                'Approved' => 'primary',
+                                'Shipped' => 'info',
+                                'Completed' => 'success',
+                                'Canceled' => 'danger',
+                                'Pending' => 'warning',
+                            ];
+                        @endphp
+                        <td class=""><span class="label label-{{ $status_colors[$order->statuses->last()->name] }}">{{ __($order->statuses->last()->name) }}</span></td>
+                        <td class="">{{ $order->created_at }}</td>
                         <td class="price">
-                            @php
-                                $activeDiscount = $cart->activeDiscount;
-                                $price = $cart->price;
-                            @endphp
-                            @include('user.components.pricing')
+                            {{ $order->total_price }} {{ __('LE') }}
                         </td>
-                        <td class="">{{ $cart->pivot->quantity * $cart->final_price }} {{ __('LE') }}</td>
+                        <td class="">
+                            <a class="btn btn-info" title="" data-toggle="tooltip" href="{{ route('user.orders.details', $order->id) }}" data-original-title="{{ __('View') }}"><i class="fa fa-eye"></i></a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
             </table>
-        </div>
-    
-        <div class="row">
-            <div class="col-sm-4 col-sm-offset-8">
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr>
-                            <td class="text-right">
-                                <strong>{{ __('Sub-Total Price') }}:</strong>
-                            </td>
-                            <td class="text-right">{{ ceil(auth()->user()->cart_total_price) }}</td>
-                        </tr>
-                        <tr>
-                            <td class="text-right">
-                                <strong>{{ __('Price Tax') }} ({{ $price_tax->value }}%):</strong>
-                            </td>
-                            <td class="text-right">{{ ceil(auth()->user()->cart_total_price * ($price_tax->value / 100)) }}</td>
-                        </tr>
-                        <tr>
-                            <td class="text-right">
-                                <strong>{{ __('Total Price') }}:</strong>
-                            </td>
-                            <td class="text-right">{{ ceil(auth()->user()->cart_total_price + ceil(auth()->user()->cart_total_price * ($price_tax->value / 100))) }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="buttons">
-        <div class="pull-left"><a href="{{ url('/'.app()->getLocale() ) }}" class="btn btn-primary">{{ __('Continue Shopping') }}</a></div>
-        <div class="pull-right"><a href="checkout.html" class="btn btn-primary">{{ __('Checkout') }}</a></div>
         </div>
     </div>
 

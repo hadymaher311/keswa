@@ -655,5 +655,14 @@
     "Add your data": "اكتب بياناتك",
     "Choose Address": "اختر عنوانك",
     "or": "أو",
+    "Status": "الحالة",
+    "Date Added": "تاريخ الاضافة",
+    "Order ID": "الرقم التعريفي",
+    "Waiting for confirmation": "في انتظار التأكيد",
+    "Approved": "تم التأكيد",
+    "Shipped": "تم الشحن",
+    "Completed": "اكتمل",
+    "Canceled": "تم الالغاء",
+    "Pending": "في الانتظار",
     "Check all": "تحديد الكل"
 }
