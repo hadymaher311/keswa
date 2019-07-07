@@ -76,6 +76,25 @@
                         </div>
                     </form>
 
+                    <form action="{{ route('admin.general.settings.points.value') }}" method="post">
+                        @csrf
+                        <div class="form-group row">
+                            <label class="col-sm-3 mt-3 col-form-label">{{ __('Points Value') }} ({{ __('points per LE') }})</label>
+                            <div class="col-sm-6 mt-3">
+                                <input id="points_value" type="number" min="0" class="form-control @error('points_value') is-invalid @enderror" name="points_value" value="{{ ($points_value) ? $points_value->value : 1 }}" autocomplete="points_value" autofocus>
+                                
+                                @error('points_value')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-sm-3 mt-3">
+                                <button type="submit" class="btn btn-warning btn-block">{{ __('Submit') }}</button>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>

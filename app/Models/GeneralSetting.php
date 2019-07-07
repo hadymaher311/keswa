@@ -39,4 +39,12 @@ class GeneralSetting extends Model
     {
         return $this->where('name', 'working_hours_to');
     }
+    
+    /**
+     * Get Points value to scope
+     */
+    public function ScopePointsValue()
+    {
+        return $this->where('name', 'points_value');
+    }
 }

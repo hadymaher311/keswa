@@ -30,7 +30,8 @@ class GeneralSettingsController extends Controller
         $price_tax = GeneralSetting::priceTax()->first();
         $working_hours_from = GeneralSetting::workingHoursFrom()->first();
         $working_hours_to = GeneralSetting::workingHoursTo()->first();
-        return view('admin.settings.general', compact('price_tax', 'working_hours_from', 'working_hours_to'));
+        $points_value = GeneralSetting::pointsValue()->first();
+        return view('admin.settings.general', compact('price_tax', 'working_hours_from', 'working_hours_to', 'points_value'));
     }
 
     /**
@@ -47,6 +48,24 @@ class GeneralSettingsController extends Controller
         GeneralSetting::updateOrCreate(
             ['name' => 'price_tax'],
             ['value' => $request->price_tax]
+        );
+        return back()->with(['status' => trans('Updated Successfully')]);
+    }
+    
+    /**
+     * Store Points Value in database
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storePointsValue(Request $request)
+    {
+        $this->validate($request, [
+            'points_value' => 'required|integer|min:1',
+        ]);
+        GeneralSetting::updateOrCreate(
+            ['name' => 'points_value'],
+            ['value' => $request->points_value]
         );
         return back()->with(['status' => trans('Updated Successfully')]);
     }
