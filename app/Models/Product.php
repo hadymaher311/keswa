@@ -282,7 +282,7 @@ class Product extends LocalizableModel implements HasMedia
      */
     public function scopeActive($query)
     {
-        return $query->where('active', 1);
+        return $query->where('active', 1)->available();
     }
     
     /**
@@ -293,7 +293,7 @@ class Product extends LocalizableModel implements HasMedia
      */
     public function scopeAvailable($query)
     {
-        return $query->where('quantity', '>=' , 'min_sale_quantity');
+        return $query->whereColumn('min_sale_quantity', '<' , 'products.quantity');
     }
     
     /**

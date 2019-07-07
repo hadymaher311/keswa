@@ -78,6 +78,19 @@ class OrdersController extends Controller
     }
 
     /**
+     * Check min sale of produts
+     */
+    protected function checkMinSaleOfProducts()
+    {
+        foreach (auth()->user()->cart as $product) {
+            if ($product->pivot->quantity < $product->min_sale_quantity) {
+                return $product;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Confirm Order
      * 
      * @param \Illuminate\Http\Request $request
@@ -100,10 +113,14 @@ class OrdersController extends Controller
         $request['comments'] = str_replace('<', '&lt;', $request->comments);
         $request['comments'] = str_replace('>', '&gt;', $request->comments);
         $request['comments'] = nl2br($request->comments);
-        $order = $this->storeOrderDetails($request);
-        $this->addOrderStatus($order);
-        $this->addOrderProducts($order);
-        return redirect()->route('user.orders')->with(['status' => trans('Added Successfully')]);
+        $product = $this->checkMinSaleOfProducts();
+        if (!$product) {
+            $order = $this->storeOrderDetails($request);
+            $this->addOrderStatus($order);
+            $this->addOrderProducts($order);
+            return redirect()->route('user.orders')->with(['status' => trans('Added Successfully')]);
+        }
+        return back()->with(['error' => __('You must order at least') . ' ' . $product->min_sale_quantity . ' ' . __('from') . ' ' . $product->name]);
     }
 
     /**
