@@ -10,7 +10,7 @@
         <li class="dropdown">
           <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>{{ __('Dashboard') }}</span></a>
           <ul class="dropdown-menu">
-            <li><a class="nav-link" href="{{ route('admin.home') }}">{{ __('Home') }}</a></li>
+            <li><a class="nav-link" href="{{ route('admin.home') }}">{{ __('Homepage') }}</a></li>
           </ul>
         </li>
         @if (auth()->user()->can('view products') || auth()->user()->can('view orders') || auth()->user()->can('view brands') || auth()->user()->can('view categories') || auth()->user()->can('view sub_categories') || auth()->user()->can('view warehouses'))

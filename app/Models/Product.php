@@ -55,6 +55,7 @@ class Product extends LocalizableModel implements HasMedia
         'active' => 'boolean',
         'free_shipping' => 'boolean',
         'allow_review' => 'boolean',
+        'allow_points' => 'boolean',
     ];
 
     /**

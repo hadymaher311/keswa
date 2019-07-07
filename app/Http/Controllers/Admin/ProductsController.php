@@ -476,6 +476,20 @@ class ProductsController extends Controller
         $product->save();
         return back()->with('status', trans('Updated Successfully'));
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function enablePoints(Request $request, Product $product)
+    {
+        $product->allow_points = !($product->allow_points);
+        $product->save();
+        return back()->with('status', trans('Updated Successfully'));
+    }
     
     /**
      * Update the specified resource in storage.

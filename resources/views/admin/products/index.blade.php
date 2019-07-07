@@ -64,6 +64,7 @@
                             <th>{{ __('Activate discount') }}</th>
                             <th>{{ __('Allow reviews') }}</th>
                             <th>{{ __('Free shipping') }}</th>
+                            <th>{{ __('Enable Points') }}</th>
                             <th>{{ __('Controls') }}</th>
                         </tr>
                         </thead>
@@ -156,6 +157,26 @@
                                                     {{ __('Not Free') }}
                                                     @endif">
                                                     <input name="active" value="{{ $product->id }}" type="checkbox" @if ($product->free_shipping)
+                                                    checked
+                                                    @endif class="custom-switch-input" onchange="
+                                                        $(this).parent('form'),submit();
+                                                    ">
+                                                    <span class="custom-switch-indicator"></span>
+                                                </label>
+                                            </form>
+                                        @endcan
+                                    </td>
+                                    <td>
+                                        @can('update products')
+                                            <form action="{{ route('products.enable.points', $product->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if ($product->allow_points)
+                                                    {{ __('Have points') }}
+                                                    @else
+                                                    {{ __('Have no points') }}
+                                                    @endif">
+                                                    <input name="active" value="{{ $product->id }}" type="checkbox" @if ($product->allow_points)
                                                     checked
                                                     @endif class="custom-switch-input" onchange="
                                                         $(this).parent('form'),submit();
