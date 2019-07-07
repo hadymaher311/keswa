@@ -112,6 +112,7 @@ Route::group([
         /*********************************************** General Settings routes *******************************************/
         Route::get('/admin/general/settings', 'GeneralSettingsController@index')->name('general.settings');
         Route::post('/admin/general/settings/price/tax', 'GeneralSettingsController@storePriceTax')->name('admin.general.settings.price.tax');
+        Route::post('/admin/general/settings/working/hours', 'GeneralSettingsController@storeWorkingHours')->name('admin.general.settings.working.hours');
         /*********************************************** General Settings routes *******************************************/
 
         /**

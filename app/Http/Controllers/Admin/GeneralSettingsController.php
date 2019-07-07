@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\GeneralSetting;
+use App\Http\Controllers\Controller;
 
 class GeneralSettingsController extends Controller
 {
@@ -26,8 +27,10 @@ class GeneralSettingsController extends Controller
      */
     public function index()
     {
-        $price_tax = GeneralSetting::priceTax();
-        return view('admin.settings.general', compact('price_tax'));
+        $price_tax = GeneralSetting::priceTax()->first();
+        $working_hours_from = GeneralSetting::workingHoursFrom()->first();
+        $working_hours_to = GeneralSetting::workingHoursTo()->first();
+        return view('admin.settings.general', compact('price_tax', 'working_hours_from', 'working_hours_to'));
     }
 
     /**
@@ -44,6 +47,32 @@ class GeneralSettingsController extends Controller
         GeneralSetting::updateOrCreate(
             ['name' => 'price_tax'],
             ['value' => $request->price_tax]
+        );
+        return back()->with(['status' => trans('Updated Successfully')]);
+    }
+    
+    /**
+     * Store Working hours in database
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeWorkingHours(Request $request)
+    {
+        $request['working_hours_from'] = Carbon::create($request->working_hours_from);
+        $request['working_hours_to'] = Carbon::create($request->working_hours_to);
+
+        $this->validate($request, [
+            'working_hours_from' => 'required|date|before:working_hours_to',
+            'working_hours_to' => 'required|date|after:working_hours_from',
+        ]);
+        GeneralSetting::updateOrCreate(
+            ['name' => 'working_hours_from'],
+            ['value' => $request->working_hours_from->format('h:i A')]
+        );
+        GeneralSetting::updateOrCreate(
+            ['name' => 'working_hours_to'],
+            ['value' => $request->working_hours_to->format('h:i A')]
         );
         return back()->with(['status' => trans('Updated Successfully')]);
     }

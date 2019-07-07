@@ -5,7 +5,7 @@
 @endsection
 
 @section('css')
-    
+<link rel="stylesheet" href="{{ asset('/admin_styles/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">    
 @endsection
 
 @section('body')
@@ -47,6 +47,35 @@
                             </div>
                         </div>
                     </form>
+                    
+                    <form action="{{ route('admin.general.settings.working.hours') }}" method="post">
+                        @csrf
+                        <div class="form-group row">
+                            <label class="col-sm-3 mt-3 col-form-label">{{ __('Working Hours') }} ({{ __('From - To') }})</label>
+                            <div class="col-sm-3 mt-3">
+                                <input id="working_hours_from" type="text" class="form-control timepicker @error('working_hours_from') is-invalid @enderror" name="working_hours_from" value="{{ ($working_hours_from) ? $working_hours_from->value : now()->format('H:i A') }}" autocomplete="working_hours_from">
+                                
+                                @error('working_hours_from')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-sm-3 mt-3">
+                                <input id="working_hours_to" type="text" class="form-control timepicker @error('working_hours_to') is-invalid @enderror" name="working_hours_to" value="{{ ($working_hours_to) ? $working_hours_to->value : now()->format('H:i A') }}" autocomplete="working_hours_to">
+                                
+                                @error('working_hours_to')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-sm-3 mt-3">
+                                <button type="submit" class="btn btn-warning btn-block">{{ __('Submit') }}</button>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -55,5 +84,5 @@
 @endsection
 
 @section('js')
-    
+<script src="{{ asset('/admin_styles/modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
 @endsection
