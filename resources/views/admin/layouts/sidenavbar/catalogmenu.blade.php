@@ -13,18 +13,6 @@
                 </ul>
             </li>
         @endcan
-        
-        @can('view orders')
-            <li class="dropdown">
-                <a class="nav-link has-dropdown" href="#"><i class="fa fa-barcode"></i>{{ __('Orders') }}</a>
-                <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{ route('orders.index') }}">{{ __('Homepage') }}</a></li>
-                    @can('create orders')
-                        <li><a class="nav-link" href="{{ route('orders.create') }}">{{ __('Create') }}</a></li>
-                    @endcan
-                </ul>
-            </li>
-        @endcan
 
         @can('view categories')
             <li class="dropdown">

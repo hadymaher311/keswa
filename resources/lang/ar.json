@@ -680,5 +680,17 @@
     "Enable Points": "تفعيل النقاط",
     "Have no points": "ليس لديه نقاط",
     "Have points": "لديه نقاط",
+    "Add new order": "أضف طلب جديد",
+    "Orders Table": "جدول الطلبات",
+    "All": "الكل",
+    "Delivering": "في الطريق",
+    "By date": "بالتاريخ",
+    "Today": "اليوم",
+    "Yesterday": "الأمس",
+    "Last 7 Days": "أخر 7 أيام",
+    "Last 30 Days": "أخر 30 يوم",
+    "This Month": "هذا الشهر",
+    "Last Month": "أخر شهر",
+    "Choose Date": "اختر التاريخ",
     "Check all": "تحديد الكل"
 }

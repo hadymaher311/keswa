@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use App\Models\Product;
 use App\Models\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
@@ -42,5 +43,14 @@ class Order extends Model
     public function address()
     {
         return $this->belongsTo(UserAddress::class, 'user_address_id');
+    }
+    
+    /**
+     * Get order User
+     * 
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
