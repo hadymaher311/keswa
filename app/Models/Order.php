@@ -37,6 +37,22 @@ class Order extends Model
     }
     
     /**
+     * Get order latest statuses
+     * 
+     */
+    public function latestStatus()
+    {
+        return $this->hasOne(OrderStatus::class)->orderBy('id', 'desc');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->whereHas('latestStatus', function($status) {
+            $status->where('name','Waiting for confirmation');
+        });
+    }
+    
+    /**
      * Get order address
      * 
      */

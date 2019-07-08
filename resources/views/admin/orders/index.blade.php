@@ -131,7 +131,7 @@
                                     <td>{{ $order->total_price }}</td>
                                     @php
                                         $status_colors = [
-                                            'Waiting for confirmation' => 'primary',
+                                            'Waiting for confirmation' => 'warning',
                                             'Approved' => 'primary',
                                             'Shipped' => 'info',
                                             'Completed' => 'success',

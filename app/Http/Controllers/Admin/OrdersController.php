@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\User;
 use Carbon\Carbon;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Orders\CreateRequest;
 
 class OrdersController extends Controller
 {
@@ -67,9 +70,9 @@ class OrdersController extends Controller
      */
     protected function pendingOrders()
     {
-        return Order::orderBy('created_at', 'desc')->whereHas('statuses', function ($query) {
-            $query->pending();
-        })->get();
+        return Order::with('latestStatus')->get()->filter(function ($order) {
+            return $order->latestStatus->name == 'Waiting for confirmation';
+        });
     }
     
     /**
@@ -79,9 +82,9 @@ class OrdersController extends Controller
      */
     protected function approvedOrders()
     {
-        return Order::orderBy('created_at', 'desc')->whereHas('statuses', function ($query) {
-            $query->approved();
-        })->get();
+        return Order::with('latestStatus')->get()->filter(function ($order) {
+            return $order->latestStatus->name == 'Approved';
+        });
     }
     
     /**
@@ -91,9 +94,9 @@ class OrdersController extends Controller
      */
     protected function completedOrders()
     {
-        return Order::orderBy('created_at', 'desc')->whereHas('statuses', function ($query) {
-            $query->completed();
-        })->get();
+        return Order::with('latestStatus')->get()->filter(function ($order) {
+            return $order->latestStatus->name == 'Completed';
+        });
     }
     
     /**
@@ -103,9 +106,9 @@ class OrdersController extends Controller
      */
     protected function shippedOrders()
     {
-        return Order::orderBy('created_at', 'desc')->whereHas('statuses', function ($query) {
-            $query->shipped();
-        })->get();
+        return Order::with('latestStatus')->get()->filter(function ($order) {
+            return $order->latestStatus->name == 'Shipped';
+        });
     }
     
     /**
@@ -115,9 +118,9 @@ class OrdersController extends Controller
      */
     protected function canceledOrders()
     {
-        return Order::orderBy('created_at', 'desc')->whereHas('statuses', function ($query) {
-            $query->canceled();
-        })->get();
+        return Order::with('latestStatus')->get()->filter(function ($order) {
+            return $order->latestStatus->name == 'Canceled';
+        });
     }
     
     /**
@@ -161,7 +164,6 @@ class OrdersController extends Controller
      */
     public function index(Request $request)
     {
-        // return $request->all();
         $orders = $this->getOrdersByState($request);
         $pending_orders_count = $this->pendingOrders()->count();
         $all_orders_count = $this->allOrders()->count();
@@ -179,21 +181,112 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        return view('admin.orders.create');
+        $users = User::active()->get();
+        $products = Product::active()->get();
+        return view('admin.orders.create', compact('users', 'products'));
+    }
+
+    /**
+     * Check min sale of produts
+     * 
+     * @param \Illuminate\Http\Request
+     */
+    protected function checkMinSaleOfProducts(Request $request)
+    {
+        $i = 0;
+        foreach ($request->quantity as $quantity) {
+            $product = Product::find($request->products[$i]);
+            if ($quantity < $product->min_sale_quantity) {
+                return $product;
+            }
+            $i++;
+        }
+        return null;
+    }
+
+    /**
+     * add order status
+     * 
+     * @param \App\Models\Order $order
+     */
+    protected function addOrderStatus(Order $order)
+    {
+        $order->statuses()->createMany([
+            ['name' => 'Waiting for confirmation',],
+            ['name' => 'Approved',]
+        ]);
+    }    
+    
+    /**
+     * add order products
+     * 
+     * @param \App\Models\Order $order
+     */
+    protected function addOrderProducts(Request $request, Order $order)
+    {
+        $i = 0;
+        foreach ($request->products as $product) {
+            $order->products()->attach(
+                $product,
+                ['quantity' => $request->quantity[$i],]
+            );
+            $i++;
+        }
+    }    
+
+    /**
+     * Store order details
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Models\Order
+     */
+    protected function storeOrderDetails(Request $request)
+    {
+        $user = User::find($request->user);
+        return $user->orders()->create([
+            'comment' => $request->comment,
+            'user_address_id' => $user->addresses->first()->id,
+            'total_price' => $this->getTotalPrice($request),
+        ]);
+    }
+    
+    /**
+     * get order total price
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Models\Order
+     */
+    protected function getTotalPrice(Request $request)
+    {
+        $products = Product::find($request->products);
+        $i = 0;
+        $sum = 0;
+        foreach ($products as $product) {
+            $sum += $product->final_price * $request->quantity[$i];
+            $i++;
+        }
+        return $sum;
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Http\Requests\Admin\Orders\CreateRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required|string|min:2'
-        ]);
-        return back()->with(['status' => trans('Added Successfully')]);
+        $request['comment'] = str_replace('<', '&lt;', $request->comment);
+        $request['comment'] = str_replace('>', '&gt;', $request->comment);
+        $request['comment'] = nl2br($request->comment);
+        $product = $this->checkMinSaleOfProducts($request);
+        if (!$product) {
+            $order = $this->storeOrderDetails($request);
+            $this->addOrderStatus($order);
+            $this->addOrderProducts($request, $order);
+            return back()->with(['status' => trans('Added Successfully')]);
+        }
+        return back()->with(['error' => __('You must order at least') . ' ' . $product->min_sale_quantity . ' ' . __('from') . ' ' . $product->name]);
     }
 
     /**
