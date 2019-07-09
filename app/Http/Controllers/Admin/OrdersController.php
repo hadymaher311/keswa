@@ -186,6 +186,30 @@ class OrdersController extends Controller
         $price_tax = GeneralSetting::priceTax()->first();
         return view('admin.orders.show', compact('order', 'price_tax'));
     }
+    
+    /**
+     * Display order invoice.
+     *
+     * @param  \App\Models\Order  $order
+     * @return \Illuminate\Http\Response
+     */
+    public function invoice(Order $order)
+    {
+        $price_tax = GeneralSetting::priceTax()->first();
+        return view('admin.orders.invoice', compact('order', 'price_tax'));
+    }
+    
+    /**
+     * Print order invoice.
+     *
+     * @param  \App\Models\Order  $order
+     * @return \Illuminate\Http\Response
+     */
+    public function invoicePrint(Order $order)
+    {
+        $price_tax = GeneralSetting::priceTax()->first();
+        return view('admin.orders.invoicePrint', compact('order', 'price_tax'));
+    }
 
     /**
      * Show the form for creating a new resource.

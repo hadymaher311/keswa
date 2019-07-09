@@ -54,6 +54,8 @@ Route::group([
         /*********************************************** orders CRUD routes *******************************************/
         Route::resource('/admin/orders', 'OrdersController');
         Route::delete('/admin/orders', 'OrdersController@destroy')->name('orders.destroy');
+        Route::get('/admin/orders/{order}/invoice', 'OrdersController@invoice')->name('orders.invoice');
+        Route::get('/admin/orders/{order}/invoice/print', 'OrdersController@invoicePrint')->name('orders.invoice.print');
         /*********************************************** orders CRUD routes *******************************************/
         
         /*********************************************** categories CRUD routes *******************************************/

@@ -696,5 +696,9 @@
     "Choose product": "اختر المنتج",
     "View order": "عرض الطلب",
     "Order": "الطلب",
+    "Invoice": "فاتورة",
+    "Date": "التاريخ",
+    "Billed To": "الي",
+    "Order Date": "تاريخ الطلب",
     "Check all": "تحديد الكل"
 }

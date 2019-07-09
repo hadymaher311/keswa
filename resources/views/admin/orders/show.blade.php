@@ -212,7 +212,7 @@
                                                     $activeDiscount = $product->activeDiscount;
                                                     $price = $product->price;
                                                 @endphp
-                                                @include('user.components.pricing')
+                                                @include('admin.components.pricing')
                                             </td>
                                             <td class="">{{ $product->pivot->quantity * $product->final_price }} {{ __('LE') }}</td>
                                         </tr>
@@ -240,6 +240,14 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <a href="{{ route('orders.invoice', $order->id) }}" class="btn btn-warning">
+                                <i class="far fa-file-pdf"></i> {{ __('Invoice') }}
+                            </a>
                         </div>
                     </div>
 
