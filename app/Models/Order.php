@@ -45,11 +45,36 @@ class Order extends Model
         return $this->hasOne(OrderStatus::class)->orderBy('id', 'desc');
     }
 
-    public function scopePending($query)
+    /**
+     * if order has approved status
+     */
+    public function isApproved()
     {
-        return $query->whereHas('latestStatus', function($status) {
-            $status->where('name','Waiting for confirmation');
-        });
+        return $this->statuses->where('name', 'Approved')->isNotEmpty();
+    }
+    
+    /**
+     * if order has Shipped status
+     */
+    public function isShipped()
+    {
+        return $this->statuses->where('name', 'Shipped')->isNotEmpty();
+    }
+    
+    /**
+     * if order has Completed status
+     */
+    public function isCompleted()
+    {
+        return $this->statuses->where('name', 'Completed')->isNotEmpty();
+    }
+    
+    /**
+     * if order has Canceled status
+     */
+    public function isCanceled()
+    {
+        return $this->statuses->where('name', 'Completed')->isNotEmpty();
     }
     
     /**

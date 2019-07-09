@@ -29,6 +29,9 @@
         *{
           font-family: 'Cairo', sans-serif;
         }
+        .img-circle {
+          border-radius: 100%;
+        }
       </style>
     @endif
 

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\GeneralSetting;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Orders\CreateRequest;
 
@@ -172,6 +173,18 @@ class OrdersController extends Controller
         $completed_orders_count = $this->completedOrders()->count();
         $canceled_orders_count = $this->canceledOrders()->count();
         return view('admin.orders.index', compact('orders', 'pending_orders_count', 'all_orders_count', 'approved_orders_count', 'shipped_orders_count', 'completed_orders_count', 'canceled_orders_count'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Order  $order
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Order $order)
+    {
+        $price_tax = GeneralSetting::priceTax()->first();
+        return view('admin.orders.show', compact('order', 'price_tax'));
     }
 
     /**

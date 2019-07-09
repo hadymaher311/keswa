@@ -130,15 +130,9 @@
                                     <td>#{{ $order->id }}</td>
                                     <td>{{ $order->total_price }}</td>
                                     @php
-                                        $status_colors = [
-                                            'Waiting for confirmation' => 'warning',
-                                            'Approved' => 'primary',
-                                            'Shipped' => 'info',
-                                            'Completed' => 'success',
-                                            'Canceled' => 'danger',
-                                        ];
+                                        $order_status = $order->statuses->last()->name;
                                     @endphp
-                                    <td><span class="badge badge-{{ $status_colors[$order->statuses->last()->name] }}">{{ __($order->statuses->last()->name) }}</span></td>
+                                    <td>@include('admin.components.orderStatusColor')</td>
                                     <td><a href="{{ route('users.show', $order->user->id) }}">{{ $order->user->name }}</a></td>
                                     <td>{{ $order->created_at }}</td>
                                     <td>
@@ -147,6 +141,10 @@
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                         @endcan
+
+                                        <a href="{{ route('orders.show', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('View') }}" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-file"></i>
+                                        </a>
 
                                         @can('delete orders')
                                             <a 
