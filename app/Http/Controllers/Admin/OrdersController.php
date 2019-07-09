@@ -6,6 +6,7 @@ use App\User;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\warehouse;
 use Illuminate\Http\Request;
 use App\Models\GeneralSetting;
 use App\Http\Controllers\Controller;
@@ -172,7 +173,33 @@ class OrdersController extends Controller
         $shipped_orders_count = $this->shippedOrders()->count();
         $completed_orders_count = $this->completedOrders()->count();
         $canceled_orders_count = $this->canceledOrders()->count();
-        return view('admin.orders.index', compact('orders', 'pending_orders_count', 'all_orders_count', 'approved_orders_count', 'shipped_orders_count', 'completed_orders_count', 'canceled_orders_count'));
+
+        $warehouses = warehouse::active()->get();
+        return view('admin.orders.index', compact('orders', 'pending_orders_count', 'all_orders_count', 'approved_orders_count', 'shipped_orders_count', 'completed_orders_count', 'canceled_orders_count', 'warehouses'));
+    }
+
+    /**
+     * Approve Order.
+     *
+     * @param  \App\Models\Order  $order
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function approve(Request $request, Order $order)
+    {
+        $this->validate($request, [
+            'warehouse' => 'required|exists:warehouses,id',
+            'comment' => 'nullable|string',
+        ]);
+        $request['comment'] = str_replace('<', '&lt;', $request->comment);
+        $request['comment'] = str_replace('>', '&gt;', $request->comment);
+        $request['comment'] = nl2br($request->comment);
+        $order->warehouse_id = $request->warehouse;
+        $order->comment = $request->comment;
+        $order->save();
+        $order->statuses()->create(
+            ['name' => 'Approved',]
+        );
     }
 
     /**
@@ -334,7 +361,7 @@ class OrdersController extends Controller
      */
     public function edit(Permission $permission)
     {
-        return view('admin.orders.edit', compact('permission'));
+        // return view('admin.orders.edit', compact('permission'));
     }
 
     /**
@@ -346,18 +373,18 @@ class OrdersController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
-        $this->validate($request, [
-            'name' => 'required|string|min:2'
-        ]);
-        $permission->name = $request->name;
-        $permission->save();
-        return redirect()->route('orders.index')->with('status', trans('Updated Successfully'));
+        // $this->validate($request, [
+        //     'name' => 'required|string|min:2'
+        // ]);
+        // $permission->name = $request->name;
+        // $permission->save();
+        // return redirect()->route('orders.index')->with('status', trans('Updated Successfully'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Permission  $permission
+     * @param  App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)

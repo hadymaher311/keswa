@@ -56,6 +56,7 @@ Route::group([
         Route::delete('/admin/orders', 'OrdersController@destroy')->name('orders.destroy');
         Route::get('/admin/orders/{order}/invoice', 'OrdersController@invoice')->name('orders.invoice');
         Route::get('/admin/orders/{order}/invoice/print', 'OrdersController@invoicePrint')->name('orders.invoice.print');
+        Route::post('/admin/orders/{order}/approve', 'OrdersController@approve')->name('orders.approve');
         /*********************************************** orders CRUD routes *******************************************/
         
         /*********************************************** categories CRUD routes *******************************************/

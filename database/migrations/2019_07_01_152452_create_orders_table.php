@@ -20,11 +20,13 @@ class CreateOrdersTable extends Migration
             $table->integer('points')->unsigned()->default(0);
             $table->timestamp('shipping_date')->nullable();
             $table->text('comment')->nullable();
-            // pay on deleviry
+            // cash on deleviry
             $table->string('payment_method')->default('COD');
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('user_address_id')->unsigned();
+            $table->bigInteger('warehouse_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('warehouse_id')->references('id')->on('warehouses')->onUpdate('cascade')->onDelete('set null');
             $table->foreign('user_address_id')->references('id')->on('user_addresses')->onUpdate('cascade')->onDelete('set null');
             $table->timestamps();
         });

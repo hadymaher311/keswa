@@ -25,7 +25,7 @@ class CreateProductsTable extends Migration
             $table->integer('low_quantity')->unsigned();
             $table->integer('quantity_per_packet')->unsigned();
             $table->integer('min_sale_quantity')->unsigned()->nullable();
-            $table->string('SKU')->nullable();
+            $table->string('upc')->nullable();
             $table->integer('cost')->unsigned();
             $table->integer('price')->unsigned();
             $table->integer('weight')->unsigned()->nullable();
@@ -33,6 +33,7 @@ class CreateProductsTable extends Migration
             $table->integer('width')->unsigned()->nullable();
             $table->integer('depth')->unsigned()->nullable();
             $table->timestamp('expiry_date')->nullable();
+            $table->integer('expiry_alarm_before')->unsigned();
             $table->bigInteger('brand_id')->unsigned();
             $table->bigInteger('warehouse_id')->unsigned()->nullable();
             $table->boolean('active')->default(1);

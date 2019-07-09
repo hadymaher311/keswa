@@ -6,6 +6,7 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('/admin_styles/modules/bootstrap-daterangepicker/daterangepicker.css') }}">    
+<link rel="stylesheet" href="{{ asset('/admin_styles/modules/izitoast/css/iziToast.min.css') }}">
 @endsection
 
 @section('body')
@@ -114,6 +115,7 @@
                             <th>{{ __('Status') }}</th>
                             <th>{{ __('User') }}</th>
                             <th>{{ __('Added from') }}</th>
+                            <th>{{ __('Approve') }}</th>
                             <th>{{ __('Controls') }}</th>
                         </tr>
                         </thead>
@@ -136,11 +138,26 @@
                                     <td><a href="{{ route('users.show', $order->user->id) }}">{{ $order->user->name }}</a></td>
                                     <td>{{ $order->created_at }}</td>
                                     <td>
+                                        @if ($order->isApproved())
+                                            <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                        @else
+                                            <button data-toggle="tooltip" data-placement="top" title="{{ __('Approve') }}" id="modal-5" class="btn btn-sm btn-info">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                        @endif
+                                    </td>
+                                    <td>
                                         @can('update orders')
                                             <a href="{{ route('orders.edit', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                         @endcan
+
+                                        <a href="{{ route('orders.invoice', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Invoice') }}" class="btn btn-sm btn-info">
+                                            <i class="fa fa-file-pdf"></i>
+                                        </a>
 
                                         <a href="{{ route('orders.show', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('View') }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-file"></i>
@@ -174,6 +191,24 @@
     </div>
     </div>
 
+    <form class="modal-part" id="modal-approve-part" action="" method="POST">
+        @csrf
+        <div class="form-group">
+            <div class="input-group">
+                <select name="warehouse" class="form-control select2" required>
+                    <option value="">{{ __('Choose warehouse') }}</option>
+                    @foreach ($warehouses as $warehouse)
+                        <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <textarea name="comment" placeholder="{{ __('Comment') }}" class="form-control"></textarea>
+            </div>
+        </div>
+    </form>
 @endsection
 
 @section('js')
@@ -182,7 +217,7 @@
     <script src="{{ asset('/admin_styles/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('/admin_styles/modules/datatables/Select-1.2.4/js/dataTables.select.min.js') }}"></script>
     <script src="{{ asset('/admin_styles/modules/jquery-ui/jquery-ui.min.js') }}"></script>
-
+    <script src="{{ asset('/admin_styles/modules/izitoast/js/iziToast.min.js') }}"></script>
     <!-- Page Specific JS File -->
     
     @if (app()->isLocale('ar'))
@@ -193,6 +228,55 @@
     <script src="{{ asset('/admin_styles/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 
     <script>
+
+        $("#modal-5").fireModal({
+            title: '{{ __("Approve") }}',
+            body: $("#modal-approve-part"),
+            footerClass: 'bg-whitesmoke',
+            autoFocus: false,
+            onFormSubmit: function(modal, e, form) {
+                // Form Data
+                if ($(e.target).find('select').val()) {
+                    let form_data = $(e.target).serialize();
+                    console.log(form_data)
+                    $.post("{{ route('orders.approve', $order->id) }}", form_data)
+                        .done((res) => {
+                            location.reload();
+                        })
+                        .fail(err => {
+                            iziToast.error({
+                                title: '{{ __("Whooops") }}!',
+                                message: '{{ __("Something went wrong") }}',
+                                position: 'topRight'
+                            });
+                            form.stopProgress();
+                        })
+                } else {
+                    form.stopProgress();
+                    iziToast.error({
+                        title: '{{ __("Whooops") }}!',
+                        message: '{{ __("Choose warehouse") }}',
+                        position: 'topRight'
+                    });
+                }
+
+
+                e.preventDefault();
+            },
+            shown: function(modal, form) {
+                console.log(form)
+            },
+            buttons: [
+                {
+                text: '{{ __("Approve") }}',
+                submit: true,
+                class: 'btn btn-primary btn-shadow',
+                handler: function(modal) {
+                }
+                }
+            ]
+        });
+
         $('.daterange-btn').daterangepicker({
             ranges: {
                 "{{ __('Today') }}"       : [moment(), moment().add(1, 'days')],
