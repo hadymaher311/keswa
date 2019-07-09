@@ -31,7 +31,7 @@ class Product extends LocalizableModel implements HasMedia
         'length', 'width', 'depth', 'weight',
         'cost', 'price',
         'expiry_date', 'brand_id',
-        'SKU',
+        'upc',
     ];
  
     /**

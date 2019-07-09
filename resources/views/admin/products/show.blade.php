@@ -89,8 +89,8 @@
                                             <div class="col-sm-9">{!! $product->short_description !!}</div>
                                         </div>
                                         <div class="row mt-3">
-                                            <div class="col-3"><b>{{ __('SKU') }}:</b></div>
-                                            <div class="col-9">{{ $product->SKU }}</div>
+                                            <div class="col-3"><b>{{ __('UPC') }}:</b></div>
+                                            <div class="col-9">{{ $product->upc }}</div>
                                             <div class="col-3"><b>{{ __('Brand') }}:</b></div>
                                             <div class="col-9">{{ $product->brand->name }}</div>
                                             <div class="col-3"><b>{{ __('Categories') }}:</b></div>

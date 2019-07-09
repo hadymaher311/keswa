@@ -102,11 +102,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">{{ __('SKU') }}</label>
+                                    <label class="col-sm-3 col-form-label">{{ __('UPC') }}</label>
                                     <div class="col-sm-9">
-                                        <input id="sku" type="text" class="form-control @error('sku') is-invalid @enderror" name="sku" value="{{ old('sku') }}" required autocomplete="sku">
+                                        <input id="upc" type="text" class="form-control @error('upc') is-invalid @enderror" name="upc" value="{{ old('upc') }}" required autocomplete="upc">
                                         
-                                        @error('sku')
+                                        @error('upc')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
