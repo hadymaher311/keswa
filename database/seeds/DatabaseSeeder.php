@@ -64,7 +64,8 @@ class DatabaseSeeder extends Seeder
         array('id' => '37','name' => 'create sub_sub_categories','guard_name' => 'admin','created_at' => '2019-06-16 20:31:24','updated_at' => '2019-06-16 20:31:24'),
         array('id' => '38','name' => 'update sub_sub_categories','guard_name' => 'admin','created_at' => '2019-06-16 20:31:26','updated_at' => '2019-06-16 20:31:26'),
         array('id' => '39','name' => 'delete sub_sub_categories','guard_name' => 'admin','created_at' => '2019-06-16 20:31:30','updated_at' => '2019-06-16 20:31:30'),
-        array('id' => '40','name' => 'view sub_sub_categories','guard_name' => 'admin','created_at' => '2019-06-16 20:31:33','updated_at' => '2019-06-16 20:31:33')
+        array('id' => '40','name' => 'view sub_sub_categories','guard_name' => 'admin','created_at' => '2019-06-16 20:31:33','updated_at' => '2019-06-16 20:31:33'),
+        array('id' => '40','name' => 'general settings','guard_name' => 'admin','created_at' => '2019-06-16 20:31:33','updated_at' => '2019-06-16 20:31:33'),
     );
 
     /**
@@ -93,6 +94,7 @@ class DatabaseSeeder extends Seeder
 
         $role = Role::create(['name' => 'super', 'guard_name' => 'admin']);
         $role->givePermissionTo(Permission::all());
+        $admin->syncRoles($role);
         $role = Role::create(['name' => 'worker', 'guard_name' => 'admin']);
         factory(Admin::class, 10)->create();
         $admins = Admin::all();

@@ -23,8 +23,8 @@ class CreateOrdersTable extends Migration
             // cash on deleviry
             $table->string('payment_method')->default('COD');
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('user_address_id')->unsigned();
-            $table->bigInteger('warehouse_id')->unsigned();
+            $table->bigInteger('user_address_id')->unsigned()->nullable();
+            $table->bigInteger('warehouse_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('warehouse_id')->references('id')->on('warehouses')->onUpdate('cascade')->onDelete('set null');
             $table->foreign('user_address_id')->references('id')->on('user_addresses')->onUpdate('cascade')->onDelete('set null');

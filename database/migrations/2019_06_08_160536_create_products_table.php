@@ -25,7 +25,10 @@ class CreateProductsTable extends Migration
             $table->integer('low_quantity')->unsigned();
             $table->integer('quantity_per_packet')->unsigned();
             $table->integer('min_sale_quantity')->unsigned()->nullable();
+            // sale by unit or gram
+            $table->string('sale_by')->default('unit');
             $table->string('upc')->nullable();
+            $table->string('sku')->nullable();
             $table->integer('cost')->unsigned();
             $table->integer('price')->unsigned();
             $table->integer('weight')->unsigned()->nullable();

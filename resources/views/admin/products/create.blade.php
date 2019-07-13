@@ -114,6 +114,18 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">{{ __('SKU') }}</label>
+                                    <div class="col-sm-9">
+                                        <input id="sku" type="text" class="form-control @error('sku') is-invalid @enderror" name="sku" value="{{ old('sku') }}" required autocomplete="sku">
+                                        
+                                        @error('sku')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('Expiry date') }}</label>
                                     <div class="col-sm-9">
                                         <input id="expiry_date" type="text" class="
@@ -122,6 +134,18 @@
                                         @endif form-control datepicker @error('expiry_date') is-invalid @enderror" name="expiry_date" value="{{ old('expiry_date') }}" required autocomplete="expiry_date">
                                         
                                         @error('expiry_date')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">{{ __('Expiry alarm before') }} ({{ __('In days') }})</label>
+                                    <div class="col-sm-9">
+                                        <input id="expiry_alarm_before" type="number" class="form-control @error('expiry_alarm_before') is-invalid @enderror" name="expiry_alarm_before" min="1" value="{{ old('expiry_alarm_before', 30)  }}" required autocomplete="expiry_alarm_before">
+                                        
+                                        @error('expiry_alarm_before')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -210,7 +234,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputEmail" class="col-sm-3 control-label">{{ __('Brand') }}</label>
+                                    <label for="brand" class="col-sm-3 control-label">{{ __('Brand') }}</label>
                 
                                     <div class="col-sm-9">
                                         <select name="brand" id="brand" required class="form-control @error('brand') is-invalid @enderror">
@@ -251,9 +275,33 @@
                             {{------------------------------------------Quantity  ----------------------------------------------}}
                             <div class="tab-pane fade" id="quantity3" role="tabpanel" aria-labelledby="quantity-tab3">
                                 <div class="form-group row">
+                                    <label for="sale_by" class="col-sm-3 control-label">{{ __('Sale by') }}</label>
+                                    @php
+                                        $sale_by = [
+                                            'unit',
+                                            'gram'
+                                        ]
+                                    @endphp
+                                    <div class="col-sm-9">
+                                        <select name="sale_by" id="sale_by" required class="form-control @error('sale_by') is-invalid @enderror">
+                                            @foreach ($sale_by as $by)
+                                                <option @if ($by == old('sale_by'))
+                                                    selected
+                                                @endif value="{{ $by }}">{{ __(ucfirst($by)) }}</option>
+                                            @endforeach
+                                        </select>
+        
+                                        @error('sale_by')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('Quantity') }}</label>
                                     <div class="col-sm-9">
-                                        <input id="quantity" type="number" class="form-control @error('quantity') is-invalid @enderror" name="quantity" min="1" value="{{ old('quantity')  }}" required autocomplete="quantity">
+                                        <input id="quantity" type="number" class="form-control @error('quantity') is-invalid @enderror" name="quantity" min="1" value="{{ old('quantity', 1)  }}" required autocomplete="quantity">
                                         
                                         @error('quantity')
                                         <span class="invalid-feedback" role="alert">
@@ -266,7 +314,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('Low quantity') }}</label>
                                     <div class="col-sm-9">
-                                        <input id="low_quantity" type="number" class="form-control @error('low_quantity') is-invalid @enderror" name="low_quantity" min="1" value="{{ old('low_quantity')  }}" required autocomplete="low_quantity">
+                                        <input id="low_quantity" type="number" class="form-control @error('low_quantity') is-invalid @enderror" name="low_quantity" min="1" value="{{ old('low_quantity', 1)  }}" required autocomplete="low_quantity">
                                         
                                         @error('low_quantity')
                                         <span class="invalid-feedback" role="alert">
@@ -277,9 +325,9 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">{{ __('Quantity pre packet') }}</label>
+                                    <label class="col-sm-3 col-form-label">{{ __('Quantity per packet') }}</label>
                                     <div class="col-sm-9">
-                                        <input id="quantity_per_packet" type="number" class="form-control @error('quantity_per_packet') is-invalid @enderror" name="quantity_per_packet" min="1" value="{{ old('quantity_per_packet')  }}" required autocomplete="quantity_per_packet">
+                                        <input id="quantity_per_packet" type="number" class="form-control @error('quantity_per_packet') is-invalid @enderror" name="quantity_per_packet" min="1" value="{{ old('quantity_per_packet', 1)  }}" required autocomplete="quantity_per_packet">
                                         
                                         @error('quantity_per_packet')
                                         <span class="invalid-feedback" role="alert">
@@ -293,7 +341,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('Min sale quantity') }}</label>
                                     <div class="col-sm-9">
-                                        <input id="min_sale_quantity" type="number" class="form-control @error('min_sale_quantity') is-invalid @enderror" name="min_sale_quantity" min="1" value="{{ old('min_sale_quantity')  }}" required autocomplete="min_sale_quantity">
+                                        <input id="min_sale_quantity" type="number" class="form-control @error('min_sale_quantity') is-invalid @enderror" name="min_sale_quantity" min="1" value="{{ old('min_sale_quantity', 1)  }}" required autocomplete="min_sale_quantity">
                                         
                                         @error('min_sale_quantity')
                                         <span class="invalid-feedback" role="alert">
@@ -311,7 +359,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('Cost') }}</label>
                                     <div class="col-sm-9">
-                                        <input id="cost" type="number" class="form-control @error('cost') is-invalid @enderror" name="cost" min="1" value="{{ old('cost')  }}" required autocomplete="cost">
+                                        <input id="cost" type="number" class="form-control @error('cost') is-invalid @enderror" name="cost" min="1" value="{{ old('cost', 1)  }}" required autocomplete="cost">
                                         
                                         @error('cost')
                                         <span class="invalid-feedback" role="alert">
@@ -323,7 +371,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('Price') }}</label>
                                     <div class="col-sm-9">
-                                        <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" min="1" value="{{ old('price')  }}" required autocomplete="price">
+                                        <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" min="1" value="{{ old('price', 1)  }}" required autocomplete="price">
                                         
                                         @error('price')
                                         <span class="invalid-feedback" role="alert">
@@ -384,7 +432,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('Dimensions') }} {{ __('in cm') }}</label>
                                     <div class="col-sm-3">
-                                        <input id="width" type="number" class="form-control @error('width') is-invalid @enderror" name="width" min="1" value="{{ old('width')  }}" autocomplete="width" placeholder="{{ __('Width') }}">
+                                        <input id="width" type="number" class="form-control @error('width') is-invalid @enderror" name="width" min="1" value="{{ old('width', 1)  }}" autocomplete="width" placeholder="{{ __('Width') }}">
                                         
                                         @error('width')
                                         <span class="invalid-feedback" role="alert">
@@ -393,7 +441,7 @@
                                         @enderror
                                     </div>
                                     <div class="col-sm-3">
-                                        <input id="length" type="number" class="form-control @error('length') is-invalid @enderror" name="length" min="1" value="{{ old('length')  }}" autocomplete="length" placeholder="{{ __('Length') }}">
+                                        <input id="length" type="number" class="form-control @error('length') is-invalid @enderror" name="length" min="1" value="{{ old('length', 1)  }}" autocomplete="length" placeholder="{{ __('Length') }}">
                                         
                                         @error('length')
                                         <span class="invalid-feedback" role="alert">
@@ -402,7 +450,7 @@
                                         @enderror
                                     </div>
                                     <div class="col-sm-3">
-                                        <input id="depth" type="number" class="form-control @error('depth') is-invalid @enderror" name="depth" min="1" value="{{ old('depth')  }}" autocomplete="depth" placeholder="{{ __('Depth') }}">
+                                        <input id="depth" type="number" class="form-control @error('depth') is-invalid @enderror" name="depth" min="1" value="{{ old('depth', 1)  }}" autocomplete="depth" placeholder="{{ __('Depth') }}">
                                         
                                         @error('depth')
                                         <span class="invalid-feedback" role="alert">
@@ -414,7 +462,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('Weight in Kg') }}</label>
                                     <div class="col-sm-9">
-                                        <input id="weight" type="number" class="form-control @error('weight') is-invalid @enderror" name="weight" min="1" value="{{ old('weight')  }}" required autocomplete="weight">
+                                        <input id="weight" type="number" class="form-control @error('weight') is-invalid @enderror" name="weight" min="1" value="{{ old('weight', 1)  }}" required autocomplete="weight">
                                         
                                         @error('weight')
                                         <span class="invalid-feedback" role="alert">

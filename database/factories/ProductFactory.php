@@ -26,10 +26,14 @@ $factory->define(Product::class, function (Faker $faker) {
         'cost'  => $faker->numberBetween(1, 100), 
         'price' => $faker->numberBetween(100, 1000),
         'expiry_date' => $faker->dateTime(Carbon::now()->addWeeks($faker->numberBetween(2, 52))), 
+        'expiry_alarm_before' => $faker->numberBetween(1, 30),
         'brand_id' => function() {
         	return Brand::all()->random();
         },
-        'SKU' => $faker->numberBetween(1000000000, 9999999999),
+        'sku' => $faker->numberBetween(1000000000, 9999999999),
+        'upc' => $faker->numberBetween(1000000000, 9999999999),
+        'upc' => $faker->numberBetween(1000000000, 9999999999),
+        'sale_by' => $faker->randomElement(['unit', 'gram']),
         'warehouse_id' => function() {
             return warehouse::all()->random();
         },

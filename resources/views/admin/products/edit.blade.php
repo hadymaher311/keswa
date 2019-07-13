@@ -100,9 +100,21 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('UPC') }}</label>
                                     <div class="col-sm-9">
-                                        <input id="upc" type="text" class="form-control @error('upc') is-invalid @enderror" name="upc" value="{{ $product->upc }}" required autocomplete="upc">
+                                        <input id="upc" type="text" class="form-control @error('upc') is-invalid @enderror" name="upc" value="{{ $product->upc }}" autocomplete="upc">
                                         
                                         @error('upc')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">{{ __('SKU') }}</label>
+                                    <div class="col-sm-9">
+                                        <input id="sku" type="text" class="form-control @error('sku') is-invalid @enderror" name="sku" value="{{ $product->sku }}" autocomplete="sku">
+                                        
+                                        @error('sku')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -124,6 +136,18 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">{{ __('Expiry alarm before') }} ({{ __('In days') }})</label>
+                                        <div class="col-sm-9">
+                                            <input id="expiry_alarm_before" type="number" class="form-control @error('expiry_alarm_before') is-invalid @enderror" name="expiry_alarm_before" min="1" value="{{ $product->expiry_alarm_before  }}" required autocomplete="expiry_alarm_before">
+                                            
+                                            @error('expiry_alarm_before')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('Short description') }} {{ __('in English') }}</label>
                                     <div class="col-sm-9">
@@ -228,6 +252,30 @@
 
                             {{------------------------------------------Quantity  ----------------------------------------------}}
                             <div class="tab-pane fade" id="quantity3" role="tabpanel" aria-labelledby="quantity-tab3">
+                                <div class="form-group row">
+                                    <label for="sale_by" class="col-sm-3 control-label">{{ __('Sale by') }}</label>
+                                    @php
+                                        $sale_by = [
+                                            'unit',
+                                            'gram'
+                                        ]
+                                    @endphp
+                                    <div class="col-sm-9">
+                                        <select name="sale_by" id="sale_by" required class="form-control @error('sale_by') is-invalid @enderror">
+                                            @foreach ($sale_by as $by)
+                                                <option @if ($by == $product->sale_by)
+                                                    selected
+                                                @endif value="{{ $by }}">{{ __(ucfirst($by)) }}</option>
+                                            @endforeach
+                                        </select>
+        
+                                        @error('sale_by')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('Quantity') }}</label>
                                     <div class="col-sm-9">

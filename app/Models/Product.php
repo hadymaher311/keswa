@@ -30,8 +30,9 @@ class Product extends LocalizableModel implements HasMedia
         'quantity', 'low_quantity', 'quantity_per_packet', 'min_sale_quantity',
         'length', 'width', 'depth', 'weight',
         'cost', 'price',
-        'expiry_date', 'brand_id',
+        'expiry_date', 'expiry_alarm_before', 'brand_id', 'warehouse_id',
         'upc',
+        'sku',
     ];
  
     /**
