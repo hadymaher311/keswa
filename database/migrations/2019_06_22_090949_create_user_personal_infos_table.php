@@ -17,6 +17,7 @@ class CreateUserPersonalInfosTable extends Migration
             $table->bigIncrements('id');
             $table->string('phone');
             $table->string('gender');
+            $table->timestamp('birth_date');
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

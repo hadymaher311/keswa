@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAdminSettingsTable extends Migration
+class CreateAdminWarehousesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateAdminSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('admin_settings', function (Blueprint $table) {
+        Schema::create('admin_warehouses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('language')->default('en');
-            $table->boolean('min_sidebar')->default(0);
             $table->bigInteger('admin_id')->unsigned();
-            $table->foreign('admin_id')->references('id')->on('admins')->onUpdate('cascade')->onDelete('cascade');
+            $table->bigInteger('warehouse_id')->unsigned();
+            $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('warehouse_id')->references('id')->on('warehouses')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateAdminSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admin_settings');
+        Schema::dropIfExists('admin_warehouses');
     }
 }

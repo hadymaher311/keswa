@@ -19,6 +19,7 @@ class CreateWarehousesTable extends Migration
             $table->string('name_ar')->nullable();
             $table->string('location_en')->nullable();
             $table->string('location_ar')->nullable();
+            $table->integer('shipping_price')->unsigned()->nullable();
             $table->boolean('active')->default(1);
             $table->timestamps();
         });

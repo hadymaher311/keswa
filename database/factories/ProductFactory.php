@@ -15,7 +15,6 @@ $factory->define(Product::class, function (Faker $faker) {
         'name_en' => $faker->word,
         'description_en' => $faker->text(1000),
         'short_description_en' => $faker->text(300),
-        'quantity' => $faker->numberBetween(50, 1000), 
         'low_quantity' => $faker->numberBetween(0, 50), 
         'quantity_per_packet' => $faker->numberBetween(1, 100), 
         'min_sale_quantity' => $faker->numberBetween(1, 10),
@@ -25,7 +24,7 @@ $factory->define(Product::class, function (Faker $faker) {
         'weight' => $faker->numberBetween(1, 100),
         'cost'  => $faker->numberBetween(1, 100), 
         'price' => $faker->numberBetween(100, 1000),
-        'expiry_date' => $faker->dateTime(Carbon::now()->addWeeks($faker->numberBetween(2, 52))), 
+        // 'expiry_date' => $faker->dateTime(Carbon::now()->addWeeks($faker->numberBetween(2, 52))), 
         'expiry_alarm_before' => $faker->numberBetween(1, 30),
         'brand_id' => function() {
         	return Brand::all()->random();
@@ -34,9 +33,6 @@ $factory->define(Product::class, function (Faker $faker) {
         'upc' => $faker->numberBetween(1000000000, 9999999999),
         'upc' => $faker->numberBetween(1000000000, 9999999999),
         'sale_by' => $faker->randomElement(['unit', 'gram']),
-        'warehouse_id' => function() {
-            return warehouse::all()->random();
-        },
         'active' => $faker->numberBetween(0, 1),
         'free_shipping' => $faker->numberBetween(0, 1),
         'allow_review' => $faker->numberBetween(0, 1),
