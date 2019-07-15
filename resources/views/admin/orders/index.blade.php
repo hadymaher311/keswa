@@ -143,7 +143,7 @@
                                                 <i class="fa fa-check"></i>
                                             </button>
                                         @else
-                                            <button data-toggle="tooltip" data-placement="top" title="{{ __('Approve') }}" id="modal-5" class="btn btn-sm btn-info">
+                                            <button data-toggle="tooltip" data-placement="top" title="{{ __('Approve') }}" data-id="{{ $order->id }}" class="btn btn-sm btn-info model-5">
                                                 <i class="fa fa-check"></i>
                                             </button>
                                         @endif
@@ -191,24 +191,26 @@
     </div>
     </div>
 
-    <form class="modal-part" id="modal-approve-part" action="" method="POST">
-        @csrf
-        <div class="form-group">
-            <div class="input-group">
-                <select name="warehouse" class="form-control select2" required>
-                    <option value="">{{ __('Choose warehouse') }}</option>
-                    @foreach ($warehouses as $warehouse)
-                        <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
-                    @endforeach
-                </select>
+    @foreach ($orders as $order)
+        <form class="modal-part" id="modal-approve-part-{{ $order->id }}" action="{{ route('orders.approve', $order->id) }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <div class="input-group">
+                    <select name="warehouse" class="form-control select2" required>
+                        <option value="">{{ __('Choose warehouse') }}</option>
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <textarea name="comment" placeholder="{{ __('Comment') }}" class="form-control"></textarea>
+            <div class="form-group">
+                <div class="input-group">
+                    <textarea name="comment" placeholder="{{ __('Comment') }}" class="form-control"></textarea>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    @endforeach
 @endsection
 
 @section('js')
@@ -229,9 +231,9 @@
 
     <script>
 
-        $("#modal-5").fireModal({
+        $(".modal-5").fireModal({
             title: '{{ __("Approve") }}',
-            body: $("#modal-approve-part"),
+            body: $("#modal-approve-part-" + $(this).data("id")),
             footerClass: 'bg-whitesmoke',
             autoFocus: false,
             onFormSubmit: function(modal, e, form) {
@@ -239,7 +241,7 @@
                 if ($(e.target).find('select').val()) {
                     let form_data = $(e.target).serialize();
                     console.log(form_data)
-                    $.post("{{ route('orders.approve', $order->id) }}", form_data)
+                    $.post($(e.target).attr('method'), form_data)
                         .done((res) => {
                             location.reload();
                         })

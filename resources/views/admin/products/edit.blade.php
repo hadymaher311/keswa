@@ -481,7 +481,7 @@
                                 <div class="form-group row features">
                                     <label for="inputEmail" class="col-sm-3 control-label">{{ __('Features') }}</label>
                                     
-                                    @foreach ($product->features as $feature)
+                                    @forelse ($product->features as $feature)
                                         @if ($loop->index > 0)
                                             <div class="col-sm-3 feature-box mt-3"></div>
                                         @endif
@@ -514,7 +514,31 @@
                                                 <button class="btn btn-sm btn-success add-feature" data-toggle="tooltip" data-placement="top" title="{{ __('Add new feature') }}"><i class="fa fa-plus"></i></button>
                                             </div>
                                         @endif
-                                    @endforeach
+                                    @empty
+                                        <div class="col-sm-4">
+                                            <input id="feature_type" feature_type="text" class="form-control @error('feature_type') is-invalid @enderror" name="feature_type[]" value="{!! old('feature_type')[0]  !!}" autocomplete="feature_type" placeholder="{{ __('Type') }}">
+            
+                                            @error('feature_type')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                        
+                                        <div class="col-sm-4">
+                                            <input id="feature_value" feature_value="text" class="form-control @error('feature_value') is-invalid @enderror" name="feature_value[]" value="{!! old('feature_value')[0]  !!}" autocomplete="feature_value" placeholder="{{ __('Value') }}">
+            
+                                            @error('feature_value')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+    
+                                        <div class="col-sm-1">
+                                            <button class="btn btn-sm btn-success add-feature" data-toggle="tooltip" data-placement="top" title="{{ __('Add new feature') }}"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    @endforelse
                                 </div>
                             </div>
                             {{------------------------------------------ Features ----------------------------------------------}}

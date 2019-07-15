@@ -27,7 +27,7 @@ class Product extends LocalizableModel implements HasMedia
         'name_en', 'name_ar',
         'description_en', 'description_ar',
         'short_description_en', 'short_description_ar',
-        'quantity', 'low_quantity', 'quantity_per_packet', 'min_sale_quantity',
+        'sale_by', 'quantity', 'low_quantity', 'quantity_per_packet', 'min_sale_quantity',
         'length', 'width', 'depth', 'weight',
         'cost', 'price',
         'expiry_date', 'expiry_alarm_before', 'brand_id', 'warehouse_id',
