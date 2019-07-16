@@ -152,4 +152,18 @@ class WarehousesController extends Controller
         warehouse::destroy($request->warehouses);
         return back()->with('status', trans('Deleted Successfully'));
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  warehouse  $warehouse
+     * @return \Illuminate\Http\Response
+     */
+    public function active(Request $request, warehouse $warehouse)
+    {
+        $warehouse->active = !($warehouse->active);
+        $warehouse->save();
+        return back()->with('status', trans('Updated Successfully'));
+    }
 }

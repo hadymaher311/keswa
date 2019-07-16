@@ -61,6 +61,7 @@
                             <th>{{ __('Location') }}</th>
                             <th>{{ __('Shipping price') }}</th>
                             <th>{{ __('Added from') }}</th>
+                            <th>{{ __('Activate') }}</th>
                             <th>{{ __('Controls') }}</th>
                         </tr>
                         </thead>
@@ -78,6 +79,26 @@
                                     <td>{{ $warehouse->location }}</td>
                                     <td>{{ $warehouse->shipping_price }} {{  __('LE') }}</td>
                                     <td>{{ $warehouse->created_at->diffForHumans() }}</td>
+                                    <td>
+                                        @can('update warehouses')
+                                            <form action="{{ route('warehouses.active', $warehouse->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if ($warehouse->active)
+                                                    {{ __('Active') }}
+                                                    @else
+                                                    {{ __('Not Active') }}
+                                                    @endif">
+                                                    <input name="active" value="{{ $warehouse->id }}" type="checkbox" @if ($warehouse->active)
+                                                    checked
+                                                    @endif class="custom-switch-input" onchange="
+                                                        $(this).parent('form'),submit();
+                                                    ">
+                                                    <span class="custom-switch-indicator"></span>
+                                                </label>
+                                            </form>
+                                        @endcan
+                                    </td>
                                     <td>
                                         @can('update warehouses')
                                             <a href="{{ route('warehouses.edit', $warehouse->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">

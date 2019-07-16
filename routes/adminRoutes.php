@@ -90,6 +90,7 @@ Route::group([
         /*********************************************** warehouses CRUD routes *******************************************/
         Route::resource('/admin/warehouses', 'WarehousesController');
         Route::delete('/admin/warehouses', 'WarehousesController@destroy')->name('warehouses.destroy');
+        Route::PUT('/admin/warehouses/{warehouse}/active', 'WarehousesController@active')->name('warehouses.active');
         /*********************************************** warehouses CRUD routes *******************************************/
         
         /*********************************************** Admin profile pages *******************************************/

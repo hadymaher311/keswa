@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Admin;
+use App\Models\warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Admin\Admins\CreateRequest;
-use function GuzzleHttp\json_encode;
 
 class AdminsController extends Controller
 {
@@ -46,7 +46,8 @@ class AdminsController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('admin.admins.create', compact('roles'));
+        $warehouses = warehouse::active()->get();
+        return view('admin.admins.create', compact('roles', 'warehouses'));
     }
     
     /**

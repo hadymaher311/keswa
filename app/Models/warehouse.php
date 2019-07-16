@@ -29,6 +29,15 @@ class warehouse extends LocalizableModel
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
+    /**
      * Scope a query to only include active users.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query

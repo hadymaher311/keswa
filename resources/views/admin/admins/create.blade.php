@@ -5,7 +5,7 @@
 @endsection
 
 @section('css')
-    
+<link rel="stylesheet" href="{{ asset('/admin_styles/modules/select2/dist/css/select2.min.css') }}">    
 @endsection
 
 @section('body')
@@ -109,6 +109,32 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="warehouses" class="col-sm-3 control-label">{{ __('Warehouses') }}</label>
+        
+                            <div class="col-sm-9">
+                                <select name="warehouses[]" id="warehouses" class="form-control select2 @error('warehouses[]') is-invalid @enderror" multiple>
+                                    @foreach ($warehouses as $warehouse)
+                                        <option 
+                                        @if (old('warehouses'))
+                                            @foreach (old('warehouses') as $ware)
+                                                @if ($warehouse->id == $ware)
+                                                    selected
+                                                @endif 
+                                            @endforeach
+                                        @endif
+                                        value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('warehouses[]')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="inputEmail" class="col-sm-3 control-label">{{ __('Roles') }}</label>
         
                             <div class="col-sm-9">
@@ -145,6 +171,7 @@
 
 @section('js')
     <script src="{{ asset('/admin_styles/modules/upload-preview/assets/js/jquery.uploadPreview.min.js') }}"></script>
+    <script src="{{ asset('/admin_styles/modules/select2/dist/js/select2.full.min.js') }}"></script>
 
     <script>
         $.uploadPreview({
