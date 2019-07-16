@@ -28,6 +28,7 @@ class UpdateRequest extends FormRequest
             'name_ar' => 'required_without:name',
             'location' => 'required_without:location_ar',
             'location_ar' => 'required_without:location',
+            'related_locations' => 'required|string',
         ];
     }
 }

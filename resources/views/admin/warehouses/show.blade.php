@@ -45,6 +45,14 @@
                         <div class="col-sm-9">{{ $warehouse->name }}</div>
                         <div class="col-sm-3"><b>{{ __('Location') }}:</b></div>
                         <div class="col-sm-9">{{ $warehouse->location }}</div>
+                        <div class="col-sm-3"><b>{{ __('Related Location') }}:</b></div>
+                        <div class="col-sm-9">
+                            @forelse ($warehouse->related_locations as $location)
+                                <div class="badge badge-primary">{{ $location->location_name }}</div>
+                            @empty
+                                <div class="text-danger">{{ __('No related location for this warehouse') }}</div>
+                            @endforelse    
+                        </div>
                     </div>
 
                 </div>

@@ -5,6 +5,7 @@
 @endsection
 
 @section('css')
+<link rel="stylesheet" href="{{ asset('/admin_styles/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
 @endsection
 
 @section('body')
@@ -33,7 +34,7 @@
                     <form action="{{ route('warehouses.store') }}" method="post">
                         @csrf
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">{{ __('Name') }} {{ __('in English') }}</label>
+                            <label for="name_en" class="col-sm-3 col-form-label">{{ __('Name') }} {{ __('in English') }}</label>
                             <div class="col-sm-9">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name" autofocus>
                                 
@@ -45,7 +46,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">{{ __('Name') }} {{ __('in Arabic') }}</label>
+                            <label for="name_ar" class="col-sm-3 col-form-label">{{ __('Name') }} {{ __('in Arabic') }}</label>
                             <div class="col-sm-9">
                                 <input id="name_ar" type="text" class="form-control @error('name_ar') is-invalid @enderror" name="name_ar" value="{{ old('name_ar') }}" autocomplete="name_ar">
                                 
@@ -57,9 +58,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">{{ __('Location') }} {{ __('in English') }}</label>
+                            <label for="location_en" class="col-sm-3 col-form-label">{{ __('Location') }} {{ __('in English') }}</label>
                             <div class="col-sm-9">
-                                <input id="location" type="text" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}" required autocomplete="location">
+                                <input id="location" type="text" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}" autocomplete="location">
                                 
                                 @error('location')
                                 <span class="invalid-feedback" role="alert">
@@ -69,11 +70,23 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">{{ __('Location') }} {{ __('in Arabic') }}</label>
+                            <label for="location_ar" class="col-sm-3 col-form-label">{{ __('Location') }} {{ __('in Arabic') }}</label>
                             <div class="col-sm-9">
                                 <input id="location_ar" type="text" class="form-control @error('location_ar') is-invalid @enderror" name="location_ar" value="{{ old('location_ar') }}" autocomplete="location_ar">
                                 
                                 @error('location_ar')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="#related_locations" class="col-sm-3 col-form-label">{{ __('Related Locations') }}</label>
+                            <div class="col-sm-9">
+                                <input id="related_locations" type="text" class="form-control inputtags @error('related_locations') is-invalid @enderror" name="related_locations" value="{{ old('related_locations') }}" autocomplete="related_locations">
+                                
+                                @error('related_locations')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -96,4 +109,11 @@
 @endsection
 
 @section('js')
+<script src="{{ asset('/admin_styles/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
+
+<script>
+    $(function() {
+        $(".inputtags").tagsinput('items');
+    })
+</script>
 @endsection

@@ -46,6 +46,21 @@ class WarehousesController extends Controller
     }
     
     /**
+     * Store warehouse related locations.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\warehouse  $warehouse
+     */
+    protected function saveRelatedLocations(Request $request, $warehouse)
+    {
+        $related_locations = explode(',', $request->related_locations);
+        foreach ($related_locations as $location) {
+            $warehouse->related_locations()->create(['location_name' => $location]); 
+        }
+    }
+
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -53,12 +68,13 @@ class WarehousesController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        warehouse::create([
+        $warehouse = warehouse::create([
             'name_en' => $request->name,
             'name_ar' => $request->name_ar,
             'location_en' => $request->location,
             'location_ar' => $request->location_ar,
         ]);
+        $this->saveRelatedLocations($request, $warehouse);
         return back()->with(['status' => trans('Added Successfully')]);
     }
     

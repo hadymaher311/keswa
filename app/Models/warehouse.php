@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\LocalizableModel;
+use App\Models\WarehouseRelatedLocation;
 
 class warehouse extends LocalizableModel
 {
@@ -35,5 +36,13 @@ class warehouse extends LocalizableModel
     public function scopeActive($query)
     {
         return $query->where('active', 1);
+    }
+
+    /**
+     * Get warehouse related locations
+     */
+    public function related_locations()
+    {
+        return $this->hasMany(WarehouseRelatedLocation::class, 'warehouse_id');
     }
 }

@@ -20,13 +20,13 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique()->nullabe();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->bigInteger('main_location')->unsigned()->nullabe();
+            $table->bigInteger('main_location')->unsigned()->nullable();
             // added by email or mobile phone
             $table->string('added_by')->default('email');
             $table->boolean('active')->default(1);
             $table->rememberToken();
             $table->timestamps();
-            $table->foreign('main_location')->references('id')->on('user_addresses')->onUpdate('cascade')->onDelete('set  null');
+            // $table->foreign('main_location')->references('id')->on('user_addresses')->onUpdate('cascade')->onDelete('set  null');
         });
     }
 

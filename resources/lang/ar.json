@@ -708,5 +708,7 @@
     "Sale by": "البيع بواسطة",
     "Unit": "الوحدة",
     "Gram": "الجرام",
+    "Related Locations": "الاماكن المتعلقة",
+    "No related location for this warehouse": "لا توجد مواقع متعلقة بهذا المخزن",
     "Check all": "تحديد الكل"
 }

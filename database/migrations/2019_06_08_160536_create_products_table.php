@@ -21,7 +21,6 @@ class CreateProductsTable extends Migration
             $table->text('short_description_ar')->nullable();
             $table->text('description_en')->nullable();
             $table->text('description_ar')->nullable();
-            // $table->bigInteger('quantity')->unsigned();
             $table->integer('low_quantity')->unsigned();
             $table->integer('quantity_per_packet')->unsigned();
             $table->integer('min_sale_quantity')->unsigned()->nullable();
@@ -35,16 +34,13 @@ class CreateProductsTable extends Migration
             $table->integer('length')->unsigned()->nullable();
             $table->integer('width')->unsigned()->nullable();
             $table->integer('depth')->unsigned()->nullable();
-            // $table->timestamp('expiry_date')->nullable();
             $table->integer('expiry_alarm_before')->unsigned();
             $table->bigInteger('brand_id')->unsigned()->nullable();
-            // $table->bigInteger('warehouse_id')->unsigned()->nullable();
             $table->boolean('active')->default(1);
             $table->boolean('free_shipping')->default(0);
             $table->boolean('allow_review')->default(1);
             $table->boolean('allow_points')->default(1);
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('set null')->onUpdate('cascade');
-            // $table->foreign('warehouse_id')->references('id')->on('warehouses')->onDelete('set null')->onUpdate('cascade');
             $table->timestamps();
         });
     }
