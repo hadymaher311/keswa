@@ -51,6 +51,37 @@ class AdminsController extends Controller
     }
     
     /**
+     * Store admin personal info.
+     *
+     * @param  \App\Models\Admin  $admin
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function storePersonalInfo(Request $request, Admin $admin)
+    {
+        $admin->personalInfo()->create([
+            'phone' => $request->phone,
+            'gender' => $request->gender,
+            'birth_date' => $request->birth_date,
+        ]);
+    }
+    
+    /**
+     * Store admin address.
+     *
+     * @param  \App\Models\Admin  $admin
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function storeAddress(Request $request, Admin $admin)
+    {
+        $admin->address()->create(
+            $request->all()
+        );
+    }
+
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -70,6 +101,8 @@ class AdminsController extends Controller
                 ->addMediaFromUrl($request->image)
                 ->toMediaCollection('admin.avatar');
         }
+        $this->storePersonalInfo($request, $admin);
+        $this->storeAddress($request, $admin);
         return back()->with(['status' => trans('Added Successfully')]);
     }
     

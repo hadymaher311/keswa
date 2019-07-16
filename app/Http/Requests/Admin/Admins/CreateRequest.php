@@ -28,8 +28,21 @@ class CreateRequest extends FormRequest
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:admins'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'image' => ['sometimes', 'image'],
             'role' => ['required', 'exists:roles,id'],
-            'image' => ['sometimes', 'image']
+            'warehouses' => ['required', 'array'],
+            'warehouses.*' => ['required', 'exists:warehouses,id'],
+            'birth_date' => ['required', 'date', 'before:today'],
+            'phone' => ['required', 'string', 'max:11', 'min:11'],
+            'gender' => ['required', 'string', 'in:male,female'],
+            'country' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'street' => ['required', 'string', 'max:255'],
+            'building' => ['required', 'string', 'max:255'],
+            'floor' => ['required', 'string', 'max:255'],
+            'apartment' => ['required', 'string', 'max:255'],
+            'nearest_landmark' => ['nullable', 'string', 'max:255'],
+            'location_type' => ['required', 'string', 'in:home,business'],
         ];
     }
 }

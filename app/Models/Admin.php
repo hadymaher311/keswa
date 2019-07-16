@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\warehouse;
 use App\Models\AdminAddress;
 use App\Models\AdminSetting;
 use App\Models\AdminPersonalInfo;
@@ -113,6 +114,14 @@ class Admin extends Authenticatable implements HasMedia
     public function address()
     {
         return $this->hasone(AdminAddress::class);
+    }
+
+    /**
+     * Get admin warehouses
+     */
+    public function warehouses()
+    {
+        return $this->belongsToMany(warehouse::class, 'admin_warehouses');
     }
 
     /**
