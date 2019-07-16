@@ -15,6 +15,7 @@ class warehouse extends LocalizableModel
     protected $fillable = [
         'name_en', 'name_ar',
         'location_en', 'location_ar',
+        'shipping_price'
     ];
  
     /**

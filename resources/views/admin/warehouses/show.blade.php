@@ -41,12 +41,14 @@
                     @endif
                     
                     <div class="row">
-                        <div class="col-sm-3"><b>{{ __('Name') }}:</b></div>
-                        <div class="col-sm-9">{{ $warehouse->name }}</div>
-                        <div class="col-sm-3"><b>{{ __('Location') }}:</b></div>
-                        <div class="col-sm-9">{{ $warehouse->location }}</div>
-                        <div class="col-sm-3"><b>{{ __('Related Location') }}:</b></div>
-                        <div class="col-sm-9">
+                        <div class="col-sm-3 p-1"><b>{{ __('Name') }}:</b></div>
+                        <div class="col-sm-9 p-1">{{ $warehouse->name }}</div>
+                        <div class="col-sm-3 p-1"><b>{{ __('Location') }}:</b></div>
+                        <div class="col-sm-9 p-1">{{ $warehouse->location }}</div>
+                        <div class="col-sm-3 p-1"><b>{{ __('Shipping price') }}:</b></div>
+                        <div class="col-sm-9 p-1">{{ $warehouse->shipping_price }} {{ __('LE') }}</div>
+                        <div class="col-sm-3 p-1"><b>{{ __('Related Location') }}:</b></div>
+                        <div class="col-sm-9 p-1">
                             @forelse ($warehouse->related_locations as $location)
                                 <div class="badge badge-primary">{{ $location->location_name }}</div>
                             @empty

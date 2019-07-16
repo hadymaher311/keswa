@@ -34,7 +34,7 @@
                     <form action="{{ route('warehouses.store') }}" method="post">
                         @csrf
                         <div class="form-group row">
-                            <label for="name_en" class="col-sm-3 col-form-label">{{ __('Name') }} {{ __('in English') }}</label>
+                            <label for="name" class="col-sm-3 col-form-label">{{ __('Name') }} {{ __('in English') }}</label>
                             <div class="col-sm-9">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name" autofocus>
                                 
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="location_en" class="col-sm-3 col-form-label">{{ __('Location') }} {{ __('in English') }}</label>
+                            <label for="location" class="col-sm-3 col-form-label">{{ __('Location') }} {{ __('in English') }}</label>
                             <div class="col-sm-9">
                                 <input id="location" type="text" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}" autocomplete="location">
                                 
@@ -75,6 +75,18 @@
                                 <input id="location_ar" type="text" class="form-control @error('location_ar') is-invalid @enderror" name="location_ar" value="{{ old('location_ar') }}" autocomplete="location_ar">
                                 
                                 @error('location_ar')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="shipping_price" class="col-sm-3 col-form-label">{{ __('Shipping price') }}</label>
+                            <div class="col-sm-9">
+                                <input id="shipping_price" type="number" min="1" class="form-control @error('shipping_price') is-invalid @enderror" name="shipping_price" value="{{ old('shipping_price', 1) }}" autocomplete="shipping_price">
+                                
+                                @error('shipping_price')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

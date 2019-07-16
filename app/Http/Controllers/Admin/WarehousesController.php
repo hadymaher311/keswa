@@ -73,6 +73,7 @@ class WarehousesController extends Controller
             'name_ar' => $request->name_ar,
             'location_en' => $request->location,
             'location_ar' => $request->location_ar,
+            'shipping_price' => $request->shipping_price,
         ]);
         $this->saveRelatedLocations($request, $warehouse);
         return back()->with(['status' => trans('Added Successfully')]);
