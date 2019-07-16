@@ -82,11 +82,11 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="shipping_price" class="col-sm-3 col-form-label">{{ __('Shipping price') }}</label>
+                            <label for="#related_locations" class="col-sm-3 col-form-label">{{ __('Related Locations') }}</label>
                             <div class="col-sm-9">
-                                <input id="shipping_price" type="number" min="1" class="form-control @error('shipping_price') is-invalid @enderror" name="shipping_price" value="{{ old('shipping_price', 1) }}" autocomplete="shipping_price">
+                                <input id="related_locations" type="text" class="form-control inputtags @error('related_locations') is-invalid @enderror" name="related_locations" value="{{ old('related_locations') }}" autocomplete="related_locations">
                                 
-                                @error('shipping_price')
+                                @error('related_locations')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -94,11 +94,11 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="#related_locations" class="col-sm-3 col-form-label">{{ __('Related Locations') }}</label>
+                            <label for="shipping_price" class="col-sm-3 col-form-label">{{ __('Shipping price') }}</label>
                             <div class="col-sm-9">
-                                <input id="related_locations" type="text" class="form-control inputtags @error('related_locations') is-invalid @enderror" name="related_locations" value="{{ old('related_locations') }}" autocomplete="related_locations">
+                                <input id="shipping_price" type="number" min="1" class="form-control @error('shipping_price') is-invalid @enderror" name="shipping_price" value="{{ old('shipping_price', 1) }}" required autocomplete="shipping_price">
                                 
-                                @error('related_locations')
+                                @error('shipping_price')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

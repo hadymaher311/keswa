@@ -59,6 +59,7 @@
                             <th>{{ __('#') }}</th>
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Location') }}</th>
+                            <th>{{ __('Shipping price') }}</th>
                             <th>{{ __('Added from') }}</th>
                             <th>{{ __('Controls') }}</th>
                         </tr>
@@ -75,6 +76,7 @@
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>{{ $warehouse->name }}</td>
                                     <td>{{ $warehouse->location }}</td>
+                                    <td>{{ $warehouse->shipping_price }} {{  __('LE') }}</td>
                                     <td>{{ $warehouse->created_at->diffForHumans() }}</td>
                                     <td>
                                         @can('update warehouses')

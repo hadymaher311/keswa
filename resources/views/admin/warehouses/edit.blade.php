@@ -5,7 +5,7 @@
 @endsection
 
 @section('css')
-    
+<link rel="stylesheet" href="{{ asset('/admin_styles/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">    
 @endsection
 
 @section('body')
@@ -90,6 +90,31 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">{{ __('Tags') }}</label>
+                            <div class="col-sm-9">
+                                <input id="related_locations" type="text" class="form-control inputtags @error('related_locations') is-invalid @enderror" name="related_locations" value="{{ implode(',', $warehouse->related_locations->map(function ($location) { return $location->location_name; })->toArray()) }}" autocomplete="related_locations">
+                                
+                                @error('related_locations')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="shipping_price" class="col-sm-3 col-form-label">{{ __('Shipping price') }}</label>
+                            <div class="col-sm-9">
+                                <input id="shipping_price" type="number" min="1" class="form-control @error('shipping_price') is-invalid @enderror" name="shipping_price" value="{{ $warehouse->shipping_price }}" required autocomplete="shipping_price">
+                                
+                                @error('shipping_price')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <div class="col-sm-3"></div>
                             <div class="col-sm-9">
                                 <button type="submit" class="btn btn-warning btn-block">{{ __('Submit') }}</button>
@@ -105,4 +130,11 @@
 @endsection
 
 @section('js')
+<script src="{{ asset('/admin_styles/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
+
+<script>
+    $(function() {
+        $(".inputtags").tagsinput('items');
+    })
+</script>
 @endsection

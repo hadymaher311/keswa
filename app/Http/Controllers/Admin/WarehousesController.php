@@ -51,7 +51,7 @@ class WarehousesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\warehouse  $warehouse
      */
-    protected function saveRelatedLocations(Request $request, $warehouse)
+    protected function storeRelatedLocations(Request $request, $warehouse)
     {
         $related_locations = explode(',', $request->related_locations);
         foreach ($related_locations as $location) {
@@ -75,7 +75,7 @@ class WarehousesController extends Controller
             'location_ar' => $request->location_ar,
             'shipping_price' => $request->shipping_price,
         ]);
-        $this->saveRelatedLocations($request, $warehouse);
+        $this->storeRelatedLocations($request, $warehouse);
         return back()->with(['status' => trans('Added Successfully')]);
     }
     
@@ -100,6 +100,21 @@ class WarehousesController extends Controller
     {
         return view('admin.warehouses.edit', compact('warehouse'));
     }
+
+    /**
+     * Update warehouse related locations.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\warehouse  $warehouse
+     */
+    protected function updateRelatedLocations(Request $request, $warehouse)
+    {
+        $warehouse->related_locations()->delete();
+        $related_locations = explode(',', $request->related_locations);
+        foreach ($related_locations as $location) {
+            $warehouse->related_locations()->create(['location_name' => $location]); 
+        }
+    }
     
     /**
      * Update the specified resource in storage.
@@ -114,7 +129,9 @@ class WarehousesController extends Controller
         $warehouse->name_ar = $request->name_ar;
         $warehouse->location_en = $request->location;
         $warehouse->location_ar = $request->location_ar;
+        $warehouse->shipping_price = $request->shipping_price;
         $warehouse->save();
+        $this->updateRelatedLocations($request, $warehouse);
         return redirect()->route('warehouses.index')->with('status', trans('Updated Successfully'));
     }
 
