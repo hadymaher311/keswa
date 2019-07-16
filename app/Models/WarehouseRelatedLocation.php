@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\warehouse;
 use Illuminate\Database\Eloquent\Model;
 
 class WarehouseRelatedLocation extends Model
@@ -14,4 +15,12 @@ class WarehouseRelatedLocation extends Model
     protected $fillable = [
         'location_name'
     ];
+
+    /**
+     * Get related warehouse
+     */
+    public function warehouse()
+    {
+        return $this->belongsTo(warehouse::class);
+    }
 }

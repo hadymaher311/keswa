@@ -26,7 +26,10 @@
                                     @method('DELETE')
                                 </form>
                                 <a href="{{ route('user.addresses.edit', $address->id) }}" class="btn btn-link btn-xs pull-right"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
-                                <button class="btn btn-danger btn-xs pull-right" type="submit" form="delete-form-{{ $loop->index }}"><i class="fa fa-times"></i> {{ __('Delete') }}</button>
+                                @if ($address->id != auth()->user()->main_location)
+                                    <a href="{{ route('user.addresses.main_location', $address->id) }}" class="btn btn-primary btn-xs pull-right"><i class="fa fa-home"></i> {{ __('Choose as main location') }}</a>
+                                    <button class="btn btn-danger btn-xs pull-right" type="submit" form="delete-form-{{ $loop->index }}"><i class="fa fa-times"></i> {{ __('Delete') }}</button>
+                                @endif
                                 <div>
                                     <b>{{ $address->country }}, {{ $address->city }}</b>
                                 </div>
@@ -74,7 +77,14 @@
                             <div class="form-group required">
                                 <label class="col-sm-2 control-label" for="input-city">{{ __('City') }}</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" required autocomplete="city" placeholder="{{ __('City') }}" id="input-city">
+                                    <select name="city" id="input-city" class="form-control @error('city') is-invalid @enderror" name="city" required>
+                                        <option value=""> --- {{ __('Please Select') }} --- </option>')
+                                        @foreach ($locations as $location)
+                                            <option @if (old('city') == $location->id)
+                                                selected
+                                            @endif value="{{ $location->id }}">{{ $location->location_name }}</option>
+                                        @endforeach
+                                    </select>
 
                                     @error('city')
                                         <span class="invalid-feedback" role="alert">

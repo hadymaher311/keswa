@@ -52,6 +52,7 @@ Route::group([
             Route::get('/user/profile/addresses', 'ProfileController@showAddress')->name('user.addresses');
             Route::POST('/user/profile/addresses/store', 'ProfileController@storeAddress')->name('user.addresses.store');
             Route::get('/user/profile/addresses/{address}/edit', 'ProfileController@editAddress')->name('user.addresses.edit');
+            Route::get('/user/profile/addresses/{address}/main_location', 'ProfileController@main_location')->name('user.addresses.main_location');
             Route::PUT('/user/profile/addresses/{address}/update', 'ProfileController@updateAddress')->name('user.addresses.update');
             Route::DELETE('/user/profile/addresses/{address}/delete', 'ProfileController@destroyAddress')->name('user.addresses.delete');
 

@@ -295,7 +295,7 @@ class Product extends LocalizableModel implements HasMedia
      */
     public function scopeAvailable($query)
     {
-        return $query->whereColumn('min_sale_quantity', '<' , 'products.quantity');
+        // return $query->whereColumn('min_sale_quantity', '<' , 'products.quantity');
     }
     
     /**
@@ -305,6 +305,6 @@ class Product extends LocalizableModel implements HasMedia
      */
     public function isAvailable()
     {
-        return ($this->quantity >= $this->min_sale_quantity);
+        // return ($this->quantity >= $this->min_sale_quantity);
     }
 }

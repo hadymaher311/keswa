@@ -98,7 +98,14 @@
                         <div class="form-group required">
                             <label class="col-sm-2 control-label" for="input-city">{{ __('City') }}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" required autocomplete="city" placeholder="{{ __('City') }}" id="input-city">
+                                <select name="city" id="input-city" class="form-control @error('city') is-invalid @enderror" name="city" required>
+                                    <option value=""> --- {{ __('Please Select') }} --- </option>')
+                                    @foreach ($locations as $location)
+                                        <option @if (old('city') == $location->id)
+                                            selected
+                                        @endif value="{{ $location->id }}">{{ $location->location_name }}</option>
+                                    @endforeach
+                                </select>
 
                                 @error('city')
                                     <span class="invalid-feedback" role="alert">

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Models\WarehouseRelatedLocation;
 
 class RegisterController extends Controller
 {
@@ -48,7 +49,10 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('user.auth.register');
+        $locations = WarehouseRelatedLocation::whereHas('warehouse', function($warehouse){
+            return $warehouse->active();
+        })->get();
+        return view('user.auth.register', compact('locations'));
     }
 
     /**
@@ -71,7 +75,7 @@ class RegisterController extends Controller
 
             // Address
             'country' => ['required', 'string', 'max:255'],
-            'city' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'exists:warehouse_related_locations,id'],
             'street' => ['required', 'string', 'max:255'],
             'building' => ['required', 'string', 'max:255'],
             'floor' => ['required', 'string', 'max:255'],
@@ -89,7 +93,7 @@ class RegisterController extends Controller
      */
     protected function createAddress(array $data, User $user)
     {
-        $user->addresses()->create($data);
+        return $user->addresses()->create($data);
     }
     
     /**
@@ -117,7 +121,9 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-        $this->createAddress($data, $user);
+        $address = $this->createAddress($data, $user);
+        $user->main_location = $address->id;
+        $user->save();
         $this->createPersonalInfo($data, $user);
         return $user;
     }

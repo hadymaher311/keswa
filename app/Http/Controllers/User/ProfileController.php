@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Models\WarehouseRelatedLocation;
 
 class ProfileController extends Controller
 {
@@ -48,7 +49,10 @@ class ProfileController extends Controller
      */
     public function showAddress()
     {
-        return view('user.profile.addressBook');
+        $locations = WarehouseRelatedLocation::whereHas('warehouse', function($warehouse){
+            return $warehouse->active();
+        })->get();
+        return view('user.profile.addressBook', compact('locations'));
     }
 
     /**
@@ -61,7 +65,7 @@ class ProfileController extends Controller
     {
         $this->validate($request, [
             'country' => ['required', 'string', 'max:255'],
-            'city' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'exists:warehouse_related_locations,id'],
             'street' => ['required', 'string', 'max:255'],
             'building' => ['required', 'string', 'max:255'],
             'floor' => ['required', 'string', 'max:255'],
@@ -113,7 +117,10 @@ class ProfileController extends Controller
      */
     public function editAddress(UserAddress $address)
     {
-        return view('user.profile.addressEdit', compact('address'));
+        $locations = WarehouseRelatedLocation::whereHas('warehouse', function($warehouse){
+            return $warehouse->active();
+        })->get();
+        return view('user.profile.addressEdit', compact('address', 'locations'));
     }
 
     /**
@@ -126,7 +133,7 @@ class ProfileController extends Controller
     {
         $this->validate($request, [
             'country' => ['required', 'string', 'max:255'],
-            'city' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'exists:warehouse_related_locations,id'],
             'street' => ['required', 'string', 'max:255'],
             'building' => ['required', 'string', 'max:255'],
             'floor' => ['required', 'string', 'max:255'],
@@ -222,11 +229,18 @@ class ProfileController extends Controller
      */
     public function destroyAddress(Request $request, UserAddress $address)
     {
-        // don't delete the last address
-        if (auth()->user()->addresses->count() <= 1) {
+        // don't delete the main address
+        if (auth()->user()->main_location == $address->id) {
             return back()->with(['error' => trans('Something worng happened')]);
         }
         $address->delete();
         return back()->with('status', trans('Deleted Successfully'));        
+    }
+
+    public function main_location(UserAddress $address)
+    {
+        auth()->user()->main_location = $address->id;
+        auth()->user()->save();
+        return back()->with('status', trans('Updated Successfully'));        
     }
 }
