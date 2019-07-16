@@ -104,6 +104,19 @@
                                 </div>
 
                                 <br>
+                                <h5>{{ __('Warehouses') }}</h5>
+                                <div class="row">
+                                    <div class="col-sm-3"><b>{{ __('Warehouses') }}:</b></div>
+                                    <div class="col-sm-9">
+                                        @forelse ($admin->warehouses as $warehouse)
+                                            <a href="{{ route('warehouses.show', $warehouse->id) }}" class="badge badge-primary" style="margin: 5px">{{ $warehouse->name }}</a>
+                                        @empty
+                                            <div class="text-danger">{{ __('No warehouses for this admin') }}</div>
+                                        @endforelse
+                                    </div>
+                                </div>
+
+                                <br>
                                 <h5>{{ __('Permissions') }}</h5>
                                 <div class="row">
                                     <div class="col-sm-3"><b>{{ __('Permissions') }}:</b></div>

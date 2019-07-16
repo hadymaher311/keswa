@@ -46,7 +46,7 @@ class AdminsController extends Controller
     public function create()
     {
         $roles = Role::all();
-        $warehouses = warehouse::active()->get();
+        $warehouses = warehouse::all();
         return view('admin.admins.create', compact('roles', 'warehouses'));
     }
     
@@ -79,6 +79,20 @@ class AdminsController extends Controller
             $request->all()
         );
     }
+    
+    /**
+     * Store admin warehouses.
+     *
+     * @param  \App\Models\Admin  $admin
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function storeWarehouses(Request $request, Admin $admin)
+    {
+        $admin->warehouses()->sync(
+            $request->warehouses
+        );
+    }
 
 
     /**
@@ -103,6 +117,7 @@ class AdminsController extends Controller
         }
         $this->storePersonalInfo($request, $admin);
         $this->storeAddress($request, $admin);
+        $this->storeWarehouses($request, $admin);
         return back()->with(['status' => trans('Added Successfully')]);
     }
     
@@ -126,7 +141,53 @@ class AdminsController extends Controller
     public function edit(Admin $admin)
     {
         $roles = Role::all();
-        return view('admin.admins.edit', compact('admin', 'roles'));
+        $warehouses = warehouse::all();
+        return view('admin.admins.edit', compact('admin', 'roles', 'warehouses'));
+    }
+
+    /**
+     * update admin personal info.
+     *
+     * @param  \App\Models\Admin  $admin
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function updatePersonalInfo(Request $request, Admin $admin)
+    {
+        $admin->personalInfo()->update([
+            'phone' => $request->phone,
+            'gender' => $request->gender,
+            'birth_date' => $request->birth_date,
+        ]);
+    }
+    
+    /**
+     * update admin address.
+     *
+     * @param  \App\Models\Admin  $admin
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function updateAddress(Request $request, Admin $admin)
+    {
+        $admin->address()->updateOrCreate(
+            ['admin_id' => $admin->id],
+            $request->all()
+        );
+    }
+    
+    /**
+     * update admin warehouses.
+     *
+     * @param  \App\Models\Admin  $admin
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function updateWarehouses(Request $request, Admin $admin)
+    {
+        $admin->warehouses()->sync(
+            $request->warehouses
+        );
     }
     
     /**
@@ -146,9 +207,12 @@ class AdminsController extends Controller
         $admin->syncRoles($request->role);
         if ($request->has('image')) {
             $admin
-                ->addMediaFromUrl($request->image)
-                ->toMediaCollection('admin.avatar');
+            ->addMediaFromUrl($request->image)
+            ->toMediaCollection('admin.avatar');
         }
+        $this->updatePersonalInfo($request, $admin);
+        $this->updateAddress($request, $admin);
+        $this->updateWarehouses($request, $admin);
         return redirect()->route('admins.index')->with('status', trans('Updated Successfully'));
     }
 
@@ -168,7 +232,20 @@ class AdminsController extends Controller
                         Rule::unique('admins')->ignore($admin->id)
                         ],
             'role' => ['required', 'exists:roles,id'],
-            'image' => ['sometimes', 'image']
+            'image' => ['sometimes', 'image'],
+            'warehouses' => ['required', 'array'],
+            'warehouses.*' => ['required', 'exists:warehouses,id'],
+            'birth_date' => ['required', 'date', 'before:today'],
+            'phone' => ['required', 'string', 'max:11', 'min:11'],
+            'gender' => ['required', 'string', 'in:male,female'],
+            'country' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'street' => ['required', 'string', 'max:255'],
+            'building' => ['required', 'string', 'max:255'],
+            'floor' => ['required', 'string', 'max:255'],
+            'apartment' => ['required', 'string', 'max:255'],
+            'nearest_landmark' => ['nullable', 'string', 'max:255'],
+            'location_type' => ['required', 'string', 'in:home,business'],
         ]);
     }
     

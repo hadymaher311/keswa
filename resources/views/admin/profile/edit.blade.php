@@ -118,7 +118,7 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 control-label" for="input-gender">{{ __('Gender') }}</label>
                                                         <div class="col-sm-9">
-                                                            <select class="form-control @error('gender') is-invalid @enderror" name="gender" value="{{ (auth()->user()->personalInfo) ? auth()->user()->personalInfo->gender : '' }}" required id="input-gender" class="form-control">
+                                                            <select class="form-control @error('gender') is-invalid @enderror" name="gender" required id="input-gender" class="form-control">
                                                                 <option value=""> --- {{ __('Please Select') }} --- </option>
                                                                 <option {{ ((auth()->user()->personalInfo) && auth()->user()->personalInfo->gender == 'male') ? 'selected' : '' }} value="male">{{ __('Male') }}</option>
                                                                 <option {{ ((auth()->user()->personalInfo) && auth()->user()->personalInfo->gender == 'female') ? 'selected' : '' }} value="female">{{ __('Female') }}</option>
