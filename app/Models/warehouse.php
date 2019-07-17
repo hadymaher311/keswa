@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\WarehouseProduct;
 use App\Helpers\LocalizableModel;
 use App\Models\WarehouseRelatedLocation;
 
@@ -54,5 +55,13 @@ class warehouse extends LocalizableModel
     public function related_locations()
     {
         return $this->hasMany(WarehouseRelatedLocation::class, 'warehouse_id');
+    }
+    
+    /**
+     * Get warehouse products quantities
+     */
+    public function product_quantities()
+    {
+        return $this->hasMany(WarehouseProduct::class, 'warehouse_id');
     }
 }

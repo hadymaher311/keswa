@@ -703,7 +703,7 @@
     "Order Date": "تاريخ الطلب",
     "Print": "طباعة",
     "Approve": "تأكيد",
-    "Expiry alarm before": "الانذار بانتهاء مدة الصلاحية",
+    "Expiry alert before": "الانذار بانتهاء مدة الصلاحية",
     "In days": "باليوم",
     "Sale by": "البيع بواسطة",
     "Unit": "وحدة",
@@ -711,10 +711,13 @@
     "Related Locations": "الاماكن المتعلقة",
     "No related location for this warehouse": "لا توجد مواقع متعلقة بهذا المخزن",
     "No warehouses for this admin": "لا توجد مخازن لهذا المشرف",
+    "Not in warehouses yet": "لا يوجد في اي مخزن حتي الان",
+    "No profit from this product": "لا يوجد مكسب من هذا المنتج",
     "Shipping price": "سعر الشحن",
     "Choose as main location": "اختره كعنوان رئيسي",
     "Added by": "اضيفت بواسطة",
     "Phone": "الموبايل",
     "Total Quantity": "الكمية الكلية",
+    "days": "أيام",
     "Check all": "تحديد الكل"
 }

@@ -111,23 +111,31 @@
                                             @if ($product->discount)
                                                 <div class="col-9">
                                                     <span style="text-decoration: line-through">{{ $product->price }} {{ __('LE') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    @if ($product->discount->type == 'value')
-                                                        <span>{{ $product->price - $product->discount->amount }} {{ __('LE') }}</span>
-                                                    @elseif ($product->discount->type == 'percentage')
-                                                        <span>{{ ($product->price * (100 - $product->discount->amount) / 100) }} {{ __('LE') }}</span>
+                                                    <span>{{ $product->final_price }} {{ __('LE') }}</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    @if ($product->final_price <= $product->cost)
+                                                        <span class="text-danger">{{ __('No profit from this product') }}</span>
                                                     @endif
                                                 </div>
                                             @else
-                                                <div class="col-9">{{ $product->price }} {{ __('LE') }}</div>
+                                                <div class="col-9">
+                                                    {{ $product->final_price }} {{ __('LE') }}
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    @if ($product->final_price <= $product->cost)
+                                                        <span class="text-danger">{{ __('No profit from this product') }}</span>
+                                                    @endif
+                                                </div>
                                             @endif
                                             <div class="col-3"><b>{{ __('Total price') }}:</b></div>
-                                            <div class="col-9">{{ $product->price * $product->quantity }} {{ __('LE') }}</div>
+                                            <div class="col-9">
+                                                {{ $product->price * $product->total_quantity }} {{ __('LE') }}
+                                            </div>
                                             <div class="col-3"><b>{{ __('Available quantity') }}:</b></div>
-                                            <div class="col-9">{{ $product->quantity }} {{ __('Item') }}</div>
+                                            <div class="col-9">{{ $product->total_quantity }} {{ __(ucfirst($product->sale_by)) }}</div>
                                             <div class="col-3"><b>{{ __('Packets') }}:</b></div>
-                                            <div class="col-9">{{ $product->quantity/$product->quantity_per_packet }} {{ __('Packet') }}</div>
-                                            <div class="col-3"><b>{{ __('Expiry date') }}:</b></div>
-                                            <div class="col-9">{{ $product->expiry_date->format('Y-m-d') }}&nbsp;&nbsp;&nbsp;&nbsp;{{ $product->expiry_date->diffForHumans() }}</div>
+                                            <div class="col-9">{{ $product->total_quantity/$product->quantity_per_packet }} {{ __('Packet') }}</div>
+                                            <div class="col-3"><b>{{ __('Expiry alert before') }}:</b></div>
+                                            <div class="col-9">{{ $product->expiry_alarm_before }} {{ __('days') }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -141,15 +149,25 @@
                                 </div>
                                 <div class="accordion">
                                     <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-3">
-                                        <h4>{{ __('Warehouse') }}</h4>
+                                        <h4>{{ __('Warehouses') }}</h4>
                                     </div>
                                     <div class="accordion-body collapse" id="panel-body-3" data-parent="#accordion">
-                                        <div class="row">
-                                            <div class="col-3"><b>{{ __('Name') }}:</b></div>
-                                            <div class="col-9">{{ $product->warehouse->name }}</div>
-                                            <div class="col-3"><b>{{ __('Location') }}:</b></div>
-                                            <div class="col-9">{{ $product->warehouse->location }}</div>
-                                        </div>
+                                        @forelse ($product->distinct_warehouses as $warehouse)
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-3"><b>{{ __('Name') }}:</b></div>
+                                                        <div class="col-9"><a href="{{ route('warehouses.show', $warehouse->id) }}">{{ $warehouse->name }}</a></div>
+                                                        <div class="col-3"><b>{{ __('Location') }}:</b></div>
+                                                        <div class="col-9">{{ $warehouse->location }}</div>
+                                                        <div class="col-3"><b>{{ __('Quantity') }}:</b></div>
+                                                        <div class="col-9">{{ $product->getWarehouseQuantity($warehouse->id) }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @empty
+                                            <div class="text-danger">{{ __('Not in warehouses yet') }}</div>
+                                        @endforelse
                                     </div>
                                 </div>
                                 <div class="accordion">
@@ -159,15 +177,15 @@
                                     <div class="accordion-body collapse" id="panel-body-4" data-parent="#accordion">
                                         <div class="row">
                                             <div class="col-3"><b>{{ __('Available quantity') }}:</b></div>
-                                            <div class="col-9">{{ $product->quantity }} {{ __('Item') }}</div>
+                                            <div class="col-9">{{ $product->total_quantity }} {{ __(ucfirst($product->sale_by)) }}</div>
                                             <div class="col-3"><b>{{ __('Low quantity') }}:</b></div>
-                                            <div class="col-9">{{ $product->low_quantity }} {{ __('Item') }}</div>
+                                            <div class="col-9">{{ $product->low_quantity }} {{ __(ucfirst($product->sale_by)) }}</div>
                                             <div class="col-3"><b>{{ __('Quantity per packet') }}:</b></div>
-                                            <div class="col-9">{{ $product->quantity_per_packet }} {{ __('Item') }}</div>
+                                            <div class="col-9">{{ $product->quantity_per_packet }} {{ __(ucfirst($product->sale_by)) }}</div>
                                             <div class="col-3"><b>{{ __('Min sale quantity') }}:</b></div>
-                                            <div class="col-9">{{ $product->min_sale_quantity }} {{ __('Item') }}</div>
+                                            <div class="col-9">{{ $product->min_sale_quantity }} {{ __(ucfirst($product->sale_by)) }}</div>
                                             <div class="col-3"><b>{{ __('Packets') }}:</b></div>
-                                            <div class="col-9">{{ $product->quantity/$product->quantity_per_packet }} {{ __('Packet') }}</div>
+                                            <div class="col-9">{{ $product->total_quantity/$product->quantity_per_packet }} {{ __('Packet') }}</div>
                                         </div>
                                         <div class="row mt-3">
                                             <div class="col-3"><b>{{ __('Shipping') }}:</b></div>

@@ -126,7 +126,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">{{ __('Expiry alarm before') }} ({{ __('In days') }})</label>
+                                    <label class="col-sm-3 col-form-label">{{ __('Expiry alert before') }} ({{ __('In days') }})</label>
                                     <div class="col-sm-9">
                                         <input id="expiry_alarm_before" type="number" class="form-control @error('expiry_alarm_before') is-invalid @enderror" name="expiry_alarm_before" min="1" value="{{ old('expiry_alarm_before', 30)  }}" required autocomplete="expiry_alarm_before">
                                         

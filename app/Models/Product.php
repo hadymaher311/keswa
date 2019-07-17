@@ -146,6 +146,17 @@ class Product extends LocalizableModel implements HasMedia
     }
     
     /**
+     * The function to return product in specific warehouse quantity.
+     *
+     */
+    public function getWarehouseQuantity($warehouse_id)
+    {
+        return ($this->quantities->where('warehouse_id', $warehouse_id)->count()) ? $this->quantities->where('warehouse_id', $warehouse_id)->sum(function($quantity) {
+            return $quantity->reduced_quantity;
+        }) : 0;
+    }
+    
+    /**
      * The function to return product discount percentage.
      *
      */
@@ -256,9 +267,18 @@ class Product extends LocalizableModel implements HasMedia
      * Get product warehouse
      * 
      */
-    public function warehouse()
+    public function warehouses()
     {
-        return $this->belongsTo(warehouse::class);
+        return $this->belongsToMany(warehouse::class, 'warehouse_products');
+    }
+    
+    /**
+     * Get product distinct warehouse
+     * 
+     */
+    public function distinct_warehouses()
+    {
+        return $this->belongsToMany(warehouse::class, 'warehouse_products')->distinct();
     }
     
     /**
