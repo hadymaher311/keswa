@@ -126,21 +126,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">{{ __('Expiry date') }}</label>
-                                    <div class="col-sm-9">
-                                        <input id="expiry_date" type="text" class="
-                                        @if (app()->getLocale() == 'ar')
-                                        pull-right
-                                        @endif form-control datepicker @error('expiry_date') is-invalid @enderror" name="expiry_date" value="{{ old('expiry_date') }}" required autocomplete="expiry_date">
-                                        
-                                        @error('expiry_date')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('Expiry alarm before') }} ({{ __('In days') }})</label>
                                     <div class="col-sm-9">
                                         <input id="expiry_alarm_before" type="number" class="form-control @error('expiry_alarm_before') is-invalid @enderror" name="expiry_alarm_before" min="1" value="{{ old('expiry_alarm_before', 30)  }}" required autocomplete="expiry_alarm_before">
@@ -295,18 +280,6 @@
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">{{ __('Quantity') }}</label>
-                                    <div class="col-sm-9">
-                                        <input id="quantity" type="number" class="form-control @error('quantity') is-invalid @enderror" name="quantity" min="1" value="{{ old('quantity', 1)  }}" required autocomplete="quantity">
-                                        
-                                        @error('quantity')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
                                         @enderror
                                     </div>
                                 </div>
@@ -468,26 +441,6 @@
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputEmail" class="col-sm-3 control-label">{{ __('Warehouses') }}</label>
-                
-                                    <div class="col-sm-9">
-                                        <select name="warehouse" id="warehouse" required class="form-control @error('warehouse') is-invalid @enderror">
-                                            <option value="">{{ __('Choose warehouse') }}</option>
-                                            @foreach ($warehouses as $warehouse)
-                                                <option @if ($warehouse->id == old('warehouse'))
-                                                    selected
-                                                @endif value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
-                                            @endforeach
-                                        </select>
-        
-                                        @error('warehouse')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
                                         @enderror
                                     </div>
                                 </div>

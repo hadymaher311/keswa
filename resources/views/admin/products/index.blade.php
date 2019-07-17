@@ -57,7 +57,7 @@
                             </th>
                             <th>{{ __('#') }}</th>
                             <th>{{ __('Name') }}</th>
-                            <th>{{ __('Quantity') }}</th>
+                            <th>{{ __('Total Quantity') }}</th>
                             <th>{{ __('Price') }}</th>
                             <th>{{ __('Added from') }}</th>
                             <th>{{ __('Activate') }}</th>
@@ -79,7 +79,7 @@
                                     </td>
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>{{ $product->name }}</td>
-                                    <td>{{ $product->quantity }}</td>
+                                    <td>{{ $product->total_quantity }} {{ __(ucfirst($product->sale_by)) }}</td>
                                     <td>{{ $product->price }}</td>
                                     <td>{{ $product->created_at->diffForHumans() }}</td>
                                     <td>

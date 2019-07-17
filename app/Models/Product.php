@@ -9,6 +9,7 @@ use App\Models\Feature;
 use App\Models\Discount;
 use App\Models\warehouse;
 use App\Models\SubSubCategory;
+use App\Models\WarehouseProduct;
 use App\Helpers\LocalizableModel;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -134,6 +135,17 @@ class Product extends LocalizableModel implements HasMedia
     }
     
     /**
+     * The function to return product total quantities.
+     *
+     */
+    public function getTotalQuantityAttribute()
+    {
+        return ($this->quantities->count()) ? $this->quantities->sum(function($quantity) {
+            return $quantity->reduced_quantity;
+        }) : 0;
+    }
+    
+    /**
      * The function to return product discount percentage.
      *
      */
@@ -256,6 +268,15 @@ class Product extends LocalizableModel implements HasMedia
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+    
+    /**
+     * Get product quantities
+     * 
+     */
+    public function quantities()
+    {
+        return $this->hasMany(WarehouseProduct::class);
     }
     
     /**
