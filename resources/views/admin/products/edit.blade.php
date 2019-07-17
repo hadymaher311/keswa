@@ -276,18 +276,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">{{ __('Quantity') }}</label>
-                                    <div class="col-sm-9">
-                                        <input id="quantity" type="number" class="form-control @error('quantity') is-invalid @enderror" name="quantity" min="1" value="{{ $product->quantity  }}" required autocomplete="quantity">
-                                        
-                                        @error('quantity')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
 
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">{{ __('Low quantity') }}</label>
@@ -450,26 +438,6 @@
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputEmail" class="col-sm-3 control-label">{{ __('Warehouses') }}</label>
-                
-                                    <div class="col-sm-9">
-                                        <select name="warehouse" id="warehouse" required class="form-control @error('warehouse') is-invalid @enderror">
-                                            <option value="">{{ __('Choose warehouse') }}</option>
-                                            @foreach ($warehouses as $warehouse)
-                                                <option @if ($warehouse->id == $product->warehouse->id)
-                                                    selected
-                                                @endif value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
-                                            @endforeach
-                                        </select>
-        
-                                        @error('warehouse')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
                                         @enderror
                                     </div>
                                 </div>

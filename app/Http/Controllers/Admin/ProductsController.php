@@ -234,10 +234,9 @@ class ProductsController extends Controller
     public function edit(Product $product)
     {
         $sub_sub_categories = SubSubCategory::active()->get();
-        $warehouses = warehouse::active()->get();
         $products = Product::active()->get();
         $brands = Brand::active()->get();
-        return view('admin.products.edit', compact('product', 'sub_sub_categories', 'warehouses', 'products', 'brands'));
+        return view('admin.products.edit', compact('product', 'sub_sub_categories', 'products', 'brands'));
     }
 
     /**
@@ -255,12 +254,10 @@ class ProductsController extends Controller
             'short_description_ar' => $request->short_description_ar,
             'description_en' => $request->description_en,
             'description_ar' => $request->description_ar,
-            'expiry_date' => Carbon::create($request->expiry_date),
             'expiry_alarm_before' => $request->expiry_alarm_before,
             'upc' => $request->upc,
             'sku' => $request->sku,
             'sale_by' => $request->sale_by,
-            'quantity' => $request->quantity,
             'low_quantity' => $request->low_quantity,
             'quantity_per_packet' => $request->quantity_per_packet,
             'min_sale_quantity' => $request->min_sale_quantity,
@@ -271,7 +268,6 @@ class ProductsController extends Controller
             'depth' => $request->depth,
             'weight' => $request->weight,
             'brand_id' => $request->brand,
-            'warehouse_id' => $request->warehouse,
         ]);
     }
 

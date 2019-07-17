@@ -108,7 +108,7 @@
                                             <div class="col-3"><b>{{ __('Cost') }}:</b></div>
                                             <div class="col-9">{{ $product->cost }} {{ __('LE') }}</div>
                                             <div class="col-3"><b>{{ __('Price') }}:</b></div>
-                                            @if ($product->discount)
+                                            @if ($product->activeDiscount)
                                                 <div class="col-9">
                                                     <span style="text-decoration: line-through">{{ $product->price }} {{ __('LE') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <span>{{ $product->final_price }} {{ __('LE') }}</span>

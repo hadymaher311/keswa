@@ -80,7 +80,18 @@
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->total_quantity }} {{ __(ucfirst($product->sale_by)) }}</td>
-                                    <td>{{ $product->price }}</td>
+                                    <td>
+                                        @if ($product->activeDiscount)
+                                            <div class="col-9">
+                                                <span style="text-decoration: line-through">{{ $product->price }} {{ __('LE') }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span class="{{ ($product->final_price <= $product->cost) ? 'badge badge-danger' : '' }}">{{ $product->final_price }} {{ __('LE') }}</span>
+                                            </div>
+                                        @else
+                                            <div class="col-9 {{ ($product->final_price <= $product->cost) ? 'badge badge-danger' : '' }}">
+                                                {{ $product->final_price }} {{ __('LE') }}
+                                            </div>
+                                        @endif
+                                    </td>
                                     <td>{{ $product->created_at->diffForHumans() }}</td>
                                     <td>
                                         @can('update products')
