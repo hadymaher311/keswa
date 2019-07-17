@@ -59,6 +59,7 @@
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Email') }}</th>
                             <th>{{ __('Added from') }}</th>
+                            <th>{{ __('Added by') }}</th>
                             <th>{{ __('Active') }}</th>
                             <th>{{ __('Controls') }}</th>
                         </tr>
@@ -78,6 +79,7 @@
                                     </td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->created_at->diffForHumans() }}</td>
+                                    <td><span class="badge badge-primary">{{ __(ucfirst($user->added_by)) }}</span></td>
                                     
                                     <td>
                                         @can('update users')

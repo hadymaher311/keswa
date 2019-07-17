@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Models\WarehouseRelatedLocation;
 use App\Http\Requests\Admin\Users\CreateRequest;
 
 class UsersController extends Controller
@@ -44,9 +45,44 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+        $locations = WarehouseRelatedLocation::whereHas('warehouse', function($warehouse){
+            return $warehouse->active();
+        })->get();
+        return view('admin.users.create', compact('locations'));
     }
     
+    /**
+     * Store User personal info.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function storePersonalInfo(Request $request, User $user)
+    {
+        $user->personalInfo()->create([
+            'phone' => $request->phone,
+            'gender' => $request->gender,
+            'birth_date' => $request->birth_date,
+        ]);
+    }
+    
+    /**
+     * Store User address.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function storeAddress(Request $request, User $user)
+    {
+        $address = $user->addresses()->create(
+            $request->all()
+        );
+        $user->main_location = $address->id;
+        $user->save();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -60,13 +96,16 @@ class UsersController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'verified_at' => Carbon::now()
+            'verified_at' => Carbon::now(),
+            'added_by' => 'phone'
         ]);
         if ($request->has('image')) {
             $user
                 ->addMediaFromUrl($request->image)
                 ->toMediaCollection('user.avatar');
         }
+        $this->storePersonalInfo($request, $user);
+        $this->storeAddress($request, $user);
         return back()->with(['status' => trans('Added Successfully')]);
     }
     
@@ -93,10 +132,26 @@ class UsersController extends Controller
     }
     
     /**
+     * update User personal info.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function updatePersonalInfo(Request $request, User $user)
+    {
+        $user->personalInfo()->update([
+            'phone' => $request->phone,
+            'gender' => $request->gender,
+            'birth_date' => $request->birth_date,
+        ]);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Admin  $user
+     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
@@ -111,6 +166,7 @@ class UsersController extends Controller
                 ->addMediaFromUrl($request->image)
                 ->toMediaCollection('user.avatar');
         }
+        $this->updatePersonalInfo($request, $user);
         return redirect()->route('users.index')->with('status', trans('Updated Successfully'));
     }
 
@@ -126,10 +182,13 @@ class UsersController extends Controller
         $this->validate($request, [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 
+            'email' => ['nullable', 'string', 'email', 'max:255', 
                         Rule::unique('users')->ignore($user->id)
                         ],
-            'image' => ['sometimes', 'image']
+            'image' => ['sometimes', 'image'],
+            'birth_date' => ['required', 'date', 'before:today'],
+            'phone' => ['required', 'string', 'max:11', 'min:11'],
+            'gender' => ['required', 'string', 'in:male,female'],
         ]);
     }
     

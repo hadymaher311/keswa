@@ -12,6 +12,6 @@ class UserPersonalInfo extends Model
      * @var array
      */
     protected $fillable = [
-        'gender', 'phone',
+        'gender', 'phone', 'birth_date'
     ];
 }

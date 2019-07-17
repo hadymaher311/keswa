@@ -5,7 +5,7 @@
 @endsection
 
 @section('css')
-    
+<link rel="stylesheet" href="{{ asset('/admin_styles/modules/bootstrap-daterangepicker/daterangepicker.css') }}">        
 @endsection
 
 @section('body')
@@ -79,6 +79,48 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label" for="input-date-of-birth">{{ __('Date of birth') }}</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control @if (app()->getLocale() == 'ar')
+                                pull-right
+                                @endif datepicker @error('birth_date') is-invalid @enderror" name="birth_date" value="{{ ($user->personalInfo) ? Carbon\Carbon::create($user->personalInfo->birth_date)->format('Y-m-d') : '' }}" required autocomplete="birth_date" placeholder="{{ __('Date of birth') }}" id="input-date-of-birth" class="form-control">
+
+                                @error('birth_date')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label" for="input-telephone">{{ __('Phone Number') }}</label>
+                            <div class="col-sm-9">
+                                <input type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ ($user->personalInfo) ? $user->personalInfo->phone : '' }}" required autocomplete="phone" placeholder="{{ __('Phone Number') }}" id="input-telephone" class="form-control">
+
+                                @error('phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label" for="input-gender">{{ __('Gender') }}</label>
+                            <div class="col-sm-9">
+                                <select class="form-control @error('gender') is-invalid @enderror" name="gender" required id="input-gender" class="form-control">
+                                    <option value=""> --- {{ __('Please Select') }} --- </option>
+                                    <option {{ (($user->personalInfo) && $user->personalInfo->gender == 'male') ? 'selected' : '' }} value="male">{{ __('Male') }}</option>
+                                    <option {{ (($user->personalInfo) && $user->personalInfo->gender == 'female') ? 'selected' : '' }} value="female">{{ __('Female') }}</option>
+                                </select>
+                                @error('gender')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
                         
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">{{ __('Image') }}</label>
@@ -117,6 +159,7 @@
 
 @section('js')
     <script src="{{ asset('/admin_styles/modules/upload-preview/assets/js/jquery.uploadPreview.min.js') }}"></script>
+    <script src="{{ asset('/admin_styles/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 
     <script>
         $.uploadPreview({

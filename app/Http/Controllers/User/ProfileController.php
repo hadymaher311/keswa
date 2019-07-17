@@ -204,7 +204,7 @@ class ProfileController extends Controller
         $request['content'] = str_replace('>', '&gt;', $request->content);
         $request['content'] = nl2br($request->content);
         $review->update($request->all());
-        return redirect()->route('user.reviews')->with('status', trans('Updated Successfully'));        
+        return redirect()->route('user.reviews')->with('status', trans('Updated Successfully'));
     }
     
     /**
@@ -217,7 +217,7 @@ class ProfileController extends Controller
     public function destroyReviews(Request $request, Review $review)
     {
         $review->delete();
-        return redirect()->route('user.reviews')->with('status', trans('Deleted Successfully'));        
+        return redirect()->route('user.reviews')->with('status', trans('Deleted Successfully'));
     }
     
     /**
@@ -230,17 +230,23 @@ class ProfileController extends Controller
     public function destroyAddress(Request $request, UserAddress $address)
     {
         // don't delete the main address
-        if (auth()->user()->main_location == $address->id) {
+        if (auth()->user()->main_location == $address->id || auth()->user()->addresses->count() <= 1) {
             return back()->with(['error' => trans('Something worng happened')]);
         }
         $address->delete();
-        return back()->with('status', trans('Deleted Successfully'));        
+        return back()->with('status', trans('Deleted Successfully'));
     }
 
+    /**
+     * update main location
+     * 
+     * @param \App\Models\UserAddress $address
+     * @return \Illuminate\Http\Response
+     */
     public function main_location(UserAddress $address)
     {
         auth()->user()->main_location = $address->id;
         auth()->user()->save();
-        return back()->with('status', trans('Updated Successfully'));        
+        return back()->with('status', trans('Updated Successfully'));
     }
 }
