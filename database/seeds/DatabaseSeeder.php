@@ -16,6 +16,7 @@ use App\Models\SubSubCategory;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\GeneralSetting;
 
 class DatabaseSeeder extends Seeder
 {
@@ -168,6 +169,18 @@ class DatabaseSeeder extends Seeder
             $user->main_location = ($user->addresses->count()) ? $user->addresses->first()->id : null;
             $user->save();
         }
+
+        GeneralSetting::createMany([
+            [
+                'name' => 'price_tax',
+                'value' => '14'
+            ],
+            [
+                'name' => 'points_value',
+                'value' => '10'
+            ],
+        ]);
+
         error_log('All done ...');
     }
 }
