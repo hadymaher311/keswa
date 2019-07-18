@@ -192,6 +192,15 @@ class Product extends LocalizableModel implements HasMedia
     }
     
     /**
+     * Get product active categories
+     * 
+     */
+    public function active_categories()
+    {
+        return $this->belongsToMany(SubSubCategory::class, 'product_categories', 'product_id', 'sub_sub_category_id')->withTimestamps()->active();
+    }
+    
+    /**
      * Get product features
      * 
      */
@@ -325,7 +334,7 @@ class Product extends LocalizableModel implements HasMedia
      */
     public function scopeActive($query)
     {;
-        return $query->where('active', 1)->available();
+        return $query->where('active', 1)->whereHas('active_categories')->available();
     }
     
     /**

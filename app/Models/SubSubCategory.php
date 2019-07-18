@@ -54,12 +54,21 @@ class SubSubCategory  extends LocalizableModel implements HasMedia
     }
 
     /**
-     * Get main category
+     * Get sub category
      * 
      */
     public function sub_category()
     {
         return $this->belongsTo(SubCategory::class, 'sub_category_id');
+    }
+    
+    /**
+     * Get active sub category
+     * 
+     */
+    public function active_sub_category()
+    {
+        return $this->belongsTo(SubCategory::class, 'sub_category_id')->active();
     }
     
     /**
@@ -88,6 +97,6 @@ class SubSubCategory  extends LocalizableModel implements HasMedia
      */
     public function scopeActive($query)
     {
-        return $query->where('active', 1);
+        return $query->where('active', 1)->whereHas('active_sub_category');
     }
 }

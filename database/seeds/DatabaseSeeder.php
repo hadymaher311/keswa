@@ -76,6 +76,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+        error_log('Admins start ...');
         $admin = new Admin;
         $admin->first_name = "Hady";
         $admin->last_name = "Maher";
@@ -103,17 +104,70 @@ class DatabaseSeeder extends Seeder
                 $admin->syncRoles($role);
             }
         }
+        error_log('Admins done ...');
+
+        error_log('Features start ...');
         factory(Feature::class, 20)->create();
+        error_log('Features done ...');
+
+        error_log('Brands start ...');
         factory(Brand::class, 30)->create();
-        factory(warehouse::class, 30)->create();
+        error_log('Brands done ...');
+
+        error_log('Categories start ...');
         factory(Category::class, 10)->create();
+        error_log('Categories done ...');
+        
+        error_log('Sub Categories start ...');
         factory(SubCategory::class, 15)->create();
+        error_log('Sub Categories done ...');
+        
+        error_log('Sub sub categories start ...');
         factory(SubSubCategory::class, 50)->create();
+        error_log('Sub sub categories done ...');
+        
+        error_log('Products start ...');
         factory(Product::class, 100)->create();
+        error_log('Products done ...');
+        
+        error_log('Tags start ...');
         factory(Tag::class, 1000)->create();
+        error_log('Tags done ...');
+        
+        error_log('Discounts start ...');
         factory(Discount::class, 50)->create();
+        error_log('Discounts done ...');
+        
+        error_log('Warehouses start ...');
+        factory(warehouse::class, 30)->create();
+        error_log('Warehouses done ...');
+        
+        error_log('Users start ...');
         factory(User::class, 20)->create();
+        error_log('Users done ...');
+        
+        error_log('Users addresses start ...');
         factory(UserAddress::class, 50)->create();
+        error_log('Users addresses done ...');
+        
+        error_log('Reviews start ...');
         factory(Review::class, 300)->create();
+        error_log('Reviews done ...');
+        
+        error_log('Some relations start ...');
+        $products = Product::all();
+        foreach ($products as $product) {
+            $product->total_quantity = ($product->quantities->count()) ? $product->quantities->sum(function($quantity) {
+                return $quantity->reduced_quantity;
+            }) : 0;
+            $product->save();
+        }
+        
+        $users = User::all();
+        foreach ($users as $user) {
+            $user->main_location = ($user->addresses->count()) ? $user->addresses->first()->id : null;
+            $user->save();
+        }
+        error_log('All done ...');
     }
 }

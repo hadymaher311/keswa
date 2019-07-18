@@ -5,11 +5,14 @@
 use App\User;
 use App\Models\UserAddress;
 use Faker\Generator as Faker;
+use App\Models\WarehouseRelatedLocation;
 
 $factory->define(UserAddress::class, function (Faker $faker) {
     return [
         'country' => 'Egypt',
-        'city' => $faker->city,
+        'city' => function() {
+            return WarehouseRelatedLocation::all()->random();
+        },
         'street' => $faker->streetName,
         'building' => $faker->buildingNumber,
         'floor' => $faker->buildingNumber,

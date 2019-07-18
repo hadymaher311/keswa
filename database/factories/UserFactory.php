@@ -33,7 +33,8 @@ $factory->define(User::class, function (Faker $faker) {
 $factory->afterCreating(App\User::class, function ($user, $faker) {
     $user->personalInfo()->create([
         'phone' => $faker->numberBetween(10000000000, 99999999999),
-        'gender' => $faker->randomElement(['male', 'female'])
+        'gender' => $faker->randomElement(['male', 'female']),
+        'birth_date' => $faker->dateTime('2000-01-01 00:00:00'),
     ]);
     $product = Product::all()->random();
     if (!($user->cart()->updateExistingPivot($product->id, ['quantity' => $faker->randomDigit]))) {

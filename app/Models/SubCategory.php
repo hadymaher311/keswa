@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Product;
 use App\Models\Category;
-use App\Models\SubCategory;
 use App\Models\SubSubCategory;
 use App\Helpers\LocalizableModel;
 use Spatie\MediaLibrary\Models\Media;
@@ -65,6 +63,15 @@ class SubCategory  extends LocalizableModel implements HasMedia
     }
     
     /**
+     * Get active main category
+     * 
+     */
+    public function active_main_category()
+    {
+        return $this->belongsTo(Category::class, 'category_id')->active();
+    }
+    
+    /**
      * Get sub sub category
      * 
      */
@@ -81,6 +88,6 @@ class SubCategory  extends LocalizableModel implements HasMedia
      */
     public function scopeActive($query)
     {
-        return $query->where('active', 1);
+        return $query->where('active', 1)->whereHas('active_main_category');
     }
 }
