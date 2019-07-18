@@ -50,7 +50,14 @@
                         <div class="col-md-8">
                             <div class="row">
                                 <div class="col-sm-3"><b>{{ __('Name') }}:</b></div>
-                                <div class="col-sm-9">{{ $sub_sub_category->name }}</div>
+                                <div class="col-sm-9">
+                                    {{ $sub_sub_category->name }}
+                                    @if ($sub_sub_category->active)
+                                        <div class="badge badge-success" style="padding: 7px 12px; font-size: 12px;">{{ __('Active') }}</div>
+                                        @else
+                                        <div class="badge badge-danger" style="padding: 7px 12px; font-size: 12px;">{{ __('Not Active') }}</div>
+                                    @endif
+                                </div>
                                 <div class="col-sm-3"><b>{{ __('Description') }}:</b></div>
                                 <div class="col-sm-9">{!! $sub_sub_category->description !!}</div>
                                 <div class="col-sm-3"><b>{{ __('Category') }}:</b></div>
