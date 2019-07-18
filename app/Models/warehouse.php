@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Admin;
+use App\Models\Product;
 use App\Models\WarehouseProduct;
 use App\Helpers\LocalizableModel;
 use App\Models\WarehouseRelatedLocation;
@@ -55,6 +57,22 @@ class warehouse extends LocalizableModel
     public function related_locations()
     {
         return $this->hasMany(WarehouseRelatedLocation::class, 'warehouse_id');
+    }
+
+    /**
+     * Get warehouse products
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'warehouse_products');
+    }
+
+    /**
+     * get warehouse admins
+     */
+    public function admins()
+    {
+        return $this->belongsToMany(Admin::class, 'admin_warehouses');
     }
     
     /**

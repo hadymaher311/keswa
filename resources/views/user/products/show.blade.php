@@ -99,12 +99,24 @@
                             </div>
                         </div>
 
+                        <h3>
+                            @if ($product->allow_points)
+                                <span class="label" style="background-color: #ffe636;"><i class="fa fa-trophy"></i> {{ __('Get') }} {{ $product->final_price * \App\Models\GeneralSetting::pointsValue()->first()->value }} {{ __('Sa7tot') }}</span>
+                            @endif
+                        </h3>
+                        
+                        <h3>
+                            @if ($product->free_shipping)
+                                <span class="label label-primary"><i class="fa fa-truck"></i> {{ __('Free shipping') }}</span>
+                            @endif
+                        </h3>
+
                         <div class="product-box-desc">
                             <div class="inner-box-desc">
                                 @if ($product->activeDiscount)
                                     <div class="price-tax"><span>{{ __('Save:') }} </span> {{ $product->discount_percentage }} %</div>
                                 @endif
-                                <div class="brand"><span>{{ __('Brand') }}: </span><a href="#">{{ $product->brand->name }}</a>		</div>
+                                <div class="brand"><span>{{ __('Brand') }}: </span><a href="{{ route('user.products.brand.show', $product->brand->id) }}">{{ $product->brand->name }}</a>		</div>
                                 <div class="model"><span>{{ __('Summary') }}: </span> {!! $product->short_description !!}</div>
                             </div>
                         </div>

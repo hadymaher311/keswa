@@ -134,16 +134,16 @@ class Product extends LocalizableModel implements HasMedia
         return ceil($this->price - ($this->price * ($this->discount_percentage / 100)));
     }
     
-    /**
-     * The function to return product total quantities.
-     *
-     */
-    public function getTotalQuantityAttribute()
-    {
-        return ($this->quantities->count()) ? $this->quantities->sum(function($quantity) {
-            return $quantity->reduced_quantity;
-        }) : 0;
-    }
+    // /**
+    //  * The function to return product total quantities.
+    //  *
+    //  */
+    // public function getTotalQuantityAttribute()
+    // {
+    //     return ($this->quantities->count()) ? $this->quantities->sum(function($quantity) {
+    //         return $quantity->reduced_quantity;
+    //     }) : 0;
+    // }
     
     /**
      * The function to return product in specific warehouse quantity.
@@ -324,7 +324,7 @@ class Product extends LocalizableModel implements HasMedia
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)
-    {
+    {;
         return $query->where('active', 1)->available();
     }
     
@@ -336,7 +336,7 @@ class Product extends LocalizableModel implements HasMedia
      */
     public function scopeAvailable($query)
     {
-        // return $query->whereColumn('min_sale_quantity', '<' , 'products.quantity');
+        return $query->whereColumn('total_quantity', '>=', 'min_sale_quantity');
     }
     
     /**
@@ -346,6 +346,6 @@ class Product extends LocalizableModel implements HasMedia
      */
     public function isAvailable()
     {
-        // return ($this->quantity >= $this->min_sale_quantity);
+        return ($this->total_quantity >= $this->min_sale_quantity);
     }
 }

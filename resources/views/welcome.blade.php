@@ -116,6 +116,17 @@
                                                                 @endphp
                                                                 @include('user.components.pricing')
                                                             </p>
+                                                            <h3>
+                                                                @if ($product->allow_points)
+                                                                    <span class="label" style="background-color: #ffe636;"><i class="fa fa-trophy"></i> {{ __('Get') }} {{ $product->final_price * \App\Models\GeneralSetting::pointsValue()->first()->value }} {{ __('Sa7tot') }}</span>
+                                                                @endif
+                                                            </h3>
+                                                            
+                                                            <h3>
+                                                                @if ($product->free_shipping)
+                                                                    <span class="label label-primary"><i class="fa fa-truck"></i> {{ __('Free shipping') }}</span>
+                                                                @endif
+                                                            </h3>
                                                             <p class="desc">{!! $product->short_description !!}</p>
                                                         </div>
                                                     </div>

@@ -41,6 +41,9 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Product::orderBy('created_at', 'desc')->get();
+        // $products = Product::whereHas('warehouses.admins', function($admin) {
+        //     $admin->where('admins.id', auth()->id());
+        // })->orderBy('created_at', 'desc')->get();
         return view('admin.products.index', compact('products'));
     }
     
