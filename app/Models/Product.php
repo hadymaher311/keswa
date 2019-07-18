@@ -8,6 +8,7 @@ use App\Models\Review;
 use App\Models\Feature;
 use App\Models\Discount;
 use App\Models\warehouse;
+use App\Models\GeneralSetting;
 use App\Models\SubSubCategory;
 use App\Models\WarehouseProduct;
 use App\Helpers\LocalizableModel;
@@ -77,6 +78,16 @@ class Product extends LocalizableModel implements HasMedia
     {
         return $this->getMedia('product.images');
     }
+    
+    
+    /**
+     * The function to return points.
+     *
+     */
+    public function getPointsAttribute()
+    {
+        return ($this->allow_points) ? GeneralSetting::pointsValue()->first()->value * $this->final_price : 0;
+    }
 
     /**
      * Return the sluggable configuration array for this model.
@@ -131,7 +142,15 @@ class Product extends LocalizableModel implements HasMedia
      */
     public function getFinalPriceAttribute()
     {
-        return ceil($this->price - ($this->price * ($this->discount_percentage / 100)));
+        if ($this->activeDiscount) {
+            if ($this->activeDiscount->type == 'value') {
+                return $this->price - $this->activeDiscount->amount;
+            } else {
+                return ceil($this->price * (100 - $this->activeDiscount->amount) / 100);
+            }
+        }
+        return $this->price;
+        // return ceil($this->price - ($this->price * ($this->discount_percentage / 100)));
     }
     
     // /**

@@ -31,7 +31,7 @@
                                     <button class="btn btn-danger btn-xs pull-right" type="submit" form="delete-form-{{ $loop->index }}"><i class="fa fa-times"></i> {{ __('Delete') }}</button>
                                 @endif
                                 <div>
-                                    <b>{{ $address->country }}, {{ $address->city }}</b>
+                                    <b>{{ $address->country }}, {{ $address->warehouse_related_location->location_name }}</b>
                                 </div>
                                 <div>
                                     <b>{{ __('Location') }}: </b>{{ __(ucfirst($address->location_type)) }}

@@ -41,7 +41,7 @@
                                     <select name="city" id="input-city" class="form-control @error('city') is-invalid @enderror" name="city" required>
                                         <option value=""> --- {{ __('Please Select') }} --- </option>')
                                         @foreach ($locations as $location)
-                                            <option @if ($address->id == $location->id)
+                                            <option @if ($address->city == $location->id)
                                                 selected
                                             @endif value="{{ $location->id }}">{{ $location->location_name }}</option>
                                         @endforeach

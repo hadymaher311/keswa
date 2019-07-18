@@ -44,7 +44,7 @@
                     <tr>
                         <td class="text-left">
                                 <div>
-                                    <b>{{ $order->address->country }}, {{ $order->address->city }}</b>
+                                    <b>{{ $order->address->country }}, {{ $order->address->warehouse_related_location->location_name }}</b>
                                 </div>
                                 <div>
                                     <b>{{ __('Location') }}: </b>{{ __(ucfirst($order->address->location_type)) }}
@@ -117,9 +117,15 @@
                         </tr>
                         <tr>
                             <td class="text-right">
+                                <strong>{{ __('Shipping price') }}:</strong>
+                            </td>
+                            <td class="text-right">{{ ceil($order->shipping_price) }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
                                 <strong>{{ __('Total Price') }}:</strong>
                             </td>
-                            <td class="text-right">{{ ceil($order->total_price + ceil($order->total_price * ($price_tax->value / 100))) }}</td>
+                            <td class="text-right">{{ ceil($order->total_price + $order->shipping_price + ceil($order->total_price * ($price_tax->value / 100))) }}</td>
                         </tr>
                     </tfoot>
                 </table>

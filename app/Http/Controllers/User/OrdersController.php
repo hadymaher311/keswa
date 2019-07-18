@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\UserAddress;
 use Illuminate\Http\Request;
+use App\Models\GeneralSetting;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Models\WarehouseRelatedLocation;
 
 class OrdersController extends Controller
 {
@@ -26,7 +30,10 @@ class OrdersController extends Controller
      */
     public function checkout()
     {
-        return view('user.orders.checkout');
+        $locations = WarehouseRelatedLocation::whereHas('warehouse', function($warehouse){
+            return $warehouse->active();
+        })->get();
+        return view('user.orders.checkout', compact('locations'));
     }
 
     /**
@@ -60,7 +67,20 @@ class OrdersController extends Controller
 
         // remove the cart
         auth()->user()->cart()->detach();
-    }    
+    }
+
+    /**
+     * if all cart products is free
+     */
+    protected function isAllFree()
+    {
+        foreach (auth()->user()->cart as $product) {
+            if (!$product->free_shipping) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * Store order details
@@ -73,8 +93,22 @@ class OrdersController extends Controller
         return auth()->user()->orders()->create([
             'comment' => $request->comments,
             'user_address_id' => $request->address,
-            'total_price' => auth()->user()->cart_total_price
+            'total_price' => auth()->user()->cart_total_price,
+            'points' => auth()->user()->cart_total_points,
+            'warehouse_id' => UserAddress::find($request->address)->warehouse()->id,
+            'shipping_price' => ($this->isAllFree()) ? UserAddress::find($request->address)->warehouse()->shipping_price : 0,
         ]);
+    }
+
+    /**
+     * Get real quantity
+     * 
+     * @param \App\Models\Product $product
+     * @return int
+     */
+    protected function getRealQuantity(Product $product)
+    {
+        return (mb_strtolower($product->sale_by) == 'gram') ? $product->min_sale_quantity * $product->pivot->quantity : $product->pivot->quantity;
     }
 
     /**
@@ -83,7 +117,7 @@ class OrdersController extends Controller
     protected function checkMinSaleOfProducts()
     {
         foreach (auth()->user()->cart as $product) {
-            if ($product->pivot->quantity < $product->min_sale_quantity) {
+            if ($this->getRealQuantity($product) < $product->min_sale_quantity) {
                 return $product;
             }
         }
@@ -113,14 +147,17 @@ class OrdersController extends Controller
         $request['comments'] = str_replace('<', '&lt;', $request->comments);
         $request['comments'] = str_replace('>', '&gt;', $request->comments);
         $request['comments'] = nl2br($request->comments);
-        $product = $this->checkMinSaleOfProducts();
-        if (!$product) {
-            $order = $this->storeOrderDetails($request);
-            $this->addOrderStatus($order);
-            $this->addOrderProducts($order);
-            return redirect()->route('user.orders')->with(['status' => trans('Added Successfully')]);
+        if (UserAddress::find($request->address)->warehouse()->active) {
+            $product = $this->checkMinSaleOfProducts();
+            if (!$product) {
+                $order = $this->storeOrderDetails($request);
+                $this->addOrderStatus($order);
+                $this->addOrderProducts($order);
+                return redirect()->route('user.orders')->with(['status' => trans('Added Successfully')]);
+            }
+            return back()->with(['error' => __('You must order at least') . ' ' . $product->min_sale_quantity . ' ' . __('from') . ' ' . $product->name]);
         }
-        return back()->with(['error' => __('You must order at least') . ' ' . $product->min_sale_quantity . ' ' . __('from') . ' ' . $product->name]);
+        return back()->with(['error' => __('You must change your address because warehouse in this address is no active')]);
     }
 
     /**

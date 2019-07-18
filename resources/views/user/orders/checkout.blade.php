@@ -103,9 +103,9 @@
                                         <div class="panel-body">
                                             <div class="radio">
                                                 <label style="display: block">
-                                                    <input type="radio" name="address" {{ ($loop->index == 0 ? 'checked' : '') }} id="optionsRadios{{ $loop->index }}" required value="{{ $address->id }}">
+                                                    <input type="radio" name="address" {{ (auth()->user()->main_location == $address->id ? 'checked' : '') }} id="optionsRadios{{ $loop->index }}" required value="{{ $address->id }}">
                                                     <div>
-                                                        <b>{{ $address->country }}, {{ $address->city }}</b>
+                                                        <b>{{ $address->country }}, {{ $address->warehouse_related_location->location_name }}</b>
                                                     </div>
                                                     <div>
                                                         <b>{{ __('Location') }}: </b>{{ __(ucfirst($address->location_type)) }}
@@ -167,8 +167,15 @@
                                 <div class="form-group required">
                                     <label class="col-sm-2 control-label" for="input-city">{{ __('City') }}</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" required autocomplete="city" placeholder="{{ __('City') }}" id="input-city">
-    
+                                        <select name="city" id="input-city" class="form-control @error('city') is-invalid @enderror" name="city" required>
+                                            <option value=""> --- {{ __('Please Select') }} --- </option>')
+                                            @foreach ($locations as $location)
+                                                <option @if (old('city') == $location->id)
+                                                    selected
+                                                @endif value="{{ $location->id }}">{{ $location->location_name }}</option>
+                                            @endforeach
+                                        </select>
+
                                         @error('city')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

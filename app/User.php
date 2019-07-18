@@ -121,6 +121,17 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
             return $cart->final_price * $cart->pivot->quantity;
           }) : 0;
     }
+    
+    /**
+     * The function to return cart total points.
+     *
+     */
+    public function getCartTotalPointsAttribute()
+    {
+        return ($this->cart->count()) ? $this->cart->sum(function($cart) {
+            return $cart->points * $cart->pivot->quantity;
+          }) : 0;
+    }
 
     /**
      * Get user reviews
@@ -147,6 +158,14 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function notApprovedReviews()
     {
         return $this->hasMany(Review::class)->where('approved', 0);
+    }
+
+    /**
+     * Get user main location
+     */
+    public function mainLocation()
+    {
+        return $this->belongsTo(UserAddress::class, 'main_location');
     }
 
     /**
