@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\warehouse;
 use Illuminate\Http\Request;
 use App\Models\GeneralSetting;
+use App\Models\WarehouseProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Orders\CreateRequest;
 
@@ -213,6 +214,33 @@ class OrdersController extends Controller
     }
 
     /**
+     * get real quantity
+     * 
+     * @param \App\Models\Product $product
+     * @return int
+     */
+    protected function getRealQuantity(Product $product)
+    {
+        return (mb_strtolower($product->sale_by) == 'gram') ? $product->pivot->quantity * $product->min_sale_quantity : $product->pivot->quantity;
+    }
+
+    /**
+     * reduce Order product quantities.
+     *
+     * @param  \App\Models\Order  $order
+     */
+    protected function reduceQuantities(Order $order) {
+        foreach ($order->products as $product) {
+            $quantity = WarehouseProduct::where('warehouse_id', $order->warehouse_id)->where('product_id', $product->id)->where('reduced_quantity', '>=', $product->min_sale_quantity)->where('reduced_quantity', '>=', $this->getRealQuantity($product))->first();
+            $quantity->reduced_quantity -= $this->getRealQuantity($product);
+            $quantity->save();
+            $product->total_quantity = $product->quantities->sum(function($quantity) {
+                return $quantity->reduced_quantity;
+            });
+            $product->save();
+        }
+    }
+    /**
      * shipping Order.
      *
      * @param  \App\Models\Order  $order
@@ -221,12 +249,30 @@ class OrdersController extends Controller
      */
     public function shipping(Request $request, Order $order)
     {
+        if (!$order->isShipped()) {
+            $this->reduceQuantities($order);
+        }
         $order->statuses()->create(
             ['name' => 'Shipped',]
         );
         $order->shipping_date = Carbon::now();
         $order->save();
         return back()->with(['status' => __('Shipped Successfully')]);
+    }
+    
+    /**
+     * complete Order.
+     *
+     * @param  \App\Models\Order  $order
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function complete(Request $request, Order $order)
+    {
+        $order->statuses()->create(
+            ['name' => 'Completed',]
+        );
+        return back()->with(['status' => __('Completed Successfully')]);
     }
     
     /**

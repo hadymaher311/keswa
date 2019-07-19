@@ -118,8 +118,9 @@
                             <th>{{ __('Status') }}</th>
                             <th>{{ __('User') }}</th>
                             <th>{{ __('Added from') }}</th>
-                            <th>{{ __('Shipping') }}</th>
                             <th>{{ __('Approve') }}</th>
+                            <th>{{ __('Shipping') }}</th>
+                            <th>{{ __('Completed') }}</th>
                             <th>{{ __('Controls') }}</th>
                         </tr>
                         </thead>
@@ -142,16 +143,6 @@
                                     <td><a href="{{ route('users.show', $order->user->id) }}">{{ $order->user->name }}</a></td>
                                     <td>{{ $order->created_at }}</td>
                                     <td>
-                                        @if ($order->isApproved() && !$order->isCanceled() && !$order->isCompleted())
-                                            <form action="{{ route('orders.shipping', $order->id) }}" method="POST">
-                                                @csrf
-                                                <button type="submit" data-toggle="tooltip" data-placement="top" title="{{ __('Shipping') }}" class="btn btn-sm btn-info">
-                                                    <i class="fa fa-shipping-fast"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-                                    </td>
-                                    <td>
                                         @if ($order->isApproved())
                                             <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
                                                 <i class="fa fa-check"></i>
@@ -164,6 +155,32 @@
                                             <a href="{{ route('orders.approve', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approve') }}" data-id="{{ $order->id }}" class="btn btn-sm btn-warning model-5">
                                                 <i class="fa fa-check"></i>
                                             </a>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($order->isApproved() && !$order->isCanceled() && !$order->isCompleted())
+                                            <form action="{{ route('orders.shipping', $order->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" data-toggle="tooltip" data-placement="top" title="{{ __('Shipping') }}" class="btn btn-sm btn-info">
+                                                    <i class="fa fa-shipping-fast"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($order->isApproved() && !$order->isCanceled() && $order->isShipped())
+                                            @if ($order->isCompleted())
+                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Completed') }}" class="btn btn-sm btn-success">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                            @else
+                                                <form action="{{ route('orders.complete', $order->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" data-toggle="tooltip" data-placement="top" title="{{ __('Complete') }}" class="btn btn-sm btn-warning">
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
                                         @endif
                                     </td>
                                     <td>

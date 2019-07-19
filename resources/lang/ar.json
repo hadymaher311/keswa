@@ -727,6 +727,7 @@
     "You must change your address because warehouse in this address is no active": "يجب تغيير العنوان الحالي لان المخزن المرتبط بهذا العنوان غير نشط حاليا",
     "Approve order": "تأكيد الطلب",
     "Decline": "رفض",
+    "Complete": "انهاء",
     "Declined": "تم الرفض",
     "Approved Successfully": "تم التأكيد بنجاح",
     "Declined Successfully": "تم الرفض بنجاح",

@@ -84,7 +84,7 @@ class Order extends Model
      */
     public function isCanceled()
     {
-        return $this->statuses->where('name', 'Completed')->isNotEmpty();
+        return $this->statuses->where('name', 'Canceled')->isNotEmpty();
     }
     
     /**

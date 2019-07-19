@@ -34,18 +34,29 @@
             {{ __('Waiting for confirmation') }}
             </div>
         </div>
-        <div class="wizard-step @if($order->isApproved())
-                wizard-step-active
-            @else
-                wizard-step-default
-            @endif">
-            <div class="wizard-step-icon">
-                <i class="fas fa-info"></i>
+        @if ($order->isDeclined())
+            <div class="wizard-step wizard-step-danger">
+                <div class="wizard-step-icon">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="wizard-step-label">
+                    {{ __('Declined') }}
+                </div>
             </div>
-            <div class="wizard-step-label">
-                {{ __('Approved') }}
+        @else
+            <div class="wizard-step @if($order->isApproved())
+                    wizard-step-active
+                @else
+                    wizard-step-default
+                @endif">
+                <div class="wizard-step-icon">
+                    <i class="fas fa-info"></i>
+                </div>
+                <div class="wizard-step-label">
+                    {{ __('Approved') }}
+                </div>
             </div>
-        </div>
+        @endif
         <div class="wizard-step @if($order->isShipped())
             wizard-step-info
         @else
