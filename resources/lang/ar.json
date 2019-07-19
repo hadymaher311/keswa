@@ -725,5 +725,9 @@
     "The product": "المنتج",
     "is not available in your area": "ليس متاحا في منطقتك",
     "You must change your address because warehouse in this address is no active": "يجب تغيير العنوان الحالي لان المخزن المرتبط بهذا العنوان غير نشط حاليا",
+    "Approve order": "تأكيد الطلب",
+    "Decline": "رفض",
+    "Approved Successfully": "تم التأكيد بنجاح",
+    "Declined Successfully": "تم الرفض بنجاح",
     "Check all": "تحديد الكل"
 }

@@ -56,6 +56,14 @@ class Order extends Model
     }
     
     /**
+     * if order has decline status
+     */
+    public function isDeclined()
+    {
+        return $this->statuses->where('name', 'Declined')->isNotEmpty();
+    }
+    
+    /**
      * if order has Shipped status
      */
     public function isShipped()

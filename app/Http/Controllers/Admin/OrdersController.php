@@ -195,6 +195,21 @@ class OrdersController extends Controller
     }
 
     /**
+     * decline Order.
+     *
+     * @param  \App\Models\Order  $order
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function decline(Request $request, Order $order)
+    {
+        $order->statuses()->create(
+            ['name' => 'Declined',]
+        );
+        return redirect()->route('orders.index')->with(['status' => __('Declined Successfully')]);
+    }
+
+    /**
      * Approve Order.
      *
      * @param  \App\Models\Order  $order
@@ -216,6 +231,26 @@ class OrdersController extends Controller
         $order->statuses()->create(
             ['name' => 'Approved',]
         );
+        return redirect()->route('orders.index')->with(['status' => __('Approved Successfully')]);
+    }
+
+    /**
+     * Display page for order approving.
+     *
+     * @param  \App\Models\Order  $order
+     * @return \Illuminate\Http\Response
+     */
+    public function approveView(Order $order)
+    {
+        if (auth()->user()->can('order.view', $order)) {
+            if (!($order->isApproved()) && !($order->isDeclined())) {
+                $price_tax = GeneralSetting::priceTax()->first();
+                $warehouses = auth()->user()->warehouses;
+                return view('admin.orders.approve', compact('order', 'price_tax', 'warehouses'));
+            }
+            abort(404);
+        }
+        abort(403);
     }
 
     /**
