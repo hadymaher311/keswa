@@ -155,35 +155,37 @@
                         </div>
                     </div>
 
-                    <br>
-                    <h4>{{ __('Address') }}</h4>
-                    <b>{{ __($order->address->country) }}, {{ __($order->address->city) }}</b>
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <b>{{ __('Location') }}: </b>
+                    @if ($order->address)
+                        <br>
+                        <h4>{{ __('Address') }}</h4>
+                        <b>{{ __($order->address->country) }}, {{ __($order->address->city) }}</b>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <b>{{ __('Location') }}: </b>
+                            </div>
+                            <div class="col-sm-10">{{ __(ucfirst($order->address->location_type)) }}</div>
+                            <div class="col-sm-2">
+                                <b>{{ __('Street Name/No') }}: </b>
+                            </div>
+                            <div class="col-sm-10">{{ $order->address->street }}</div>
+                            <div class="col-sm-2">
+                                <b>{{ __('Building Name/No') }}: </b>
+                            </div>
+                            <div class="col-sm-10">{{ $order->address->building }}</div>
+                            <div class="col-sm-2">
+                                <b>{{ __('Floor No') }}: </b>
+                            </div>
+                            <div class="col-sm-10">{{ $order->address->floor }}</div>
+                            <div class="col-sm-2">
+                                <b>{{ __('Apartment No') }}: </b>
+                            </div>
+                            <div class="col-sm-10">{{ $order->address->apartment }}</div>
+                            <div class="col-sm-2">
+                                <b>{{ __('Nearest Landmark') }}: </b>
+                            </div>
+                            <div class="col-sm-10">{{ $order->address->nearest_landmark }}</div>
                         </div>
-                        <div class="col-sm-10">{{ __(ucfirst($order->address->location_type)) }}</div>
-                        <div class="col-sm-2">
-                            <b>{{ __('Street Name/No') }}: </b>
-                        </div>
-                        <div class="col-sm-10">{{ $order->address->street }}</div>
-                        <div class="col-sm-2">
-                            <b>{{ __('Building Name/No') }}: </b>
-                        </div>
-                        <div class="col-sm-10">{{ $order->address->building }}</div>
-                        <div class="col-sm-2">
-                            <b>{{ __('Floor No') }}: </b>
-                        </div>
-                        <div class="col-sm-10">{{ $order->address->floor }}</div>
-                        <div class="col-sm-2">
-                            <b>{{ __('Apartment No') }}: </b>
-                        </div>
-                        <div class="col-sm-10">{{ $order->address->apartment }}</div>
-                        <div class="col-sm-2">
-                            <b>{{ __('Nearest Landmark') }}: </b>
-                        </div>
-                        <div class="col-sm-10">{{ $order->address->nearest_landmark }}</div>
-                    </div>
+                    @endif
 
                     <br>
                     <h4>{{ __('Products') }}</h4>

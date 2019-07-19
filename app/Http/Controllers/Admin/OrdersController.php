@@ -226,8 +226,11 @@ class OrdersController extends Controller
      */
     public function show(Order $order)
     {
-        $price_tax = GeneralSetting::priceTax()->first();
-        return view('admin.orders.show', compact('order', 'price_tax'));
+        if (auth()->user()->can('order.view', $order)) {
+            $price_tax = GeneralSetting::priceTax()->first();
+            return view('admin.orders.show', compact('order', 'price_tax'));
+        }
+        abort(403);
     }
     
     /**
@@ -238,8 +241,11 @@ class OrdersController extends Controller
      */
     public function invoice(Order $order)
     {
-        $price_tax = GeneralSetting::priceTax()->first();
-        return view('admin.orders.invoice', compact('order', 'price_tax'));
+        if (auth()->user()->can('order.view', $order)) {
+            $price_tax = GeneralSetting::priceTax()->first();
+            return view('admin.orders.invoice', compact('order', 'price_tax'));
+        }
+        abort(403);
     }
     
     /**
@@ -250,8 +256,11 @@ class OrdersController extends Controller
      */
     public function invoicePrint(Order $order)
     {
-        $price_tax = GeneralSetting::priceTax()->first();
-        return view('admin.orders.invoicePrint', compact('order', 'price_tax'));
+        if (auth()->user()->can('order.view', $order)) {
+            $price_tax = GeneralSetting::priceTax()->first();
+            return view('admin.orders.invoicePrint', compact('order', 'price_tax'));
+        }
+        abort(403);
     }
 
     /**
