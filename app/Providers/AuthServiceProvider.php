@@ -26,5 +26,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('order.view', 'App\Policies\Admin\OrdersPolicy@view');        
+        Gate::define('warehouse.view', 'App\Policies\Admin\WarehousesPolicy@view');        
     }
 }

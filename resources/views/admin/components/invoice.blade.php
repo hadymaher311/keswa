@@ -17,32 +17,34 @@
                             {{ ($order->user->personalInfo) ? __(ucfirst($order->user->personalInfo->gender)) : '' }}
                         </address>
                     </div>
-                    <div class="col-md-6 {{ app()->isLocale('ar') ? 'text-right' : '' }}">
-                        <address>
-                            <strong>{{ __('Address') }}:</strong><br>
-                            <div>
-                                <b>{{ $order->address->country }}, {{ $order->address->city }}</b>
-                            </div>
-                            <div>
-                                <b>{{ __('Location') }}: </b>{{ __(ucfirst($order->address->location_type)) }}
-                            </div>
-                            <div>
-                                <b>{{ __('Street Name/No') }}: </b>{{ $order->address->street }}
-                            </div>
-                            <div>
-                                <b>{{ __('Building Name/No') }}: </b>{{ $order->address->building }}
-                            </div>
-                            <div>
-                                <b>{{ __('Floor No') }}: </b>{{ $order->address->floor }}
-                            </div>
-                            <div>
-                                <b>{{ __('Apartment No') }}: </b>{{ $order->address->apartment }}
-                            </div>
-                            <div>
-                                <b>{{ __('Nearest Landmark') }}: </b>{{ $order->address->nearest_landmark }}
-                            </div>
-                        </address>
-                    </div>
+                    @if ($order->address)
+                        <div class="col-md-6 {{ app()->isLocale('ar') ? 'text-right' : '' }}">
+                            <address>
+                                <strong>{{ __('Address') }}:</strong><br>
+                                <div>
+                                    <b>{{ $order->address->country }}, {{ $order->address->city }}</b>
+                                </div>
+                                <div>
+                                    <b>{{ __('Location') }}: </b>{{ __(ucfirst($order->address->location_type)) }}
+                                </div>
+                                <div>
+                                    <b>{{ __('Street Name/No') }}: </b>{{ $order->address->street }}
+                                </div>
+                                <div>
+                                    <b>{{ __('Building Name/No') }}: </b>{{ $order->address->building }}
+                                </div>
+                                <div>
+                                    <b>{{ __('Floor No') }}: </b>{{ $order->address->floor }}
+                                </div>
+                                <div>
+                                    <b>{{ __('Apartment No') }}: </b>{{ $order->address->apartment }}
+                                </div>
+                                <div>
+                                    <b>{{ __('Nearest Landmark') }}: </b>{{ $order->address->nearest_landmark }}
+                                </div>
+                            </address>
+                        </div>
+                    @endif
                 </div>
                 <div class="row">
                     <div class="col-md-6 {{ app()->isLocale('ar') ? 'text-right' : '' }}">
@@ -107,10 +109,14 @@
                     <div class="invoice-detail-name">{{ __('Price Tax') }} ({{ $price_tax->value }}%)</div>
                     <div class="invoice-detail-value">{{ ceil($order->total_price * ($price_tax->value / 100)) }} {{ __('LE') }}</div>
                     </div>
+                    <div class="invoice-detail-item">
+                    <div class="invoice-detail-name">{{ __('Shipping price') }}</div>
+                    <div class="invoice-detail-value">{{ ceil($order->shipping_price) }} {{ __('LE') }}</div>
+                    </div>
                     <hr class="mt-2 mb-2">
                     <div class="invoice-detail-item">
                     <div class="invoice-detail-name">{{ __('Total Price') }}</div>
-                    <div class="invoice-detail-value invoice-detail-value-lg">{{ ceil($order->total_price + ceil($order->total_price * ($price_tax->value / 100))) }} {{ __('LE') }}</div>
+                    <div class="invoice-detail-value invoice-detail-value-lg">{{ ceil($order->total_price + $order->shipping_price + ceil($order->total_price * ($price_tax->value / 100))) }} {{ __('LE') }}</div>
                     </div>
                 </div>
             </div>

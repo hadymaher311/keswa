@@ -6,7 +6,6 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
-use App\Models\GeneralSetting;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use App\Models\WarehouseRelatedLocation;

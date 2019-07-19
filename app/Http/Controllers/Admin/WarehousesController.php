@@ -31,7 +31,7 @@ class WarehousesController extends Controller
      */
     public function index()
     {
-        $warehouses = warehouse::all();
+        $warehouses = auth()->user()->warehouses;
         return view('admin.warehouses.index', compact('warehouses'));
     }
     
@@ -87,7 +87,10 @@ class WarehousesController extends Controller
      */
     public function show(warehouse $warehouse)
     {
-        return view('admin.warehouses.show', compact('warehouse'));
+        if (auth()->user()->can('warehouse.view', $warehouse)) {
+            return view('admin.warehouses.show', compact('warehouse'));
+        }
+        abort(403);
     }
     
     /**
@@ -98,7 +101,10 @@ class WarehousesController extends Controller
      */
     public function edit(warehouse $warehouse)
     {
-        return view('admin.warehouses.edit', compact('warehouse'));
+        if (auth()->user()->can('warehouse.view', $warehouse)) {
+            return view('admin.warehouses.edit', compact('warehouse'));
+        }
+        abort(403);
     }
 
     /**
@@ -125,14 +131,17 @@ class WarehousesController extends Controller
      */
     public function update(UpdateRequest $request, warehouse $warehouse)
     {
-        $warehouse->name_en = $request->name;
-        $warehouse->name_ar = $request->name_ar;
-        $warehouse->location_en = $request->location;
-        $warehouse->location_ar = $request->location_ar;
-        $warehouse->shipping_price = $request->shipping_price;
-        $warehouse->save();
-        $this->updateRelatedLocations($request, $warehouse);
-        return redirect()->route('warehouses.index')->with('status', trans('Updated Successfully'));
+        if (auth()->user()->can('warehouse.view', $warehouse)) {
+            $warehouse->name_en = $request->name;
+            $warehouse->name_ar = $request->name_ar;
+            $warehouse->location_en = $request->location;
+            $warehouse->location_ar = $request->location_ar;
+            $warehouse->shipping_price = $request->shipping_price;
+            $warehouse->save();
+            $this->updateRelatedLocations($request, $warehouse);
+            return redirect()->route('warehouses.index')->with('status', trans('Updated Successfully'));
+        }
+        abort(403);
     }
 
     /**
