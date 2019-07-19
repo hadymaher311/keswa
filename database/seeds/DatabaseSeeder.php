@@ -4,6 +4,7 @@ use App\User;
 use App\Models\Tag;
 use App\Models\Admin;
 use App\Models\Brand;
+use App\Models\Order;
 use App\Models\Review;
 use App\Models\Feature;
 use App\Models\Product;
@@ -12,11 +13,11 @@ use App\Models\Discount;
 use App\Models\warehouse;
 use App\Models\SubCategory;
 use App\Models\UserAddress;
+use App\Models\GeneralSetting;
 use App\Models\SubSubCategory;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use App\Models\GeneralSetting;
 
 class DatabaseSeeder extends Seeder
 {
@@ -180,6 +181,10 @@ class DatabaseSeeder extends Seeder
                 'value' => '10'
             ],
         ]);
+
+        error_log('Orders start ...');
+        factory(Order::class, 50)->create();
+        error_log('Orders done ...');
 
         error_log('All done ...');
     }

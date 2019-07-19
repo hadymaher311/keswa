@@ -53,7 +53,7 @@
                     <form action="{{ route('orders.index') }}" id="date-form" method="get">
                         <input type="hidden" name="state" value="by_date">
                         <div class="form-group row pl-5 pr-5">
-                            <label class="col-sm-3 control-label" for="input-date-of-birth">{{ __('From - To') }} <span class="date-input">({{ Request::get('from_to') }})</span></label>
+                            <label class="col-sm-3 control-label" for="input-date-of-birth">{{ __('From - To') }} <span class="date-input">({{ implode(' / ', explode('/', Request::get('from_to'))) }})</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="d-none date-input" name="from_to" required autocomplete="from_to" placeholder="{{ __('From - To') }}" id="input-date-of-birth" class="form-control">
                                 <a href="javascript:;" class="btn btn-block btn-warning daterange-btn icon-left btn-icon"><i class="fas fa-calendar"></i> {{ __('Choose Date') }}
@@ -283,8 +283,8 @@
             ranges: {
                 "{{ __('Today') }}"       : [moment(), moment().add(1, 'days')],
                 "{{ __('Yesterday') }}"   : [moment().subtract(1, 'days'), moment()],
-                "{{ __('Last 7 Days') }}" : [moment().subtract(6, 'days'), moment()],
-                "{{ __('Last 30 Days') }}": [moment().subtract(29, 'days'), moment()],
+                "{{ __('Last 7 Days') }}" : [moment().subtract(6, 'days'), moment().add(1, 'days')],
+                "{{ __('Last 30 Days') }}": [moment().subtract(29, 'days'), moment().add(1, 'days')],
                 "{{ __('This Month') }}"  : [moment().startOf('month'), moment().endOf('month')],
                 "{{ __('Last Month') }}"  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             },

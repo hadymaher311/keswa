@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Admin;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\WarehouseProduct;
 use App\Helpers\LocalizableModel;
@@ -81,5 +82,13 @@ class warehouse extends LocalizableModel
     public function product_quantities()
     {
         return $this->hasMany(WarehouseProduct::class, 'warehouse_id');
+    }
+
+    /**
+     * Get warehouse orders
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

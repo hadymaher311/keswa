@@ -72,7 +72,9 @@ class OrdersController extends Controller
      */
     protected function pendingOrders()
     {
-        return Order::with('latestStatus')->get()->filter(function ($order) {
+        return Order::whereHas('warehouse.admins', function($admin) {
+            return $admin->where('admins.id', auth()->id());
+        })->with('latestStatus')->get()->filter(function ($order) {
             return $order->latestStatus->name == 'Waiting for confirmation';
         });
     }
@@ -84,7 +86,9 @@ class OrdersController extends Controller
      */
     protected function approvedOrders()
     {
-        return Order::with('latestStatus')->get()->filter(function ($order) {
+        return Order::whereHas('warehouse.admins', function($admin) {
+            return $admin->where('admins.id', auth()->id());
+        })->with('latestStatus')->get()->filter(function ($order) {
             return $order->latestStatus->name == 'Approved';
         });
     }
@@ -96,7 +100,9 @@ class OrdersController extends Controller
      */
     protected function completedOrders()
     {
-        return Order::with('latestStatus')->get()->filter(function ($order) {
+        return Order::whereHas('warehouse.admins', function($admin) {
+            return $admin->where('admins.id', auth()->id());
+        })->with('latestStatus')->get()->filter(function ($order) {
             return $order->latestStatus->name == 'Completed';
         });
     }
@@ -108,7 +114,9 @@ class OrdersController extends Controller
      */
     protected function shippedOrders()
     {
-        return Order::with('latestStatus')->get()->filter(function ($order) {
+        return Order::whereHas('warehouse.admins', function($admin) {
+            return $admin->where('admins.id', auth()->id());
+        })->with('latestStatus')->get()->filter(function ($order) {
             return $order->latestStatus->name == 'Shipped';
         });
     }
@@ -120,7 +128,9 @@ class OrdersController extends Controller
      */
     protected function canceledOrders()
     {
-        return Order::with('latestStatus')->get()->filter(function ($order) {
+        return Order::whereHas('warehouse.admins', function($admin) {
+            return $admin->where('admins.id', auth()->id());
+        })->with('latestStatus')->get()->filter(function ($order) {
             return $order->latestStatus->name == 'Canceled';
         });
     }
@@ -132,7 +142,9 @@ class OrdersController extends Controller
      */
     protected function allOrders()
     {
-        return Order::orderBy('created_at', 'desc')->get();
+        return Order::whereHas('warehouse.admins', function($admin) {
+            return $admin->where('admins.id', auth()->id());
+        })->orderBy('created_at', 'desc')->get();
     }
     
     /**
@@ -152,10 +164,14 @@ class OrdersController extends Controller
                     'to' => 'date|after_or_equal:from',
                     'from' => 'date|before_or_equal:to',
                 ]);
-                return Order::orderBy('created_at', 'desc')->whereBetween('created_at', [$request->from, $request->to])->get();
+                return Order::whereHas('warehouse.admins', function($admin) {
+                    return $admin->where('admins.id', auth()->id());
+                })->orderBy('created_at', 'desc')->whereBetween('created_at', [$request->from, $request->to])->get();
             }
         } else {
-            return Order::orderBy('created_at', 'desc')->whereBetween('created_at', [Carbon::today(), Carbon::tomorrow()])->get();
+            return Order::whereHas('warehouse.admins', function($admin) {
+                return $admin->where('admins.id', auth()->id());
+            })->orderBy('created_at', 'desc')->whereBetween('created_at', [Carbon::today(), Carbon::tomorrow()])->get();
         }
     }
 

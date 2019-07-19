@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\User;
 use App\Models\Product;
+use App\Models\warehouse;
 use App\Models\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
 
@@ -94,5 +95,13 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get order warehouse
+     */
+    public function warehouse()
+    {
+        return $this->belongsTo(warehouse::class);
     }
 }
