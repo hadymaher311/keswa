@@ -123,6 +123,21 @@ class OrdersController extends Controller
         }
         return null;
     }
+    
+    /**
+     * Check if products is available
+     * 
+     * @param \Illuminate\Http\Request $request
+     */
+    protected function isNotAvailable(Request $request)
+    {
+        foreach (auth()->user()->cart as $product) {
+            if (!$product->isAvailableIn(UserAddress::find($request->address)->warehouse())) {
+                return $product;
+            }
+        }
+        return null;
+    }
 
     /**
      * Confirm Order
@@ -148,14 +163,18 @@ class OrdersController extends Controller
         $request['comments'] = str_replace('>', '&gt;', $request->comments);
         $request['comments'] = nl2br($request->comments);
         if (UserAddress::find($request->address)->warehouse()->active) {
-            $product = $this->checkMinSaleOfProducts();
+            $product = $this->isNotAvailable($request);
             if (!$product) {
-                $order = $this->storeOrderDetails($request);
-                $this->addOrderStatus($order);
-                $this->addOrderProducts($order);
-                return redirect()->route('user.orders')->with(['status' => trans('Added Successfully')]);
+                $product = $this->checkMinSaleOfProducts();
+                if (!$product) {
+                    $order = $this->storeOrderDetails($request);
+                    $this->addOrderStatus($order);
+                    $this->addOrderProducts($order);
+                    return redirect()->route('user.orders')->with(['status' => trans('Added Successfully')]);
+                }
+                return back()->with(['error' => __('You must order at least') . ' ' . $product->min_sale_quantity . ' ' . __('from') . ' ' . $product->name]);
             }
-            return back()->with(['error' => __('You must order at least') . ' ' . $product->min_sale_quantity . ' ' . __('from') . ' ' . $product->name]);
+            return back()->with(['error' => __('The product') . ' ' . $product->name . ' ' . 'is not available in your area']);
         }
         return back()->with(['error' => __('You must change your address because warehouse in this address is no active')]);
     }

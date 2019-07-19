@@ -376,4 +376,19 @@ class Product extends LocalizableModel implements HasMedia
     {
         return ($this->total_quantity >= $this->min_sale_quantity);
     }
+    
+    /**
+     * if product is available in warehouse.
+     *
+     * @return bool
+     */
+    public function isAvailableIn(warehouse $warehouse)
+    {
+        foreach ($this->quantities as $quantity) {
+            if ($quantity->warehouse_id == $warehouse->id && $quantity->reduced_quantity >= $this->min_sale_quantity) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
