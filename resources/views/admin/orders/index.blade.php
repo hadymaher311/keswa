@@ -35,6 +35,9 @@
                             <a class="nav-link" href="{{ route('orders.index') }}?state=approved">{{ __('Approved') }} <span class="badge badge-dark">{{ $approved_orders_count }}</span></a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('orders.index') }}?state=declined">{{ __('Declined') }} <span class="badge badge-dark">{{ $declined_orders_count }}</span></a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('orders.index') }}?state=shipped">{{ __('Shipped') }} <span class="badge badge-dark">{{ $shipped_orders_count }}</span></a>
                         </li>
                         <li class="nav-item">
@@ -115,6 +118,7 @@
                             <th>{{ __('Status') }}</th>
                             <th>{{ __('User') }}</th>
                             <th>{{ __('Added from') }}</th>
+                            <th>{{ __('Shipping') }}</th>
                             <th>{{ __('Approve') }}</th>
                             <th>{{ __('Controls') }}</th>
                         </tr>
@@ -138,9 +142,23 @@
                                     <td><a href="{{ route('users.show', $order->user->id) }}">{{ $order->user->name }}</a></td>
                                     <td>{{ $order->created_at }}</td>
                                     <td>
+                                        @if ($order->isApproved() && !$order->isCanceled() && !$order->isCompleted())
+                                            <form action="{{ route('orders.shipping', $order->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" data-toggle="tooltip" data-placement="top" title="{{ __('Shipping') }}" class="btn btn-sm btn-info">
+                                                    <i class="fa fa-shipping-fast"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </td>
+                                    <td>
                                         @if ($order->isApproved())
                                             <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
                                                 <i class="fa fa-check"></i>
+                                            </button>
+                                        @elseif ($order->isDeclined())
+                                            <button data-toggle="tooltip" data-placement="top" title="{{ __('Declined') }}" class="btn btn-sm btn-danger">
+                                                <i class="fa fa-times"></i>
                                             </button>
                                         @else
                                             <a href="{{ route('orders.approve', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approve') }}" data-id="{{ $order->id }}" class="btn btn-sm btn-warning model-5">

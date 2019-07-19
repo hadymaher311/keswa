@@ -51,6 +51,9 @@ class OrdersController extends Controller
             case 'approved':
                 return $this->approvedOrders();
             
+            case 'declined':
+                return $this->declinedOrders();
+            
             case 'shipped':
                 return $this->shippedOrders();
             
@@ -74,7 +77,7 @@ class OrdersController extends Controller
     {
         return Order::whereHas('warehouse.admins', function($admin) {
             return $admin->where('admins.id', auth()->id());
-        })->with('latestStatus')->get()->filter(function ($order) {
+        })->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($order) {
             return $order->latestStatus->name == 'Waiting for confirmation';
         });
     }
@@ -88,8 +91,22 @@ class OrdersController extends Controller
     {
         return Order::whereHas('warehouse.admins', function($admin) {
             return $admin->where('admins.id', auth()->id());
-        })->with('latestStatus')->get()->filter(function ($order) {
+        })->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($order) {
             return $order->latestStatus->name == 'Approved';
+        });
+    }
+    
+    /**
+     * Get declined orders
+     * 
+     * @return \App\Models\Order
+     */
+    protected function declinedOrders()
+    {
+        return Order::whereHas('warehouse.admins', function($admin) {
+            return $admin->where('admins.id', auth()->id());
+        })->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($order) {
+            return $order->latestStatus->name == 'Declined';
         });
     }
     
@@ -102,7 +119,7 @@ class OrdersController extends Controller
     {
         return Order::whereHas('warehouse.admins', function($admin) {
             return $admin->where('admins.id', auth()->id());
-        })->with('latestStatus')->get()->filter(function ($order) {
+        })->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($order) {
             return $order->latestStatus->name == 'Completed';
         });
     }
@@ -116,7 +133,7 @@ class OrdersController extends Controller
     {
         return Order::whereHas('warehouse.admins', function($admin) {
             return $admin->where('admins.id', auth()->id());
-        })->with('latestStatus')->get()->filter(function ($order) {
+        })->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($order) {
             return $order->latestStatus->name == 'Shipped';
         });
     }
@@ -130,7 +147,7 @@ class OrdersController extends Controller
     {
         return Order::whereHas('warehouse.admins', function($admin) {
             return $admin->where('admins.id', auth()->id());
-        })->with('latestStatus')->get()->filter(function ($order) {
+        })->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($order) {
             return $order->latestStatus->name == 'Canceled';
         });
     }
@@ -144,7 +161,7 @@ class OrdersController extends Controller
     {
         return Order::whereHas('warehouse.admins', function($admin) {
             return $admin->where('admins.id', auth()->id());
-        })->orderBy('created_at', 'desc')->get();
+        })->orderBy('id', 'desc')->get();
     }
     
     /**
@@ -166,12 +183,12 @@ class OrdersController extends Controller
                 ]);
                 return Order::whereHas('warehouse.admins', function($admin) {
                     return $admin->where('admins.id', auth()->id());
-                })->orderBy('created_at', 'desc')->whereBetween('created_at', [$request->from, $request->to])->get();
+                })->orderBy('id', 'desc')->whereBetween('created_at', [$request->from, $request->to])->get();
             }
         } else {
             return Order::whereHas('warehouse.admins', function($admin) {
                 return $admin->where('admins.id', auth()->id());
-            })->orderBy('created_at', 'desc')->whereBetween('created_at', [Carbon::today(), Carbon::tomorrow()])->get();
+            })->orderBy('id', 'desc')->whereBetween('created_at', [Carbon::today(), Carbon::tomorrow()])->get();
         }
     }
 
@@ -186,14 +203,32 @@ class OrdersController extends Controller
         $pending_orders_count = $this->pendingOrders()->count();
         $all_orders_count = $this->allOrders()->count();
         $approved_orders_count = $this->approvedOrders()->count();
+        $declined_orders_count = $this->declinedOrders()->count();
         $shipped_orders_count = $this->shippedOrders()->count();
         $completed_orders_count = $this->completedOrders()->count();
         $canceled_orders_count = $this->canceledOrders()->count();
 
         $warehouses = warehouse::active()->get();
-        return view('admin.orders.index', compact('orders', 'pending_orders_count', 'all_orders_count', 'approved_orders_count', 'shipped_orders_count', 'completed_orders_count', 'canceled_orders_count', 'warehouses'));
+        return view('admin.orders.index', compact('orders', 'pending_orders_count', 'all_orders_count', 'approved_orders_count', 'declined_orders_count', 'shipped_orders_count', 'completed_orders_count', 'canceled_orders_count', 'warehouses'));
     }
 
+    /**
+     * shipping Order.
+     *
+     * @param  \App\Models\Order  $order
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function shipping(Request $request, Order $order)
+    {
+        $order->statuses()->create(
+            ['name' => 'Shipped',]
+        );
+        $order->shipping_date = Carbon::now();
+        $order->save();
+        return back()->with(['status' => __('Shipped Successfully')]);
+    }
+    
     /**
      * decline Order.
      *

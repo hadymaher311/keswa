@@ -59,6 +59,7 @@ Route::group([
         Route::get('/admin/orders/{order}/approve', 'OrdersController@approveView')->name('orders.approve');
         Route::post('/admin/orders/{order}/approve', 'OrdersController@approve')->name('orders.approve');
         Route::post('/admin/orders/{order}/decline', 'OrdersController@decline')->name('orders.decline');
+        Route::post('/admin/orders/{order}/shipping', 'OrdersController@shipping')->name('orders.shipping');
         /*********************************************** orders CRUD routes *******************************************/
         
         /*********************************************** categories CRUD routes *******************************************/

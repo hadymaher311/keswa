@@ -2,6 +2,7 @@
     $status_colors = [
         'Waiting for confirmation' => 'warning',
         'Approved' => 'primary',
+        'Declined' => 'danger',
         'Shipped' => 'info',
         'Completed' => 'success',
         'Canceled' => 'danger',
