@@ -69,13 +69,13 @@
                         <div class="form-group row products">
                             <label for="product" class="col-sm-3 control-label">{{ __('Products') }}</label>
         
-                            <div class="col-sm-4">
-                                <select id="product" class="form-control select2 @error('products') is-invalid @enderror" name="products[]" autocomplete="products">
+                            <div class="col-sm-6">
+                                <select id="product" class="form-control select2 @error('products') is-invalid @enderror" name="products[]" autocomplete="products" required>
                                     <option value="">{{ __('Choose product') }}</option>
                                     @foreach ($products as $product)
                                         <option @if ($product->id == old('products')[0])
                                             selected
-                                        @endif value="{{ $product->id }}">{{ $product->name }}</option>
+                                        @endif value="{{ $product->id }}">{{ $product->name }} - {{ $product->sku }} - {{ $product->upc }}</option>
                                     @endforeach
                                 </select>
 
@@ -86,8 +86,8 @@
                                 @enderror
                             </div>
                             
-                            <div class="col-sm-4">
-                                <input id="quantity" type="number" min="1" class="form-control @error('quantity') is-invalid @enderror" name="quantity[]" value="{!! old('quantity')[0]  !!}" autocomplete="quantity" placeholder="{{ __('Quantity') }}">
+                            <div class="col-sm-2">
+                                <input id="quantity" type="number" min="1" class="form-control @error('quantity') is-invalid @enderror" name="quantity[]" value="{!! old('quantity')[0]  !!}" required autocomplete="quantity" placeholder="{{ __('Quantity') }}">
 
                                 @error('quantity')
                                     <span class="invalid-feedback" role="alert">
@@ -104,7 +104,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">{{ __('Comment') }}</label>
                             <div class="col-sm-8">
-                                <textarea id="comment" type="text" class="form-control @error('comment') is-invalid @enderror" name="comment" required autocomplete="comment">{{ old('comment') }}</textarea>
+                                <textarea id="comment" type="text" class="form-control @error('comment') is-invalid @enderror" name="comment" autocomplete="comment">{{ old('comment') }}</textarea>
                                 
                                 @error('comment')
                                 <span class="invalid-feedback" role="alert">
@@ -134,17 +134,17 @@
 <script>
     $(function() {
         var product_body = '<div class="col-sm-3 product-box mt-3"></div>';
-        product_body    += '<div class="col-sm-4 product-box mt-3">';
+        product_body    += '<div class="col-sm-6 product-box mt-3">';
         product_body    += '<select id="product" type="text" class="form-control select2" name="products[]" required>';
         product_body    += '<option value="">{{ __('Choose product') }}</option>';
         @foreach ($products as $product)
-            product_body    += '<option value="{{ $product->id }}">{{ $product->name }}</option>';
+            product_body    += '<option value="{{ $product->id }}">{{ $product->name }} - {{ $product->sku }} - {{ $product->upc }}</option>';
         @endforeach
         product_body    += '</select>';
         product_body    += '</div>';
         
-        product_body    += '<div class="col-sm-4 product-box mt-3">';
-        product_body    += '<input id="quantity" value="1" type="number" min="1" class="form-control" name="quantity[]" autocomplete="quantity" placeholder="{{ __('Quantity') }}">';
+        product_body    += '<div class="col-sm-2 product-box mt-3">';
+        product_body    += '<input id="quantity" required value="1" type="number" min="1" class="form-control" name="quantity[]" autocomplete="quantity" placeholder="{{ __('Quantity') }}">';
         product_body    += '</div>';
             
         product_body    += '<div class="col-sm-1 product-box mt-3">';

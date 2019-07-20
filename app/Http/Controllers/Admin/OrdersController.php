@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\warehouse;
+use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use App\Models\GeneralSetting;
 use App\Models\WarehouseProduct;
@@ -387,8 +388,18 @@ class OrdersController extends Controller
     public function create()
     {
         $users = User::active()->get();
-        $products = Product::active()->get();
+        $products = Product::whereHas('warehouses.admins', function($admin) {
+            return $admin->where('admins.id', auth()->id());
+        })->active()->get();
         return view('admin.orders.create', compact('users', 'products'));
+    }
+
+    /**
+     * get real quantity
+     */
+    protected function getRealQuantityForMinSale(Product $product)
+    {
+        return (mb_strtolower($product->sale_by) == 'gram') ? 1 : $product->min_sale_quantity;
     }
 
     /**
@@ -401,7 +412,7 @@ class OrdersController extends Controller
         $i = 0;
         foreach ($request->quantity as $quantity) {
             $product = Product::find($request->products[$i]);
-            if ($quantity < $product->min_sale_quantity) {
+            if ($quantity < $this->getRealQuantityForMinSale($product)) {
                 return $product;
             }
             $i++;
@@ -437,7 +448,21 @@ class OrdersController extends Controller
             );
             $i++;
         }
-    }    
+    }
+
+    /**
+     * if all products is free
+     */
+    protected function isAllFree(Request $request)
+    {
+        foreach ($request->products as $pro) {
+            $product = Product::find($pro);
+            if (!$product->free_shipping) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * Store order details
@@ -450,8 +475,11 @@ class OrdersController extends Controller
         $user = User::find($request->user);
         return $user->orders()->create([
             'comment' => $request->comment,
-            'user_address_id' => $user->addresses->first()->id,
+            'user_address_id' => $user->main_location,
             'total_price' => $this->getTotalPrice($request),
+            'points' => $this->getTotalPoints($request),
+            'warehouse_id' => UserAddress::find(User::find($request->user)->main_location)->warehouse()->id,
+            'shipping_price' => ($this->isAllFree($request)) ? UserAddress::find(User::find($request->user)->main_location)->warehouse()->shipping_price : 0,
         ]);
     }
     
@@ -468,6 +496,24 @@ class OrdersController extends Controller
         $sum = 0;
         foreach ($products as $product) {
             $sum += $product->final_price * $request->quantity[$i];
+            $i++;
+        }
+        return $sum;
+    }
+    
+    /**
+     * get order total Points
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Models\Order
+     */
+    protected function getTotalPoints(Request $request)
+    {
+        $products = Product::find($request->products);
+        $i = 0;
+        $sum = 0;
+        foreach ($products as $product) {
+            $sum += $product->points * $request->quantity[$i];
             $i++;
         }
         return $sum;

@@ -105,7 +105,7 @@
                                                 <a href="{{ route('warehouses.add.product', $warehouse->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Add new product') }}" class="btn btn-sm btn-success">
                                                     <i class="fa fa-plus"></i>
                                                 </a>
-                                            @endif                                        
+                                            @endif
 
                                             <a href="{{ route('warehouses.edit', $warehouse->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                                 <i class="fa fa-edit"></i>
