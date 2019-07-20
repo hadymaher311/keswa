@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
+use App\Models\Product;
 use App\Models\warehouse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -174,5 +176,42 @@ class WarehousesController extends Controller
         $warehouse->active = !($warehouse->active);
         $warehouse->save();
         return back()->with('status', trans('Updated Successfully'));
+    }
+
+    /**
+     * get view to add new product
+     * 
+     * @param \App\Models\warehouse $warehouse
+     * @return \Illuminate\Http\Response
+     */
+    public function addProductView(warehouse $warehouse)
+    {
+        if (auth()->user()->can('warehouse.view', $warehouse) && $warehouse->active) {
+            $products = Product::active()->get();
+            return view('admin.warehouses.addproduct', compact('warehouse', 'products'));
+        }
+        abort(403);
+    }
+
+    /**
+     * add new product to this warehouse
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  warehouse  $warehouse
+     * @return \Illuminate\Http\Response
+     */
+    public function addProduct(Request $request, warehouse $warehouse)
+    {
+        $this->validate($request, [
+            'product' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+            'expiry_date' => 'required|date|after:today'
+        ]);
+        $warehouse->products()->attach($request->product, [
+            'reduced_quantity' => $request->quantity,
+            'base_quantity' => $request->quantity,
+            'expiry_date' => Carbon::create($request->expiry_date),
+        ]);
+        return redirect()->route('warehouses.index')->with(['status' => trans('Added Successfully')]);
     }
 }

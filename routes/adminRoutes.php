@@ -95,6 +95,8 @@ Route::group([
         Route::resource('/admin/warehouses', 'WarehousesController');
         Route::delete('/admin/warehouses', 'WarehousesController@destroy')->name('warehouses.destroy');
         Route::PUT('/admin/warehouses/{warehouse}/active', 'WarehousesController@active')->name('warehouses.active');
+        Route::GET('/admin/warehouses/{warehouse}/add/product', 'WarehousesController@addProductView')->name('warehouses.add.product');
+        Route::POST('/admin/warehouses/{warehouse}/add/product', 'WarehousesController@addProduct')->name('warehouses.add.product');
         /*********************************************** warehouses CRUD routes *******************************************/
         
         /*********************************************** Admin profile pages *******************************************/
