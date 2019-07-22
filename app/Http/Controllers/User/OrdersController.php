@@ -6,9 +6,11 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
+use App\Models\GeneralSetting;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use App\Models\WarehouseRelatedLocation;
+use Illuminate\Support\Carbon;
 
 class OrdersController extends Controller
 {
@@ -139,6 +141,16 @@ class OrdersController extends Controller
     }
 
     /**
+     * is in working hours
+     * 
+     * @return bool
+     */
+    protected function inWorkingHours()
+    {
+        return Carbon::now()->greaterThanOrEqualTo(new Carbon(GeneralSetting::workingHoursFrom()->first()->value)) && Carbon::now()->lessThanOrEqualTo(new Carbon(GeneralSetting::workingHoursTo()->first()->value));
+    }
+
+    /**
      * Confirm Order
      * 
      * @param \Illuminate\Http\Request $request
@@ -169,6 +181,9 @@ class OrdersController extends Controller
                     $order = $this->storeOrderDetails($request);
                     $this->addOrderStatus($order);
                     $this->addOrderProducts($order);
+                    if (!$this->inWorkingHours()) {
+                        auth()->user()->sendOrderWillBeServedLaterNotification($order);
+                    }
                     return redirect()->route('user.orders')->with(['status' => trans('Added Successfully')]);
                 }
                 return back()->with(['error' => __('You must order at least') . ' ' . $product->min_sale_quantity . ' ' . __('from') . ' ' . $product->name]);

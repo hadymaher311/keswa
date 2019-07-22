@@ -725,6 +725,7 @@
     "The product": "المنتج",
     "is not available in your area": "ليس متاحا في منطقتك",
     "You must change your address because warehouse in this address is no active": "يجب تغيير العنوان الحالي لان المخزن المرتبط بهذا العنوان غير نشط حاليا",
+    "We are not working in this hour, your order will be served soon": "نحن لا نعمل في هذة الساعة, طلبك سيكون جاهز في اقرب وقت",
     "Approve order": "تأكيد الطلب",
     "Disapprove": "رفض",
     "Complete": "انهاء",

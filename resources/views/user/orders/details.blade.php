@@ -11,7 +11,15 @@
     <div class="row">
         <!--Middle Part Start-->
         <div id="content" class="col-sm-9">
-            <h2 class="title">{{ __('Order Information') }}</h2>
+            <h2 class="title">
+                {{ __('Order Information') }}
+                @php
+                    $notification = auth()->user()->unreadnotifications()->where('type', 'App\Notifications\User\OrderWillBeServedLaterNotification')->where('data->order_id', $order->id)->first();
+                @endphp
+                @if ($notification)
+                    <div class="label label-info">{{ __($notification->data['message']) }}</div>
+                @endif
+            </h2>
 
             <table class="table table-bordered table-hover">
                 <thead>

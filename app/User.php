@@ -13,6 +13,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Notifications\User\OrderWillBeServedLaterNotification;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
@@ -73,6 +74,14 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         $this->addMediaConversion('thumb')
               ->width(100)
               ->height(100);
+    }
+
+    /**
+     * make order will be served later notification
+     */
+    public function sendOrderWillBeServedLaterNotification(Order $order)
+    {
+        $this->notify(new OrderWillBeServedLaterNotification($order));
     }
 
     /**

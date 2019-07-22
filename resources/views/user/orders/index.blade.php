@@ -37,7 +37,15 @@
                                 'Pending' => 'warning',
                             ];
                         @endphp
-                        <td class=""><span class="label label-{{ $status_colors[$order->statuses->last()->name] }}">{{ __($order->statuses->last()->name) }}</span></td>
+                        <td class="">
+                            <span class="label label-{{ $status_colors[$order->statuses->last()->name] }}">{{ __($order->statuses->last()->name) }}</span>&nbsp;
+                            @php
+                                $notification = auth()->user()->unreadnotifications()->where('type', 'App\Notifications\User\OrderWillBeServedLaterNotification')->where('data->order_id', $order->id)->first();
+                            @endphp
+                            @if ($notification)
+                                <div class="label label-info">{{ __($notification->data['message']) }}</div>
+                            @endif
+                        </td>
                         <td class="">{{ $order->created_at }}</td>
                         <td class="price">
                             {{ $order->total_price }} {{ __('LE') }}
