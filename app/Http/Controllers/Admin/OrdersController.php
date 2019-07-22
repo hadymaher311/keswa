@@ -288,6 +288,7 @@ class OrdersController extends Controller
         $order->statuses()->create(
             ['name' => 'Disapproved',]
         );
+        $this->markUserNotificationAsRead($order); 
         return redirect()->route('orders.index')->with(['status' => __('Disapproved Successfully')]);
     }
 
@@ -313,8 +314,23 @@ class OrdersController extends Controller
         $order->statuses()->create(
             ['name' => 'Approved',]
         );
+        $this->markUserNotificationAsRead($order); 
         return redirect()->route('orders.index')->with(['status' => __('Approved Successfully')]);
     }
+
+    /**
+     * Mark user notification as read
+     * 
+     * @param  \App\Models\Order  $order
+     */
+    protected function markUserNotificationAsRead(Order $order)
+    {
+        $notification = $order->user->unreadnotifications()->where('type', 'App\Notifications\User\OrderWillBeServedLaterNotification')->where('data->order_id', $order->id)->first();
+        if ($notification) {
+            $notification->markAsRead();
+        }
+    }
+    
 
     /**
      * Display page for order approving.
