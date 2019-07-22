@@ -62,11 +62,11 @@
                                                 </a>
 
                                                 <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> {{ __('Approve') }}</button>
-                                                <button type="submit" form="decline-form" class="btn btn-danger"><i class="fa fa-times"></i> {{ __('Decline') }}</button>
+                                                <button type="submit" form="disapprove-form" class="btn btn-danger"><i class="fa fa-times"></i> {{ __('Disapprove') }}</button>
                                             </div>
                                         </div>
                                     </form>
-                                    <form id="decline-form" action="{{ route('orders.decline', $order->id) }}" class="form-inline" method="POST">
+                                    <form id="disapprove-form" action="{{ route('orders.disapprove', $order->id) }}" class="form-inline" method="POST">
                                         @csrf
                                     </form>
                                 </div>

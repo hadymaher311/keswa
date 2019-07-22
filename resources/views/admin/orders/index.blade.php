@@ -35,7 +35,7 @@
                             <a class="nav-link" href="{{ route('orders.index') }}?state=approved">{{ __('Approved') }} <span class="badge badge-dark">{{ $approved_orders_count }}</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('orders.index') }}?state=declined">{{ __('Declined') }} <span class="badge badge-dark">{{ $declined_orders_count }}</span></a>
+                            <a class="nav-link" href="{{ route('orders.index') }}?state=disapproved">{{ __('Disapproved') }} <span class="badge badge-dark">{{ $disapproved_orders_count }}</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('orders.index') }}?state=shipped">{{ __('Shipped') }} <span class="badge badge-dark">{{ $shipped_orders_count }}</span></a>
@@ -147,8 +147,8 @@
                                             <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
                                                 <i class="fa fa-check"></i>
                                             </button>
-                                        @elseif ($order->isDeclined())
-                                            <button data-toggle="tooltip" data-placement="top" title="{{ __('Declined') }}" class="btn btn-sm btn-danger">
+                                        @elseif ($order->isDisapproved())
+                                            <button data-toggle="tooltip" data-placement="top" title="{{ __('Disapproved') }}" class="btn btn-sm btn-danger">
                                                 <i class="fa fa-times"></i>
                                             </button>
                                         @else
@@ -185,9 +185,11 @@
                                     </td>
                                     <td>
                                         @can('update orders')
-                                            <a href="{{ route('orders.edit', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
+                                            @if (!$order->isCanceled() && !$order->isShipped() && !$order->isDisapproved())
+                                                <a href="{{ route('orders.edit', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            @endif
                                         @endcan
 
                                         <a href="{{ route('orders.invoice', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Invoice') }}" class="btn btn-sm btn-info">

@@ -56,11 +56,11 @@ class Order extends Model
     }
     
     /**
-     * if order has decline status
+     * if order has disapproved status
      */
-    public function isDeclined()
+    public function isDisapproved()
     {
-        return $this->statuses->where('name', 'Declined')->isNotEmpty();
+        return $this->statuses->where('name', 'Disapproved')->isNotEmpty();
     }
     
     /**

@@ -34,13 +34,13 @@
             {{ __('Waiting for confirmation') }}
             </div>
         </div>
-        @if ($order->isDeclined())
+        @if ($order->isDisapproved())
             <div class="wizard-step wizard-step-danger">
                 <div class="wizard-step-icon">
                     <i class="fas fa-times"></i>
                 </div>
                 <div class="wizard-step-label">
-                    {{ __('Declined') }}
+                    {{ __('Disapproved') }}
                 </div>
             </div>
         @else

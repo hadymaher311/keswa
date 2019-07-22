@@ -53,8 +53,8 @@ class OrdersController extends Controller
             case 'approved':
                 return $this->approvedOrders();
             
-            case 'declined':
-                return $this->declinedOrders();
+            case 'disapproved':
+                return $this->disapprovedOrders();
             
             case 'shipped':
                 return $this->shippedOrders();
@@ -99,16 +99,16 @@ class OrdersController extends Controller
     }
     
     /**
-     * Get declined orders
+     * Get disapproved orders
      * 
      * @return \App\Models\Order
      */
-    protected function declinedOrders()
+    protected function disapprovedOrders()
     {
         return Order::whereHas('warehouse.admins', function($admin) {
             return $admin->where('admins.id', auth()->id());
         })->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($order) {
-            return $order->latestStatus->name == 'Declined';
+            return $order->latestStatus->name == 'Disapproved';
         });
     }
     
@@ -205,13 +205,13 @@ class OrdersController extends Controller
         $pending_orders_count = $this->pendingOrders()->count();
         $all_orders_count = $this->allOrders()->count();
         $approved_orders_count = $this->approvedOrders()->count();
-        $declined_orders_count = $this->declinedOrders()->count();
+        $disapproved_orders_count = $this->disapprovedOrders()->count();
         $shipped_orders_count = $this->shippedOrders()->count();
         $completed_orders_count = $this->completedOrders()->count();
         $canceled_orders_count = $this->canceledOrders()->count();
 
         $warehouses = warehouse::active()->get();
-        return view('admin.orders.index', compact('orders', 'pending_orders_count', 'all_orders_count', 'approved_orders_count', 'declined_orders_count', 'shipped_orders_count', 'completed_orders_count', 'canceled_orders_count', 'warehouses'));
+        return view('admin.orders.index', compact('orders', 'pending_orders_count', 'all_orders_count', 'approved_orders_count', 'disapproved_orders_count', 'shipped_orders_count', 'completed_orders_count', 'canceled_orders_count', 'warehouses'));
     }
 
     /**
@@ -277,18 +277,18 @@ class OrdersController extends Controller
     }
     
     /**
-     * decline Order.
+     * disapprove Order.
      *
      * @param  \App\Models\Order  $order
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function decline(Request $request, Order $order)
+    public function disapprove(Request $request, Order $order)
     {
         $order->statuses()->create(
-            ['name' => 'Declined',]
+            ['name' => 'Disapproved',]
         );
-        return redirect()->route('orders.index')->with(['status' => __('Declined Successfully')]);
+        return redirect()->route('orders.index')->with(['status' => __('Disapproved Successfully')]);
     }
 
     /**
@@ -325,7 +325,7 @@ class OrdersController extends Controller
     public function approveView(Order $order)
     {
         if (auth()->user()->can('order.view', $order)) {
-            if (!($order->isApproved()) && !($order->isDeclined())) {
+            if (!($order->isApproved()) && !($order->isDisapproved())) {
                 $price_tax = GeneralSetting::priceTax()->first();
                 $warehouses = auth()->user()->warehouses;
                 return view('admin.orders.approve', compact('order', 'price_tax', 'warehouses'));
@@ -522,7 +522,7 @@ class OrdersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Http\Requests\Admin\Orders\CreateRequest  $request
+     * @param  \App\Http\Requests\Admin\Orders\CreateRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(CreateRequest $request)
@@ -543,28 +543,28 @@ class OrdersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Permission  $permission
+     * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function edit(Permission $permission)
+    public function edit(Order $order)
     {
-        // return view('admin.orders.edit', compact('permission'));
+        // return view('admin.orders.edit', compact('Order'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Permission  $permission
+     * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Permission $permission)
+    public function update(Request $request, Order $order)
     {
         // $this->validate($request, [
         //     'name' => 'required|string|min:2'
         // ]);
-        // $permission->name = $request->name;
-        // $permission->save();
+        // $order->name = $request->name;
+        // $order->save();
         // return redirect()->route('orders.index')->with('status', trans('Updated Successfully'));
     }
 
