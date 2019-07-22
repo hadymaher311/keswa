@@ -189,4 +189,25 @@ class OrdersController extends Controller
     {
         return view('user.orders.details', compact('order'));
     }
+
+    /**
+     * Cancel Order
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Order $order
+     * @return \Illuminate\Http\Response
+     */
+    public function cancel(Request $request, Order $order)
+    {
+        if ($order->user->is(auth()->user())) {
+            if (!$order->isShipped() && !$order->isCompleted() && !$order->isCanceled() && !$order->isDisapproved()) {
+                $order->statuses()->create([
+                    'name' => 'Canceled',
+                ]);
+                return back()->with(['status' => 'Canceled Successfully']);
+            }
+            abort(403);
+        }
+        abort(404);
+    }
 }

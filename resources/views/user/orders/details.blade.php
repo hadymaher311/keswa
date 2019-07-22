@@ -77,7 +77,14 @@
                             <td class="">{{ __('Quantity') }}</td>
                             <td class="">{{ __('Unit Price') }}</td>
                             <td class="">{{ __('Total Price') }}</td>
-                            <td style="width: 20px;"></td>
+                            <td style="width: 20px;">
+                                @if (!$order->isShipped() && !$order->isCompleted() && !$order->isCanceled() && !$order->isDisapproved())
+                                    <form action="{{ route('user.orders.cancel', $order->id) }}" method="POST" class="form-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger" title="" data-toggle="tooltip" data-original-title="{{ __('Cancel Order') }}"><i class="fa fa-times"></i></button>
+                                    </form>
+                                @endif
+                            </td>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,7 +103,9 @@
                                 </td>
                                 <td class="">{{ $product->pivot->quantity * $product->final_price }} {{ __('LE') }}</td>
                                 <td style="white-space: nowrap;" class="text-right">
-                                    <a class="btn btn-danger" title="" data-toggle="tooltip" href="return.html" data-original-title="Return"><i class="fa fa-reply"></i></a>
+                                    @if ($order->isCompleted())
+                                        <a class="btn btn-danger" title="" data-toggle="tooltip" href="" data-original-title="{{ __('Return') }}"><i class="fa fa-reply"></i></a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -141,8 +150,9 @@
                 <tbody>
                     @php
                         $status_colors = [
-                            'Waiting for confirmation' => 'primary',
+                            'Waiting for confirmation' => 'warning',
                             'Approved' => 'primary',
+                            'Disapproved' => 'danger',
                             'Shipped' => 'info',
                             'Completed' => 'success',
                             'Canceled' => 'danger',
@@ -153,7 +163,7 @@
                         <tr>
                             <td class="text-left">{{ $status->created_at }}</td>
                             <td class="text-left">
-                                <div class="label label-{{ $status_colors[$status->name] }}">{{ __($status->name) }}</div>
+                                <div class="label label-{{ (isset($status_colors[$status->name])) ? $status_colors[$status->name] : 'primary' }}">{{ __($status->name) }}</div>
                             </td>
                         </tr>
                     @endforeach

@@ -67,6 +67,7 @@ Route::group([
             Route::get('/user/orders/checkout', 'OrdersController@checkout')->name('user.orders.checkout');
             Route::post('/user/orders/confirm', 'OrdersController@confirm')->name('user.orders.confirm');
             Route::get('/user/orders/details/{order}', 'OrdersController@details')->name('user.orders.details');
+            Route::post('/user/orders/{order}/cancel', 'OrdersController@cancel')->name('user.orders.cancel');
             /*********************************************** Orders routes *******************************************/
             Route::get('/home', 'HomeController@welcome')->name('home');
         });
