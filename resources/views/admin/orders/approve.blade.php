@@ -36,39 +36,46 @@
                                 <div class="card-body">
                                     <form action="{{ route('orders.approve', $order->id) }}" method="POST">
                                         @csrf
-                                        <div class="form-group row">
-                                            <label for="" class="col-sm-2">{{ __('Warehouse') }}</label>
-                                            <div class="input-group col-sm-10">
-                                                <select name="warehouse" class="form-control select2" required>
-                                                    <option value="">{{ __('Choose warehouse') }}</option>
-                                                    @foreach ($warehouses as $ware)
-                                                        <option @if ($ware->id == $order->warehouse_id)
-                                                            selected
-                                                        @endif value="{{ $ware->id }}">{{ $ware->name }}</option>
-                                                    @endforeach
-                                                </select>
+                                        @if (!$order->isApproved())
+                                            <div class="form-group row">
+                                                <label for="" class="col-sm-2">{{ __('Warehouse') }}</label>
+                                                <div class="input-group col-sm-10">
+                                                    <select name="warehouse" class="form-control select2" required>
+                                                        <option value="">{{ __('Choose warehouse') }}</option>
+                                                        @foreach ($warehouses as $ware)
+                                                            <option @if ($ware->id == $order->warehouse_id)
+                                                                selected
+                                                            @endif value="{{ $ware->id }}">{{ $ware->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="" class="col-sm-2">{{ __('Comment') }}</label>
-                                            <div class="input-group col-sm-10">
-                                                <textarea name="comment" placeholder="{{ __('Comment') }}" class="form-control"></textarea>
+                                            <div class="form-group row">
+                                                <label for="" class="col-sm-2">{{ __('Comment') }}</label>
+                                                <div class="input-group col-sm-10">
+                                                    <textarea name="comment" placeholder="{{ __('Comment') }}" class="form-control"></textarea>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                         <div class="row">
                                             <div class="col-12">
                                                 <a href="{{ route('orders.invoice', $order->id) }}" class="btn btn-warning">
                                                     <i class="far fa-file-pdf"></i> {{ __('Invoice') }}
                                                 </a>
-
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> {{ __('Approve') }}</button>
-                                                <button type="submit" form="disapprove-form" class="btn btn-danger"><i class="fa fa-times"></i> {{ __('Disapprove') }}</button>
+                                                @if (!$order->isApproved())
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> {{ __('Approve') }}</button>
+                                                @endif
+                                                @if (!$order->isDisapproved())
+                                                    <button type="submit" form="disapprove-form" class="btn btn-danger"><i class="fa fa-times"></i> {{ __('Disapprove') }}</button>
+                                                @endif
                                             </div>
                                         </div>
                                     </form>
-                                    <form id="disapprove-form" action="{{ route('orders.disapprove', $order->id) }}" class="form-inline" method="POST">
-                                        @csrf
-                                    </form>
+                                    @if (!$order->isDisapproved())
+                                        <form id="disapprove-form" action="{{ route('orders.disapprove', $order->id) }}" class="form-inline" method="POST">
+                                            @csrf
+                                        </form>
+                                    @endif
                                 </div>
                             </div>
         

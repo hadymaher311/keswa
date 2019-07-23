@@ -153,28 +153,37 @@
                                     <td><a href="{{ route('users.show', $order->user->id) }}">{{ $order->user->name }}</a></td>
                                     <td>{{ $order->created_at }}</td>
                                     <td>
-                                        @if ($order->isApproved())
-                                            <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
-                                                <i class="fa fa-check"></i>
-                                            </button>
-                                        @elseif ($order->isDisapproved())
-                                            <button data-toggle="tooltip" data-placement="top" title="{{ __('Disapproved') }}" class="btn btn-sm btn-danger">
-                                                <i class="fa fa-times"></i>
-                                            </button>
+                                        @if ($order->isShipped())
+                                            @if ($order->isApproved())
+                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                            @elseif ($order->isDisapproved())
+                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Disapproved') }}" class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            @endif
                                         @else
-                                            <a href="{{ route('orders.approve', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approve') }}" data-id="{{ $order->id }}" class="btn btn-sm btn-warning model-5">
-                                                <i class="fa fa-check"></i>
-                                            </a>
+                                        @if ($order->isApproved())
+                                                <a href="{{ route('orders.approve', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
+                                                    <i class="fa fa-check"></i>
+                                                </a>
+                                            @elseif ($order->isDisapproved())
+                                                <a href="{{ route('orders.approve', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Disapproved') }}" class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            @else
+                                                <a href="{{ route('orders.approve', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approve') }}" data-id="{{ $order->id }}" class="btn btn-sm btn-warning model-5">
+                                                    <i class="fa fa-check"></i>
+                                                </a>
+                                            @endif
                                         @endif
                                     </td>
                                     <td>
                                         @if ($order->isApproved() && !$order->isCanceled() && !$order->isCompleted())
-                                            {{-- <form action="{{ route('orders.shipping', $order->id) }}" method="POST"> --}}
-                                                {{-- @csrf --}}
-                                                <a href="{{ route('orders.shippingForm', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Shipping') }}" class="btn btn-sm btn-info">
-                                                    <i class="fa fa-shipping-fast"></i>
-                                                </a>
-                                            {{-- </form> --}}
+                                            <a href="{{ route('orders.shippingForm', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Shipping') }}" class="btn btn-sm btn-info">
+                                                <i class="fa fa-shipping-fast"></i>
+                                            </a>
                                         @endif
                                     </td>
                                     <td>

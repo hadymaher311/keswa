@@ -38,6 +38,17 @@ class OrderStatus extends Model
     }
     
     /**
+     * Scope a query to only include disapproved orders.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDisapproved($query)
+    {
+        return $query->where('name', 'Disapproved');
+    }
+    
+    /**
      * Scope a query to only include Shipped orders.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query

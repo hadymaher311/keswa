@@ -9,6 +9,16 @@
           </div>
         </div>
     @endif
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible show fade">
+          <div class="alert-body">
+            <button class="close" data-dismiss="alert">
+              <span>&times;</span>
+            </button>
+            {{ __(session('error')) }}
+          </div>
+        </div>
+    @endif
     <h3>{{ __('Order ID') }}: #{{ $order->id }}</h3>
     <div class="row">
         <div class="col-sm-2"><b>{{ __('Payment Method') }}:</b></div>

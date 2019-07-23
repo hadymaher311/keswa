@@ -313,8 +313,27 @@ class OrdersController extends Controller
         $order->statuses()->create(
             ['name' => 'Disapproved',]
         );
+        if ($order->isApproved()) {
+            $order->statuses()->approved()->delete();
+        }
         $this->markUserNotificationAsRead($order); 
         return redirect()->route('orders.index')->with(['status' => __('Disapproved Successfully')]);
+    }
+
+    /**
+     * Check if products is available
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Models\Order $order
+     */
+    protected function isNotAvailable(Request $request, Order $order)
+    {
+        foreach ($order->products as $product) {
+            if (!$product->isAvailableIn(warehouse::find($request->warehouse))) {
+                return $product;
+            }
+        }
+        return null;
     }
 
     /**
@@ -325,22 +344,29 @@ class OrdersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function approve(Request $request, Order $order)
-    {
+    { 
         $this->validate($request, [
             'warehouse' => 'required|exists:warehouses,id',
             'comment' => 'nullable|string',
         ]);
-        $request['comment'] = str_replace('<', '&lt;', $request->comment);
-        $request['comment'] = str_replace('>', '&gt;', $request->comment);
-        $request['comment'] = nl2br($request->comment);
-        $order->warehouse_id = $request->warehouse;
-        $order->comment = $request->comment;
-        $order->save();
-        $order->statuses()->create(
-            ['name' => 'Approved',]
-        );
-        $this->markUserNotificationAsRead($order); 
-        return redirect()->route('orders.index')->with(['status' => __('Approved Successfully')]);
+        $product = $this->isNotAvailable($request, $order);
+        if (!$product) {
+            $request['comment'] = str_replace('<', '&lt;', $request->comment);
+            $request['comment'] = str_replace('>', '&gt;', $request->comment);
+            $request['comment'] = nl2br($request->comment);
+            $order->warehouse_id = $request->warehouse;
+            $order->comment = $request->comment;
+            $order->save();
+            if ($order->isDisapproved()) {
+                $order->statuses()->disapproved()->delete();
+            }
+            $order->statuses()->create(
+                ['name' => 'Approved',]
+            );
+            $this->markUserNotificationAsRead($order); 
+            return redirect()->route('orders.index')->with(['status' => __('Approved Successfully')]);
+        }
+        return back()->with(['error' => __('The product') . ' ' . $product->name . ' ' . 'is not available in this warehouse']);
     }
 
     /**
@@ -366,7 +392,7 @@ class OrdersController extends Controller
     public function approveView(Order $order)
     {
         if (auth()->user()->can('order.view', $order)) {
-            if (!($order->isApproved()) && !($order->isDisapproved())) {
+            if (!$order->isShipped()) {
                 $price_tax = GeneralSetting::priceTax()->first();
                 $warehouses = auth()->user()->warehouses;
                 return view('admin.orders.approve', compact('order', 'price_tax', 'warehouses'));
