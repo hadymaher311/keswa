@@ -27,6 +27,7 @@ $factory->afterCreating(Order::class, function ($order, $faker) {
     $order->products()->attach(Product::active()->get()->random(), ['quantity' => $faker->numberBetween(5, 10)]);
     $order->products()->attach(Product::active()->get()->random(), ['quantity' => $faker->numberBetween(5, 10)]);
     $order->products()->attach(Product::active()->get()->random(), ['quantity' => $faker->numberBetween(5, 10)]);
+    $order->delivery()->attach(Admin::active()->role('delivery')->get()->random());
     $order->total_price = $order->products->sum(function($product) {
         return $product->final_price * $product->pivot->quantity;
     });

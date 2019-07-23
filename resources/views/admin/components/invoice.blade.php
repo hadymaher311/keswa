@@ -60,8 +60,12 @@
                     </div>
                     <div class="col-md-6 {{ app()->isLocale('ar') ? 'text-right' : '' }}">
                         <address>
-                        <strong>{{ __('Order Date') }}:</strong><br>
-                        {{ $order->created_at }}<br><br>
+                            <strong>{{ __('Order Date') }}:</strong><br>
+                            {{ $order->created_at }}<br><br>
+                            @if ($order->delivery)
+                                <strong>{{ __('Delivery man') }}:</strong><br>
+                                {{ $order->delivery->name }}<br><br>
+                            @endif
                         </address>
                     </div>
                 </div>

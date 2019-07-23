@@ -59,6 +59,7 @@ Route::group([
         Route::get('/admin/orders/{order}/approve', 'OrdersController@approveView')->name('orders.approve');
         Route::post('/admin/orders/{order}/approve', 'OrdersController@approve')->name('orders.approve');
         Route::post('/admin/orders/{order}/disapprove', 'OrdersController@disapprove')->name('orders.disapprove');
+        Route::get('/admin/orders/{order}/shippingform', 'OrdersController@shippingForm')->name('orders.shippingForm');
         Route::post('/admin/orders/{order}/shipping', 'OrdersController@shipping')->name('orders.shipping');
         Route::post('/admin/orders/{order}/complete', 'OrdersController@complete')->name('orders.complete');
         /*********************************************** orders CRUD routes *******************************************/

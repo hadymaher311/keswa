@@ -159,12 +159,12 @@
                                     </td>
                                     <td>
                                         @if ($order->isApproved() && !$order->isCanceled() && !$order->isCompleted())
-                                            <form action="{{ route('orders.shipping', $order->id) }}" method="POST">
-                                                @csrf
-                                                <button type="submit" data-toggle="tooltip" data-placement="top" title="{{ __('Shipping') }}" class="btn btn-sm btn-info">
+                                            {{-- <form action="{{ route('orders.shipping', $order->id) }}" method="POST"> --}}
+                                                {{-- @csrf --}}
+                                                <a href="{{ route('orders.shippingForm', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Shipping') }}" class="btn btn-sm btn-info">
                                                     <i class="fa fa-shipping-fast"></i>
-                                                </button>
-                                            </form>
+                                                </a>
+                                            {{-- </form> --}}
                                         @endif
                                     </td>
                                     <td>

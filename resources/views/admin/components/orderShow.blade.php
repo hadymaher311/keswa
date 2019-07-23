@@ -169,6 +169,22 @@
         </div>
     @endif
 
+    @if ($order->delivery)
+        <br>
+        <h4>{{ __('Delivery man') }}</h4>
+        <div class="row">
+            <div class="col-sm-2">
+                <a href="{{ route('admins.show', $order->delivery->id) }}"><img src="{{ ($order->delivery->image) ? $order->delivery->image->getUrl('card') : asset(config('default_avatar')) }}" alt="{{ $order->delivery->name }}" class="img-fluid img-circle img-thumbnail"></a>
+            </div>
+            <div class="col-sm-10">
+                <h5><a href="{{ route('admins.show', $order->delivery->id) }}">{{ $order->delivery->name }}</a></h5>
+                <div><a href="mailto://{{ $order->delivery->email }}">{{ $order->delivery->email }}</a></div>
+                <div>{{ ($order->delivery->personalInfo) ? $order->delivery->personalInfo->phone : '' }}</div>
+                <div>{{ ($order->delivery->personalInfo) ? __(ucfirst($order->delivery->personalInfo->gender)) : '' }}</div>
+            </div>
+        </div>
+    @endif
+
     <br>
     <h4>{{ __('Products') }}</h4>
 

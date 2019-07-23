@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\User;
 use Carbon\Carbon;
+use App\Models\Admin;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\warehouse;
@@ -241,6 +242,24 @@ class OrdersController extends Controller
             $product->save();
         }
     }
+
+    /**
+     * shipping Order form.
+     *
+     * @param  \App\Models\Order  $order
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function shippingForm(Order $order)
+    {
+        if (auth()->user()->can('order.view', $order)) {
+            $admins = Admin::active()->role('delivery')->get();
+            return view('admin.orders.shippingForm', compact('order', 'admins'));
+        }
+        abort(403);
+    }
+
+
     /**
      * shipping Order.
      *
@@ -250,15 +269,20 @@ class OrdersController extends Controller
      */
     public function shipping(Request $request, Order $order)
     {
+        $this->validate($request, [
+            'delivery' => 'required|exists:admins,id'
+        ]);
         if (!$order->isShipped()) {
             $this->reduceQuantities($order);
         }
+        $order->delivery_id = $request->delivery;
+        $order->save();
         $order->statuses()->create(
             ['name' => 'Shipped',]
         );
         $order->shipping_date = Carbon::now();
         $order->save();
-        return back()->with(['status' => __('Shipped Successfully')]);
+        return redirect()->route('orders.index', ['state'=>'shipped'])->with(['status' => __('Shipped Successfully')]);
     }
     
     /**

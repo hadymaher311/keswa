@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\User;
+use App\Models\Admin;
 use App\Models\Product;
 use App\Models\warehouse;
 use App\Models\OrderStatus;
@@ -111,5 +112,13 @@ class Order extends Model
     public function warehouse()
     {
         return $this->belongsTo(warehouse::class);
+    }
+    
+    /**
+     * Get order delivery man
+     */
+    public function delivery()
+    {
+        return $this->belongsTo(Admin::class);
     }
 }
