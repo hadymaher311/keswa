@@ -101,7 +101,7 @@
 
                         <h3>
                             @if ($product->allow_points)
-                                <span class="label" style="background-color: #ffe636;"><i class="fa fa-trophy"></i> {{ __('Get') }} {{ $product->final_price * \App\Models\GeneralSetting::pointsValue()->first()->value }} {{ __('Sa7tot') }}</span>
+                                <span class="label" style="background-color: #e4c90c;"><i class="fa fa-trophy"></i> {{ __('Get') }} {{ $product->final_price * \App\Models\GeneralSetting::pointsValue()->first()->value }} {{ __('Sa7tot') }}</span>
                             @endif
                         </h3>
                         

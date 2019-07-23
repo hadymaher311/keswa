@@ -171,16 +171,18 @@ class DatabaseSeeder extends Seeder
             $user->save();
         }
 
-        GeneralSetting::createMany([
+        GeneralSetting::create(
             [
                 'name' => 'price_tax',
                 'value' => '14'
-            ],
+            ]
+        );
+        GeneralSetting::create(
             [
                 'name' => 'points_value',
                 'value' => '10'
-            ],
-        ]);
+            ]
+        );
 
         error_log('Orders start ...');
         factory(Order::class, 50)->create();

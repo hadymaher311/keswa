@@ -15,6 +15,8 @@ class CreateWarehouseProductsTable extends Migration
     {
         Schema::create('warehouse_products', function (Blueprint $table) {
             $table->bigIncrements('id');
+            // the quantity that scrapped
+            $table->bigInteger('scrapped_quantity')->unsigned()->default(0);
             // the quantity that reduced when order placed
             $table->bigInteger('reduced_quantity')->unsigned();
             // the base quantity that placed at first time

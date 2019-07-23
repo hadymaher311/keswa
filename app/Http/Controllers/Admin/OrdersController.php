@@ -270,15 +270,22 @@ class OrdersController extends Controller
     public function shipping(Request $request, Order $order)
     {
         $this->validate($request, [
-            'delivery' => 'required|exists:admins,id'
+            'delivery' => 'required|exists:admins,id',
+            'comment' => 'nullable|string',
         ]);
         if (!$order->isShipped()) {
             $this->reduceQuantities($order);
         }
         $order->delivery_id = $request->delivery;
         $order->save();
+        $request['comment'] = str_replace('<', '&lt;', $request->comment);
+        $request['comment'] = str_replace('>', '&gt;', $request->comment);
+        $request['comment'] = nl2br($request->comment);
         $order->statuses()->create(
-            ['name' => 'Shipped',]
+            [
+                'name' => 'Shipped',
+                'description' => $request->comment,
+            ]
         );
         $order->shipping_date = Carbon::now();
         $order->save();
@@ -296,7 +303,9 @@ class OrdersController extends Controller
     {
         $order->user->sendOrderReviewNotification($order);
         $order->statuses()->create(
-            ['name' => 'Completed',]
+            [
+                'name' => 'Completed',
+            ]
         );
         return back()->with(['status' => __('Completed Successfully')]);
     }
@@ -355,18 +364,20 @@ class OrdersController extends Controller
             $request['comment'] = str_replace('>', '&gt;', $request->comment);
             $request['comment'] = nl2br($request->comment);
             $order->warehouse_id = $request->warehouse;
-            $order->comment = $request->comment;
             $order->save();
             if ($order->isDisapproved()) {
                 $order->statuses()->disapproved()->delete();
             }
             $order->statuses()->create(
-                ['name' => 'Approved',]
+                [
+                    'name' => 'Approved',
+                    'description' => $request->comment,
+                ]
             );
             $this->markUserNotificationAsRead($order); 
             return redirect()->route('orders.index')->with(['status' => __('Approved Successfully')]);
         }
-        return back()->with(['error' => __('The product') . ' ' . $product->name . ' ' . 'is not available in this warehouse']);
+        return back()->with(['error' => __('The product') . ' ' . $product->name . ' ' . __('is not available in this warehouse')]);
     }
 
     /**

@@ -42,6 +42,14 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="form-group row">
+                                            <label for="" class="col-sm-2">{{ __('Comment') }}</label>
+                                            <div class="input-group col-sm-10">
+                                                <textarea name="comment" placeholder="{{ __('Comment') }}" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+
                                         <div class="row">
                                             <div class="col-12">
                                                 <a href="{{ route('orders.invoice', $order->id) }}" class="btn btn-warning">
