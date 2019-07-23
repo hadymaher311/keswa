@@ -609,6 +609,19 @@ class OrdersController extends Controller
     }
 
     /**
+     * Can delete all orders
+     */
+    protected function canDeleteAllOrders($orders)
+    {
+        foreach ($orders as $order) {
+            if (!(!$order->isCanceled() && !$order->isShipped() && !$order->isDisapproved())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  App\Models\Order  $order
@@ -622,7 +635,11 @@ class OrdersController extends Controller
         $this->validate($request, [
             'orders.*' => 'required|exists:orders,id',
         ]);
-        Order::destroy($request->orders);
-        return back()->with('status', trans('Deleted Successfully'));
+        $orders = Order::find($request->orders);
+        if ($this->canDeleteAllOrders($orders)) {
+            Order::destroy($request->orders);
+            return back()->with('status', trans('Deleted Successfully'));
+        }
+        return back()->with(['error' => 'You Can\'t delete these orders']);
     }
 }

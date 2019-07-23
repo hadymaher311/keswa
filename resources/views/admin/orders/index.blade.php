@@ -93,6 +93,16 @@
                           </div>
                         </div>
                     @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible show fade">
+                          <div class="alert-body">
+                            <button class="close" data-dismiss="alert">
+                              <span>&times;</span>
+                            </button>
+                            {{ __(session('error')) }}
+                          </div>
+                        </div>
+                    @endif
                     <form action="{{ route('orders.destroy') }}" method="POST" id="deleteForm">
                         @csrf
                         {{ method_field('DELETE') }}
@@ -201,20 +211,22 @@
                                         </a>
 
                                         @can('delete orders')
-                                            <a 
-                                                href="#" 
-                                                class="btn btn-danger btn-sm"
-                                                onclick="
-                                                        event.preventDefault();
-                                                        if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
-                                                            $(this).siblings('form').submit();
-                                                        }" data-toggle="tooltip" data-placement="top" title="{{ __('Delete') }}"
-                                            ><i class="fa fa-times"></i></a>
-                                            <form action="{{ route('orders.destroy') }}" method="POST">
-                                                @csrf
-                                                {{ method_field('DELETE') }}
-                                                <input type="hidden" name="orders[]" value="{{ $order->id }}">
-                                            </form>
+                                            @if (!$order->isCanceled() && !$order->isShipped() && !$order->isDisapproved())
+                                                <a 
+                                                    href="#" 
+                                                    class="btn btn-danger btn-sm"
+                                                    onclick="
+                                                            event.preventDefault();
+                                                            if(confirm('{{ __('Are you sure you want to delete this row?') }}')) {
+                                                                $(this).siblings('form').submit();
+                                                            }" data-toggle="tooltip" data-placement="top" title="{{ __('Delete') }}"
+                                                ><i class="fa fa-times"></i></a>
+                                                <form action="{{ route('orders.destroy') }}" method="POST">
+                                                    @csrf
+                                                    {{ method_field('DELETE') }}
+                                                    <input type="hidden" name="orders[]" value="{{ $order->id }}">
+                                                </form>
+                                            @endif
                                         @endcan
                                     </td>
                                 </tr>
