@@ -747,5 +747,9 @@
     "Delivery man": "عامل التوصيل",
     "Choose delivery man": "اختر عامل التوصيل",
     "You Can't delete these orders": "لا يمكنك حذف هذة الطلبات",
+    "You have ordered some products from our application earlier.": "لقد طلبت بعض المنتجات من التطبيق الخاص بنا سابقا",
+    "Can you review this order to keep enhancing our service for you.": "هل يمكنك تقييم هذا الطلب لنتمكن من تحسين الخدمة دائما لك",
+    "Review your order": "تقييم طلبك",
+    "Thank you for using our application!": "شكرا لاستخدام تطبيقنا",
     "Check all": "تحديد الكل"
 }

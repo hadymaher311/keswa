@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use App\Notifications\User\OrderReviewNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\User\OrderWillBeServedLaterNotification;
 
@@ -82,6 +83,14 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function sendOrderWillBeServedLaterNotification(Order $order)
     {
         $this->notify(new OrderWillBeServedLaterNotification($order));
+    }
+    
+    /**
+     * send email for order review
+     */
+    public function sendOrderReviewNotification(Order $order)
+    {
+        $this->notify(new OrderReviewNotification($order));
     }
 
     /**

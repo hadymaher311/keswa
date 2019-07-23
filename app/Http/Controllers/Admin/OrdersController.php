@@ -294,6 +294,7 @@ class OrdersController extends Controller
      */
     public function complete(Request $request, Order $order)
     {
+        $order->user->sendOrderReviewNotification($order);
         $order->statuses()->create(
             ['name' => 'Completed',]
         );
