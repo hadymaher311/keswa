@@ -170,6 +170,13 @@ class OrdersController extends Controller
         if (!(auth()->user()->cart()->count())) {
             return back()->with(['error' => trans('Something worng happened')]);            
         }
+        if (!$this->inWorkingHours()) {
+            if (!$request->confirm) {
+                $comment = $request->comments;
+                $address = $request->address;
+                return view('user.orders.confirm', compact('comment', 'address'));
+            }
+        }
         $request['comments'] = str_replace('<', '&lt;', $request->comments);
         $request['comments'] = str_replace('>', '&gt;', $request->comments);
         $request['comments'] = nl2br($request->comments);
@@ -186,11 +193,11 @@ class OrdersController extends Controller
                     }
                     return redirect()->route('user.orders')->with(['status' => trans('Added Successfully')]);
                 }
-                return back()->with(['error' => __('You must order at least') . ' ' . $product->min_sale_quantity . ' ' . __('from') . ' ' . $product->name]);
+                return redirect()->route('user.order.checkout')->with(['error' => __('You must order at least') . ' ' . $product->min_sale_quantity . ' ' . __('from') . ' ' . $product->name]);
             }
-            return back()->with(['error' => __('The product') . ' ' . $product->name . ' ' . 'is not available in your area']);
+            return redirect()->route('user.order.checkout')->with(['error' => __('The product') . ' ' . $product->name . ' ' . 'is not available in your area']);
         }
-        return back()->with(['error' => __('You must change your address because warehouse in this address is no active')]);
+        return redirect()->route('user.order.checkout')->with(['error' => __('You must change your address because warehouse in this address is no active')]);
     }
 
     /**
