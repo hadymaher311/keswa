@@ -41,6 +41,9 @@
                             <a class="nav-link" href="{{ route('orders.index') }}?state=shipped">{{ __('Shipped') }} <span class="badge badge-dark">{{ $shipped_orders_count }}</span></a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('orders.index') }}?state=shipping_returned">{{ __('Shipping returned') }} <span class="badge badge-dark">{{ $shipping_returned_orders_count }}</span></a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('orders.index') }}?state=completed">{{ __('Completed') }} <span class="badge badge-dark">{{ $completed_orders_count }}</span></a>
                         </li>
                         <li class="nav-item">
@@ -180,14 +183,22 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if ($order->isApproved() && !$order->isCanceled() && !$order->isCompleted())
+                                        @if ($order->isApproved() && !$order->isCanceled() && !$order->isCompleted() && !$order->isShippingReturned())
                                             <a href="{{ route('orders.shippingForm', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Shipping') }}" class="btn btn-sm btn-info">
                                                 <i class="fa fa-shipping-fast"></i>
                                             </a>
+                                            @if ($order->isShipped())
+                                                <form action="{{ route('orders.shipping.returned', $order->id) }}" method="POST" class="form-inline" style="display: inline">
+                                                    @csrf
+                                                    <button data-toggle="tooltip" data-placement="top" title="{{ __('Shipping returned') }}" class="btn btn-sm btn-danger">
+                                                        <i class="fa fa-shipping-fast"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
                                         @endif
                                     </td>
                                     <td>
-                                        @if ($order->isApproved() && !$order->isCanceled() && $order->isShipped())
+                                        @if ($order->isApproved() && !$order->isCanceled() && $order->isShipped() && !$order->isShippingReturned())
                                             @if ($order->isCompleted())
                                                 <button data-toggle="tooltip" data-placement="top" title="{{ __('Completed') }}" class="btn btn-sm btn-success">
                                                     <i class="fa fa-check"></i>

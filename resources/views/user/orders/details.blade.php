@@ -164,7 +164,7 @@
                             'Shipped' => 'info',
                             'Completed' => 'success',
                             'Canceled' => 'danger',
-                            'Pending' => 'warning',
+                            'Shipping returned' => 'danger',
                         ];
                     @endphp
                     @foreach ($order->statuses as $status)

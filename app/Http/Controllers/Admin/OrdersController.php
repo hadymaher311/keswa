@@ -60,6 +60,9 @@ class OrdersController extends Controller
             case 'shipped':
                 return $this->shippedOrders();
             
+            case 'shipping_returned':
+                return $this->shippingReturnedOrders();
+            
             case 'completed':
                 return $this->completedOrders();
             
@@ -142,6 +145,20 @@ class OrdersController extends Controller
     }
     
     /**
+     * Get shippingReturned orders
+     * 
+     * @return \App\Models\Order
+     */
+    protected function shippingReturnedOrders()
+    {
+        return Order::whereHas('warehouse.admins', function($admin) {
+            return $admin->where('admins.id', auth()->id());
+        })->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($order) {
+            return $order->latestStatus->name == 'Shipping returned';
+        });
+    }
+    
+    /**
      * Get canceled orders
      * 
      * @return \App\Models\Order
@@ -208,11 +225,12 @@ class OrdersController extends Controller
         $approved_orders_count = $this->approvedOrders()->count();
         $disapproved_orders_count = $this->disapprovedOrders()->count();
         $shipped_orders_count = $this->shippedOrders()->count();
+        $shipping_returned_orders_count = $this->shippingReturnedOrders()->count();
         $completed_orders_count = $this->completedOrders()->count();
         $canceled_orders_count = $this->canceledOrders()->count();
 
         $warehouses = warehouse::active()->get();
-        return view('admin.orders.index', compact('orders', 'pending_orders_count', 'all_orders_count', 'approved_orders_count', 'disapproved_orders_count', 'shipped_orders_count', 'completed_orders_count', 'canceled_orders_count', 'warehouses'));
+        return view('admin.orders.index', compact('orders', 'pending_orders_count', 'all_orders_count', 'approved_orders_count', 'disapproved_orders_count', 'shipped_orders_count', 'shipping_returned_orders_count', 'completed_orders_count', 'canceled_orders_count', 'warehouses'));
     }
 
     /**
@@ -276,8 +294,6 @@ class OrdersController extends Controller
         if (!$order->isShipped()) {
             $this->reduceQuantities($order);
         }
-        $order->delivery_id = $request->delivery;
-        $order->save();
         $request['comment'] = str_replace('<', '&lt;', $request->comment);
         $request['comment'] = str_replace('>', '&gt;', $request->comment);
         $request['comment'] = nl2br($request->comment);
@@ -287,9 +303,50 @@ class OrdersController extends Controller
                 'description' => $request->comment,
             ]
         );
+        $order->delivery_id = $request->delivery;
         $order->shipping_date = Carbon::now();
         $order->save();
         return redirect()->route('orders.index', ['state'=>'shipped'])->with(['status' => __('Shipped Successfully')]);
+    }
+
+    /**
+     * return Order product quantities.
+     *
+     * @param  \App\Models\Order  $order
+     */
+    protected function returnQuantities(Order $order) {
+        foreach ($order->products as $product) {
+            $quantity = WarehouseProduct::where('warehouse_id', $order->warehouse_id)->where('product_id', $product->id)->where('expiry_date', '>=', now())->first();
+            if ($quantity) {
+                $quantity->reduced_quantity += $this->getRealQuantity($product);
+                $quantity->save();
+            }
+            $product->total_quantity = $product->quantities->sum(function($quantity) {
+                return $quantity->reduced_quantity;
+            });
+            $product->save();
+        }
+    }
+    
+    /**
+     * shipping returned Order.
+     *
+     * @param  \App\Models\Order  $order
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function shippingReturned(Request $request, Order $order)
+    {
+        if ($order->isShipped()) {
+            $this->returnQuantities($order);
+            $order->statuses()->create(
+                [
+                    'name' => 'Shipping returned',
+                ]
+            );
+            return redirect()->route('orders.index', ['state'=>'shipped'])->with(['status' => __('Shipping returned Successfully')]);
+        }
+        abort(404);
     }
     
     /**

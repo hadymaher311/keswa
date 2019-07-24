@@ -89,6 +89,14 @@ class Order extends Model
     }
     
     /**
+     * if order has Shipping Returned status
+     */
+    public function isShippingReturned()
+    {
+        return $this->statuses->where('name', 'Shipping returned')->isNotEmpty();
+    }
+    
+    /**
      * Get order address
      * 
      */

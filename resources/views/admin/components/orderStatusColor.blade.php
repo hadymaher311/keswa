@@ -6,6 +6,7 @@
         'Shipped' => 'info',
         'Completed' => 'success',
         'Canceled' => 'danger',
+        'Shipping returned' => 'danger',
     ];
 @endphp
 

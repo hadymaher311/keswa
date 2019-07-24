@@ -81,4 +81,15 @@ class OrderStatus extends Model
         return $query->where('name', 'Canceled');
     }
     
+    /**
+     * Scope a query to only include Shipping Returned orders.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeShippingReturned($query)
+    {
+        return $query->where('name', 'Shipping returned');
+    }
+    
 }

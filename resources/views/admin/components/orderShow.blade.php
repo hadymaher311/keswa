@@ -79,18 +79,34 @@
                 {{ __('Shipped') }}
             </div>
         </div>
-        <div class="wizard-step @if($order->isCompleted())
-            wizard-step-success
-        @else
-            wizard-step-default
-        @endif">
-            <div class="wizard-step-icon">
-            <i class="fas fa-check"></i>
+        @if ($order->isShippingReturned())
+            <div class="wizard-step @if($order->isShippingReturned())
+                wizard-step-danger
+            @else
+                wizard-step-default
+            @endif">
+                <div class="wizard-step-icon">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <div class="wizard-step-label">
+                    {{ __('Shipping returned') }}
+                </div>
             </div>
-            <div class="wizard-step-label">
-            {{ __('Completed') }}
+        @endif
+        @if (!$order->isShippingReturned())
+            <div class="wizard-step @if($order->isCompleted())
+                wizard-step-success
+            @else
+                wizard-step-default
+            @endif">
+                <div class="wizard-step-icon">
+                <i class="fas fa-check"></i>
+                </div>
+                <div class="wizard-step-label">
+                {{ __('Completed') }}
+                </div>
             </div>
-        </div>
+        @endif
         @if ($order->isCanceled())
             <div class="wizard-step @if($order->isCanceled())
                 wizard-step-danger
