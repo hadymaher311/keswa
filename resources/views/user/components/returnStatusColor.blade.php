@@ -1,7 +1,8 @@
 @php
     $status_colors = [
-        'Waiting for confirmation' => 'primary',
+        'Waiting for confirmation' => 'warning',
         'Approved' => 'primary',
+        'Disapproved' => 'danger',
         'In the way' => 'info',
         'Completed' => 'success',
         'Canceled' => 'danger',
