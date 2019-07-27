@@ -15,6 +15,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use App\Notifications\User\OrderReviewNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\User\OrderWillBeServedLaterNotification;
+use App\Models\OrderReturn;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
@@ -193,6 +194,15 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get user returns
+     * 
+     */
+    public function returns()
+    {
+        return $this->hasMany(OrderReturn::class);
     }
 
     /**

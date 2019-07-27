@@ -65,6 +65,20 @@ Route::group([
         Route::post('/admin/orders/{order}/complete', 'OrdersController@complete')->name('orders.complete');
         /*********************************************** orders CRUD routes *******************************************/
         
+        /*********************************************** returns CRUD routes *******************************************/
+        Route::resource('/admin/returns', 'ReturnsController');
+        Route::delete('/admin/returns', 'ReturnsController@destroy')->name('returns.destroy');
+        Route::get('/admin/returns/{return}/invoice', 'ReturnsController@invoice')->name('returns.invoice');
+        Route::get('/admin/returns/{return}/invoice/print', 'ReturnsController@invoicePrint')->name('returns.invoice.print');
+        Route::get('/admin/returns/{return}/approve', 'ReturnsController@approveView')->name('returns.approve');
+        Route::post('/admin/returns/{return}/approve', 'ReturnsController@approve')->name('returns.approve');
+        Route::post('/admin/returns/{return}/disapprove', 'ReturnsController@disapprove')->name('returns.disapprove');
+        Route::get('/admin/returns/{return}/shippingform', 'ReturnsController@shippingForm')->name('returns.shippingForm');
+        Route::post('/admin/returns/{return}/shipping', 'ReturnsController@shipping')->name('returns.shipping');
+        Route::post('/admin/returns/{return}/shipping/returned', 'ReturnsController@shippingReturned')->name('returns.shipping.returned');
+        Route::post('/admin/returns/{return}/complete', 'ReturnsController@complete')->name('returns.complete');
+        /*********************************************** returns CRUD routes *******************************************/
+        
         /*********************************************** categories CRUD routes *******************************************/
         Route::resource('/admin/categories', 'CategoriesController');
         Route::delete('/admin/categories', 'CategoriesController@destroy')->name('categories.destroy');

@@ -70,6 +70,13 @@ Route::group([
             Route::post('/user/orders/{order}/cancel', 'OrdersController@cancel')->name('user.orders.cancel');
             Route::get('/user/orders/review/{order}', 'OrdersController@review')->name('user.orders.review');
             /*********************************************** Orders routes *******************************************/
+            
+            /*********************************************** Returns routes *******************************************/
+            Route::get('/user/returns', 'ReturnsController@index')->name('user.returns');
+            Route::post('/user/returns/{order}/confirm/{product}', 'ReturnsController@confirm')->name('user.returns.confirm');
+            Route::get('/user/returns/details/{order}', 'ReturnsController@details')->name('user.returns.details');
+            Route::post('/user/returns/{order}/cancel', 'ReturnsController@cancel')->name('user.returns.cancel');
+            /*********************************************** Returns routes *******************************************/
             Route::get('/home', 'HomeController@welcome')->name('home');
         });
     });

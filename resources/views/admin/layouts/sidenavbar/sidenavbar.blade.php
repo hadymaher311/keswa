@@ -14,6 +14,10 @@
           </ul>
         </li>
 
+        @can('view returns')
+            <li><a class="nav-link" href="{{ route('returns.index') }}"><i class="fas fa-reply"></i> <span>{{ __('Returns') }}</span></a></li>
+        @endcan
+
         @can('view orders')
             <li><a class="nav-link" href="{{ route('orders.index') }}"><i class="fas fa-barcode"></i> <span>{{ __('Orders') }}</span></a></li>
         @endcan

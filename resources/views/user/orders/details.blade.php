@@ -76,6 +76,11 @@
                     </tr>
                 </tbody>
             </table>
+
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger">{{ $error }}</div>
+            @endforeach
+
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                     <thead>
@@ -85,7 +90,7 @@
                             <td class="">{{ __('Quantity') }}</td>
                             <td class="">{{ __('Unit Price') }}</td>
                             <td class="">{{ __('Total Price') }}</td>
-                            <td style="width: 20px;">
+                            <td style="width: 200px;">
                                 @if (!$order->isShipped() && !$order->isCompleted() && !$order->isCanceled() && !$order->isDisapproved())
                                     <form action="{{ route('user.orders.cancel', $order->id) }}" method="POST" class="form-inline">
                                         @csrf
@@ -112,7 +117,20 @@
                                 <td class="">{{ $product->pivot->quantity * $product->final_price }} {{ __('LE') }}</td>
                                 <td style="white-space: nowrap;" class="text-right">
                                     @if ($order->isCompleted())
-                                        <a class="btn btn-danger" title="" data-toggle="tooltip" href="" data-original-title="{{ __('Return') }}"><i class="fa fa-reply"></i></a>
+                                        <form action="{{ route('user.returns.confirm', [$order->id, $product->id]) }}" method="POST">
+                                            @csrf
+                                            <div class="input-group">
+                                                
+                                                <input type="number" max="{{ $product->pivot->quantity }}" min="1" value="{{ $product->pivot->quantity }}" class="form-control" placeholder="{{ __('Quantity') }}" aria-describedby="basic-addon2" name="quantity" autocomplete="quantity" required>
+
+                                                <button type="submit" style="width: auto; height: 34px;" class="btn btn-danger input-group-addon" id="basic-addon2" onclick="
+                                                    event.preventDefault();
+                                                    if(confirm('{{ __('Are you sure?') }}')) {
+                                                        $(this).parents('form').submit();
+                                                    }" title="" data-toggle="tooltip" href="" data-original-title="{{ __('Return') }}"><i class="fa fa-reply"></i></button>
+
+                                            </div>
+                                        </form>
                                     @endif
                                 </td>
                             </tr>

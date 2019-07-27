@@ -748,11 +748,17 @@
     "Shipping order": "شحن الطلب",
     "Delivery men": "عمال التوصيل",
     "Delivery man": "عامل التوصيل",
+    "Returns Table": "جدول المرتجع",
+    "Return denied": "مرتجع غير مقبول",
+    "Completed scrapped": "اكتمل - تالف",
+    "In the way": "في الطريق",
+    "Return ID": "الرقم التعريفي",
     "Choose delivery man": "اختر عامل التوصيل",
     "You Can't delete these orders": "لا يمكنك حذف هذة الطلبات",
     "You have ordered some products from our application earlier.": "لقد طلبت بعض المنتجات من التطبيق الخاص بنا سابقا",
     "Can you review this order to keep enhancing our service for you.": "هل يمكنك تقييم هذا الطلب لنتمكن من تحسين الخدمة دائما لك",
     "Review your order": "تقييم طلبك",
-    "Thank you for using our application!": "شكرا لاستخدام تطبيقنا",
+    "Thank you for using our application!": "شكرا لاستخدام تطبيقنا!",
+    "Are you sure?": "هل انت متأكد؟",
     "Check all": "تحديد الكل"
 }
