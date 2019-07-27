@@ -68,7 +68,7 @@ class ReturnsController extends Controller
                 'quantity' => $request->quantity,
             ]);
             $this->addPendingStatus($return);
-            return redirect()->route('user.returns.index')->with(['status' => 'Added Successfully']);
+            return redirect()->route('user.returns')->with(['status' => 'Added Successfully']);
         }
         abort(403);
     }

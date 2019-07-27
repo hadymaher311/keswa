@@ -17,7 +17,7 @@
             </li>
             <li><a href="#">{{ __('Reward Points') }}</a>
             </li>
-            <li><a href="#">{{ __('Returns') }}</a>
+            <li><a href="{{ route('user.returns') }}">{{ __('Returns') }}</a>
             </li>
         </ul>
     </div>
