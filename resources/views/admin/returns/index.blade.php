@@ -132,7 +132,6 @@
                             <th>{{ __('Order') }}</th>
                             <th>{{ __('Status') }}</th>
                             <th>{{ __('User') }}</th>
-                            <th>{{ __('Delivery man') }}</th>
                             <th>{{ __('Added from') }}</th>
                             <th>{{ __('Approve') }}</th>
                             <th>{{ __('Shipping') }}</th>
@@ -151,15 +150,23 @@
                                     </td>
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>#{{ $return->id }}</td>
-                                    <td>{{ $return->total_price }}</td>
+                                    <td>
+                                        <a href="{{ route('products.show', $return->product->id) }}">{{ $return->product->name }}</a>
+                                    </td>
+                                    <td>{{ $return->quantity }}</td>
+                                    <td>
+                                        <a href="{{ route('orders.show', $return->order->id) }}">#{{ $return->order->id }}</a>
+                                    </td>
                                     @php
                                         $return_status = $return->statuses->last()->name;
                                     @endphp
                                     <td>@include('admin.components.returnStatusColor')</td>
-                                    <td><a href="{{ route('users.show', $return->user->id) }}">{{ $return->user->name }}</a></td>
+                                    <td>
+                                        <a href="{{ route('users.show', $return->user->id) }}">{{ ucfirst($return->user->first_name) . ' ' . ucfirst($return->user->last_name) }}</a>
+                                    </td>
                                     <td>{{ $return->created_at }}</td>
                                     <td>
-                                        @if ($return->isShipped())
+                                        @if ($return->isInTheWay())
                                             @if ($return->isApproved())
                                                 <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
                                                     <i class="fa fa-check"></i>
@@ -190,7 +197,7 @@
                                             <a href="{{ route('returns.shippingForm', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Shipping') }}" class="btn btn-sm btn-info">
                                                 <i class="fa fa-shipping-fast"></i>
                                             </a>
-                                            @if ($return->isShipped())
+                                            @if ($return->isInTheWay())
                                                 <form action="{{ route('returns.shipping.returned', $return->id) }}" method="POST" class="form-inline" style="display: inline">
                                                     @csrf
                                                     <button data-toggle="tooltip" data-placement="top" title="{{ __('Shipping returned') }}" class="btn btn-sm btn-danger">
@@ -201,7 +208,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if ($return->isApproved() && !$return->isCanceled() && $return->isShipped() && !$return->isShippingReturned())
+                                        @if ($return->isApproved() && !$return->isCanceled() && $return->isInTheWay() && !$return->isShippingReturned())
                                             @if ($return->isCompleted())
                                                 <button data-toggle="tooltip" data-placement="top" title="{{ __('Completed') }}" class="btn btn-sm btn-success">
                                                     <i class="fa fa-check"></i>
@@ -218,7 +225,7 @@
                                     </td>
                                     <td>
                                         @can('update returns')
-                                            @if (!$return->isCanceled() && !$return->isShipped() && !$return->isDisapproved())
+                                            @if (!$return->isCanceled() && !$return->isInTheWay() && !$return->isDisapproved())
                                                 <a href="{{ route('returns.edit', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
@@ -234,7 +241,7 @@
                                         </a>
 
                                         @can('delete returns')
-                                            @if (!$return->isCanceled() && !$return->isShipped() && !$return->isDisapproved())
+                                            @if (!$return->isCanceled() && !$return->isInTheWay() && !$return->isDisapproved())
                                                 <a 
                                                     href="#" 
                                                     class="btn btn-danger btn-sm"

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Product;
 use App\Models\ReturnStatus;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
 
 class OrderReturn extends Model
 {
@@ -28,7 +29,16 @@ class OrderReturn extends Model
      */
     public function product()
     {
-        return $this->belongsTo(Product::class)->withPivot('quantity')->withTimestamps();
+        return $this->belongsTo(Product::class);
+    }
+
+    /**
+     * Get return order
+     * 
+     */
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
     
     /**

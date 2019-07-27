@@ -56,10 +56,10 @@ class ReturnsController extends Controller
      */
     public function confirm(Request $request, Order $order, Product $product)
     {
-        $this->validate($request, [
-            'quantity' => 'required|integer|min:1|max:' . $order->products->find($product)->pivot->quantity,
-        ]);
         if ($order->products->contains($product) && $order->user_id == auth()->id()) {
+            $this->validate($request, [
+                'quantity' => 'required|integer|min:1|max:' . $order->products->find($product)->pivot->quantity,
+            ]);
             $return = auth()->user()->returns()->create([
                 'order_id' => $order->id,
                 'product_id' => $product->id,
