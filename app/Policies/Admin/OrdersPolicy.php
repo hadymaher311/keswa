@@ -68,7 +68,7 @@ class OrdersPolicy
      */
     public function approve(Admin $admin, Order $order)
     {
-        if ($order->isApproved() && !$order->isShipped() && !$order->isCanceled()) {
+        if (!$order->isShipped() && !$order->isCanceled()) {
             return true;
         }
         return false;

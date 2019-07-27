@@ -42,8 +42,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('return.update', 'App\Policies\Admin\ReturnsPolicy@update');
         Gate::define('return.delete', 'App\Policies\Admin\ReturnsPolicy@delete');
         Gate::define('return.approve', 'App\Policies\Admin\ReturnsPolicy@approve');
-        Gate::define('return.shipping', 'App\Policies\Admin\ReturnsPolicy@shipping');
-        Gate::define('return.shipping_return', 'App\Policies\Admin\ReturnsPolicy@shipping_return');
+        Gate::define('return.in_the_way', 'App\Policies\Admin\ReturnsPolicy@in_the_way');
+        Gate::define('return.return_denied', 'App\Policies\Admin\ReturnsPolicy@return_denied');
         Gate::define('return.complete', 'App\Policies\Admin\ReturnsPolicy@complete');
 
         Gate::define('warehouse.view', 'App\Policies\Admin\WarehousesPolicy@view');        

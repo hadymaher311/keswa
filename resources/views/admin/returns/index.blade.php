@@ -166,18 +166,8 @@
                                     </td>
                                     <td>{{ $return->created_at }}</td>
                                     <td>
-                                        @if ($return->isInTheWay())
+                                        @can('return.approve', $return)
                                             @if ($return->isApproved())
-                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
-                                                    <i class="fa fa-check"></i>
-                                                </button>
-                                            @elseif ($return->isDisapproved())
-                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Disapproved') }}" class="btn btn-sm btn-danger">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            @endif
-                                        @else
-                                        @if ($return->isApproved())
                                                 <a href="{{ route('returns.approve', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
                                                     <i class="fa fa-check"></i>
                                                 </a>
@@ -190,25 +180,36 @@
                                                     <i class="fa fa-check"></i>
                                                 </a>
                                             @endif
-                                        @endif
+                                        @else
+                                            @if ($return->isApproved())
+                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                            @elseif ($return->isDisapproved())
+                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Disapproved') }}" class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            @endif
+                                        @endcan
                                     </td>
                                     <td>
-                                        @if ($return->isApproved() && !$return->isCanceled() && !$return->isCompleted() && !$return->isShippingReturned())
+                                        @can('return.in_the_way', $return)
                                             <a href="{{ route('returns.shippingForm', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Shipping') }}" class="btn btn-sm btn-info">
                                                 <i class="fa fa-shipping-fast"></i>
                                             </a>
-                                            @if ($return->isInTheWay())
-                                                <form action="{{ route('returns.shipping.returned', $return->id) }}" method="POST" class="form-inline" style="display: inline">
-                                                    @csrf
-                                                    <button data-toggle="tooltip" data-placement="top" title="{{ __('Shipping returned') }}" class="btn btn-sm btn-danger">
-                                                        <i class="fa fa-shipping-fast"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        @endif
+                                        @endcan
+                                            
+                                        @can('return.return_denied', $return)
+                                            <form action="{{ route('returns.shipping.returned', $return->id) }}" method="POST" class="form-inline" style="display: inline">
+                                                @csrf
+                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Shipping returned') }}" class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-shipping-fast"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
                                     </td>
                                     <td>
-                                        @if ($return->isApproved() && !$return->isCanceled() && $return->isInTheWay() && !$return->isShippingReturned())
+                                        @can('return.complete', $return)
                                             @if ($return->isCompleted())
                                                 <button data-toggle="tooltip" data-placement="top" title="{{ __('Completed') }}" class="btn btn-sm btn-success">
                                                     <i class="fa fa-check"></i>
@@ -221,15 +222,15 @@
                                                     </button>
                                                 </form>
                                             @endif
-                                        @endif
+                                        @endcan
                                     </td>
                                     <td>
                                         @can('update returns')
-                                            @if (!$return->isCanceled() && !$return->isInTheWay() && !$return->isDisapproved())
+                                            @can('return.update', $return)
                                                 <a href="{{ route('returns.edit', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
-                                            @endif
+                                            @endcan
                                         @endcan
 
                                         <a href="{{ route('returns.invoice', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Invoice') }}" class="btn btn-sm btn-info">
@@ -241,7 +242,7 @@
                                         </a>
 
                                         @can('delete returns')
-                                            @if (!$return->isCanceled() && !$return->isInTheWay() && !$return->isDisapproved())
+                                            @can('return.delete', $return)
                                                 <a 
                                                     href="#" 
                                                     class="btn btn-danger btn-sm"
@@ -256,7 +257,7 @@
                                                     {{ method_field('DELETE') }}
                                                     <input type="hidden" name="returns[]" value="{{ $return->id }}">
                                                 </form>
-                                            @endif
+                                            @endcan
                                         @endcan
                                     </td>
                                 </tr>
