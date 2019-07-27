@@ -165,7 +165,7 @@ class ReturnsController extends Controller
         return OrderReturn::whereHas('warehouse.admins', function($admin) {
             return $admin->where('admins.id', auth()->id());
         })->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($return) {
-            return $return->latestStatus->name == 'Return Denied';
+            return $return->latestStatus->name == 'Return denied';
         });
     }
     
@@ -256,23 +256,6 @@ class ReturnsController extends Controller
     }
 
     /**
-     * reduce Order product quantities.
-     *
-     * @param  \App\Models\OrderReturn  $return
-     */
-    protected function reduceQuantities(OrderReturn $return) {
-        foreach ($return->products as $product) {
-            $quantity = WarehouseProduct::where('warehouse_id', $return->warehouse_id)->where('product_id', $product->id)->where('reduced_quantity', '>=', $product->min_sale_quantity)->where('reduced_quantity', '>=', $this->getRealQuantity($product))->first();
-            $quantity->reduced_quantity -= $this->getRealQuantity($product);
-            $quantity->save();
-            $product->total_quantity = $product->quantities->sum(function($quantity) {
-                return $quantity->reduced_quantity;
-            });
-            $product->save();
-        }
-    }
-
-    /**
      * in the way Return form.
      *
      * @param  \App\Models\OrderReturn  $return
@@ -336,24 +319,23 @@ class ReturnsController extends Controller
     }
     
     /**
-     * shipping returned Order.
+     * returnDenied return.
      *
      * @param  \App\Models\OrderReturn  $return
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function shippingReturned(Request $request, OrderReturn $return)
+    public function returnDenied(Request $request, OrderReturn $return)
     {
-        if ($return->isShipped()) {
-            $this->returnQuantities($return);
+        if (auth()->user()->can('return.return_denied', $return)) {
             $return->statuses()->create(
                 [
-                    'name' => 'Shipping returned',
+                    'name' => 'Return denied',
                 ]
             );
-            return redirect()->route('orders.index', ['state'=>'shipped'])->with(['status' => __('Shipping returned Successfully')]);
+            return redirect()->route('returns.index', ['state'=>'return_denied'])->with(['status' => __('Updated Successfully')]);
         }
-        abort(404);
+        abort(403);
     }
     
     /**

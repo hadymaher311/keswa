@@ -229,7 +229,7 @@
                                             @endif
                                         @endcan
                                     </td>
-                                    <td>
+                                    <td style="width: 85px">
                                         @can('return.in_the_way', $return)
                                             <a href="{{ route('returns.inTheWayForm', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('In the way') }}" class="btn btn-sm btn-info">
                                                 <i class="fa fa-shipping-fast"></i>
@@ -239,8 +239,12 @@
                                         @can('return.return_denied', $return)
                                             <form action="{{ route('returns.return.denied', $return->id) }}" method="POST" class="form-inline" style="display: inline">
                                                 @csrf
-                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Return denied') }}" class="btn btn-sm btn-danger">
-                                                    <i class="fa fa-shipping-fast"></i>
+                                                <button type="submit" onclick="
+                                                    event.preventDefault();
+                                                    if(confirm('{{ __('Are you sure?') }}')) {
+                                                        $(this).parent('form').submit();
+                                                    }" data-toggle="tooltip" data-placement="top" title="{{ __('Return denied') }}" class="btn btn-sm btn-danger">
+                                                        <i class="fa fa-shipping-fast"></i>
                                                 </button>
                                             </form>
                                         @endcan
@@ -261,7 +265,7 @@
                                             @endif
                                         @endcan
                                     </td>
-                                    <td>
+                                    <td style="min-width: 85px">
                                         @can('update returns')
                                             @can('return.update', $return)
                                                 <a href="{{ route('returns.edit', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
