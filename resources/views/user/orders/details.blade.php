@@ -94,7 +94,11 @@
                                 @if (!$order->isShipped() && !$order->isCompleted() && !$order->isCanceled() && !$order->isDisapproved())
                                     <form action="{{ route('user.orders.cancel', $order->id) }}" method="POST" class="form-inline">
                                         @csrf
-                                        <button type="submit" class="btn btn-danger" title="" data-toggle="tooltip" data-original-title="{{ __('Cancel Order') }}"><i class="fa fa-times"></i></button>
+                                        <button type="submit" onclick="
+                                        event.preventDefault();
+                                        if(confirm('{{ __('Are you sure?') }}')) {
+                                            $(this).parents('form').submit();
+                                        }" class="btn btn-danger" title="" data-toggle="tooltip" data-original-title="{{ __('Cancel Order') }}"><i class="fa fa-times"></i></button>
                                     </form>
                                 @endif
                             </td>

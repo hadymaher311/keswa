@@ -156,18 +156,8 @@
                                     <td><a href="{{ route('users.show', $order->user->id) }}">{{ $order->user->name }}</a></td>
                                     <td>{{ $order->created_at }}</td>
                                     <td>
-                                        @if ($order->isShipped())
+                                        @can('order.approve', $order)
                                             @if ($order->isApproved())
-                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
-                                                    <i class="fa fa-check"></i>
-                                                </button>
-                                            @elseif ($order->isDisapproved())
-                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Disapproved') }}" class="btn btn-sm btn-danger">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            @endif
-                                        @else
-                                        @if ($order->isApproved())
                                                 <a href="{{ route('orders.approve', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
                                                     <i class="fa fa-check"></i>
                                                 </a>
@@ -180,25 +170,37 @@
                                                     <i class="fa fa-check"></i>
                                                 </a>
                                             @endif
-                                        @endif
+                                        @else        
+                                            @if ($order->isApproved())
+                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                            @elseif ($order->isDisapproved())
+                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Disapproved') }}" class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            @endif
+                                        @endcan
                                     </td>
+
                                     <td>
-                                        @if ($order->isApproved() && !$order->isCanceled() && !$order->isCompleted() && !$order->isShippingReturned())
+                                        @can('order.shipping', $order)
                                             <a href="{{ route('orders.shippingForm', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Shipping') }}" class="btn btn-sm btn-info">
                                                 <i class="fa fa-shipping-fast"></i>
                                             </a>
-                                            @if ($order->isShipped())
-                                                <form action="{{ route('orders.shipping.returned', $order->id) }}" method="POST" class="form-inline" style="display: inline">
-                                                    @csrf
-                                                    <button data-toggle="tooltip" data-placement="top" title="{{ __('Shipping returned') }}" class="btn btn-sm btn-danger">
-                                                        <i class="fa fa-shipping-fast"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        @endif
+                                        @endcan
+                                        @can('order.shipping_return', $order)
+                                            <form action="{{ route('orders.shipping.returned', $order->id) }}" method="POST" class="form-inline" style="display: inline">
+                                                @csrf
+                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Shipping returned') }}" class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-shipping-fast"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
                                     </td>
+
                                     <td>
-                                        @if ($order->isApproved() && !$order->isCanceled() && $order->isShipped() && !$order->isShippingReturned())
+                                        @can('order.complete', $order)
                                             @if ($order->isCompleted())
                                                 <button data-toggle="tooltip" data-placement="top" title="{{ __('Completed') }}" class="btn btn-sm btn-success">
                                                     <i class="fa fa-check"></i>
@@ -211,15 +213,15 @@
                                                     </button>
                                                 </form>
                                             @endif
-                                        @endif
+                                        @endcan
                                     </td>
                                     <td>
                                         @can('update orders')
-                                            @if (!$order->isCanceled() && !$order->isShipped() && !$order->isDisapproved())
+                                            @can('order.update', $order)
                                                 <a href="{{ route('orders.edit', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
-                                            @endif
+                                            @endcan
                                         @endcan
 
                                         <a href="{{ route('orders.invoice', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Invoice') }}" class="btn btn-sm btn-info">
@@ -231,7 +233,7 @@
                                         </a>
 
                                         @can('delete orders')
-                                            @if (!$order->isCanceled() && !$order->isShipped() && !$order->isDisapproved())
+                                            @can('order.delete', $order)
                                                 <a 
                                                     href="#" 
                                                     class="btn btn-danger btn-sm"
@@ -246,7 +248,7 @@
                                                     {{ method_field('DELETE') }}
                                                     <input type="hidden" name="orders[]" value="{{ $order->id }}">
                                                 </form>
-                                            @endif
+                                            @endcan
                                         @endcan
                                     </td>
                                 </tr>

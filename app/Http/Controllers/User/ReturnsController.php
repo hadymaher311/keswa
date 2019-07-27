@@ -101,4 +101,36 @@ class ReturnsController extends Controller
         }
         abort(403);
     }
+
+    /**
+     * Mark user notification as read
+     * 
+     * @param  \App\Models\OrderReturn  $return
+     */
+    protected function markUserNotificationAsRead(OrderReturn $return)
+    {
+        $notification = auth()->user()->unreadnotifications()->where('type', 'App\Notifications\User\ReturnWillBeServedLaterNotification')->where('data->return_id', $return->id)->first();
+        if ($notification) {
+            $notification->markAsRead();
+        }
+    }
+
+    /**
+     * Cancel order product return
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\OrderReturn $return
+     * @return \Illuminate\Http\Response
+     */
+    public function cancel(Request $request, OrderReturn $return)
+    {
+        if ($return->user_id == auth()->id()) {
+            $return->statuses()->create([
+                'name' => 'Canceled'
+            ]);
+            $this->markUserNotificationAsRead($return);
+            return back()->with(['status' => 'Canceled Successfully']);
+        }
+        abort(403);
+    }
 }

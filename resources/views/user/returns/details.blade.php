@@ -88,9 +88,13 @@
                             <td class="">{{ __('Total Price') }}</td>
                             <td style="width: 80px;">
                                 @if (!$return->isInTheWay() && !$return->isCompleted() && !$return->isCanceled() && !$return->isDisapproved())
-                                    <form action="{{ route('user.orders.cancel', $return->id) }}" method="POST" class="form-inline">
+                                    <form action="{{ route('user.returns.cancel', $return->id) }}" method="POST" class="form-inline">
                                         @csrf
-                                        <button type="submit" class="btn btn-danger" title="" data-toggle="tooltip" data-original-title="{{ __('Cancel Order') }}"><i class="fa fa-times"></i></button>
+                                        <button type="submit" onclick="
+                                        event.preventDefault();
+                                        if(confirm('{{ __('Are you sure?') }}')) {
+                                            $(this).parent('form').submit();
+                                        }" class="btn btn-danger" title="" data-toggle="tooltip" data-original-title="{{ __('Cancel Order') }}"><i class="fa fa-times"></i></button>
                                     </form>
                                 @endif
                             </td>
