@@ -6,7 +6,7 @@
         'In the way' => 'info',
         'Completed' => 'success',
         'Canceled' => 'danger',
-        'Return Denied' => 'danger',
+        'Return denied' => 'danger',
     ];
 @endphp
 @if (isset($status_colors[$return_status]))
