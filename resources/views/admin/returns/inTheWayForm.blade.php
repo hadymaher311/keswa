@@ -1,16 +1,16 @@
 @extends('admin.layouts.app')
 
 @section('title')
-{{ __('Shipping order') }}
+{{ __('In the way') }}
 @endsection
 
 @section('css')
-    
+<link rel="stylesheet" href="{{ asset('/admin_styles/modules/select2/dist/css/select2.min.css') }}">    
 @endsection
 
 @section('body')
     <div class="section-header">
-        <h1>{{ __('Orders') }}</h1>
+        <h1>{{ __('Returns') }}</h1>
     </div>
 
     <div class="section-body">
@@ -18,8 +18,8 @@
             <div class="col-12">
                 <div class="card">
                 <div class="card-header">
-                    <h4>{{ __('Shipping order') }}</h4> <br>
-                    <a href="{{ route('orders.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
+                    <h4>{{ __('In the way') }}</h4> <br>
+                    <a href="{{ route('returns.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
                 </div>
                 <div class="card-body">
 
@@ -27,7 +27,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <form action="{{ route('orders.shipping', $order->id) }}" method="POST">
+                                    <form action="{{ route('returns.intheway', $return->id) }}" method="POST">
                                         @csrf
                                         <div class="form-group row">
                                             <label for="" class="col-sm-2">{{ __('Delivery men') }}</label>
@@ -35,7 +35,7 @@
                                                 <select name="delivery" class="form-control select2" required>
                                                     <option value="">{{ __('Choose delivery man') }}</option>
                                                     @foreach ($admins as $admin)
-                                                        <option @if ($admin->id == $order->delivery_id)
+                                                        <option @if ($admin->id == $return->delivery_id)
                                                             selected
                                                         @endif value="{{ $admin->id }}">{{ $admin->name }} - {{ $admin->email }}</option>
                                                     @endforeach
@@ -52,16 +52,13 @@
 
                                         <div class="row">
                                             <div class="col-12">
-                                                <a href="{{ route('orders.invoice', $order->id) }}" class="btn btn-warning">
+                                                <a href="{{ route('returns.invoice', $return->id) }}" class="btn btn-warning">
                                                     <i class="far fa-file-pdf"></i> {{ __('Invoice') }}
                                                 </a>
 
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> {{ __('Shipping') }}</button>
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-shipping-fast"></i> {{ __('In the way') }}</button>
                                             </div>
                                         </div>
-                                    </form>
-                                    <form id="disapprove-form" action="{{ route('orders.disapprove', $order->id) }}" class="form-inline" method="POST">
-                                        @csrf
                                     </form>
                                 </div>
                             </div>
@@ -78,4 +75,5 @@
 @endsection
 
 @section('js')
+<script src="{{ asset('/admin_styles/modules/select2/dist/js/select2.full.min.js') }}"></script>
 @endsection

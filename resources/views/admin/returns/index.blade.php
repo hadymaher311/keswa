@@ -134,7 +134,7 @@
                             <th>{{ __('User') }}</th>
                             <th>{{ __('Added from') }}</th>
                             <th>{{ __('Approve') }}</th>
-                            <th>{{ __('Shipping') }}</th>
+                            <th>{{ __('In the way') }}</th>
                             <th>{{ __('Completed') }}</th>
                             <th>{{ __('Controls') }}</th>
                         </tr>
@@ -165,20 +165,57 @@
                                         <a href="{{ route('users.show', $return->user->id) }}">{{ ucfirst($return->user->first_name) . ' ' . ucfirst($return->user->last_name) }}</a>
                                     </td>
                                     <td>{{ $return->created_at }}</td>
-                                    <td>
+                                    <td style="width: 75px;">
                                         @can('return.approve', $return)
                                             @if ($return->isApproved())
-                                                <a href="{{ route('returns.approve', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
+                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
                                                     <i class="fa fa-check"></i>
-                                                </a>
+                                                </button>
+                                                <form method="POST" action="{{ route('returns.disapprove', $return->id) }}" class="form-inline" style="display: inline">
+                                                    @csrf
+                                                    <button type="submit" onclick="
+                                                        event.preventDefault();
+                                                        if(confirm('{{ __('Are you sure?') }}')) {
+                                                            $(this).parent('form').submit();
+                                                        }" href="{{ route('returns.approve', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Disapprove') }}" class="btn btn-sm btn-danger">
+                                                            <i class="fa fa-times"></i>
+                                                    </button>
+                                                </form>
                                             @elseif ($return->isDisapproved())
-                                                <a href="{{ route('returns.approve', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Disapproved') }}" class="btn btn-sm btn-danger">
-                                                    <i class="fa fa-times"></i>
-                                                </a>
+                                                <form method="POST" action="{{ route('returns.approve', $return->id) }}" class="form-inline" style="display: inline">
+                                                    @csrf
+                                                    <button type="submit" onclick="
+                                                        event.preventDefault();
+                                                        if(confirm('{{ __('Are you sure?') }}')) {
+                                                            $(this).parent('form').submit();
+                                                        }" href="{{ route('returns.approve', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approve') }}" class="btn btn-sm btn-warning">
+                                                            <i class="fa fa-check"></i>
+                                                    </button>
+                                                </form>
+                                                <button type="submit" href="{{ route('returns.approve', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Disapproved') }}" class="btn btn-sm btn-danger">
+                                                        <i class="fa fa-times"></i>
+                                                </button>
                                             @else
-                                                <a href="{{ route('returns.approve', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approve') }}" data-id="{{ $return->id }}" class="btn btn-sm btn-warning model-5">
-                                                    <i class="fa fa-check"></i>
-                                                </a>
+                                                <form method="POST" action="{{ route('returns.approve', $return->id) }}" class="form-inline" style="display: inline">
+                                                    @csrf
+                                                    <button type="submit" onclick="
+                                                        event.preventDefault();
+                                                        if(confirm('{{ __('Are you sure?') }}')) {
+                                                            $(this).parent('form').submit();
+                                                        }" href="{{ route('returns.approve', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approve') }}" class="btn btn-sm btn-warning">
+                                                            <i class="fa fa-check"></i>
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="{{ route('returns.disapprove', $return->id) }}" class="form-inline" style="display: inline">
+                                                    @csrf
+                                                    <button type="submit" onclick="
+                                                        event.preventDefault();
+                                                        if(confirm('{{ __('Are you sure?') }}')) {
+                                                            $(this).parent('form').submit();
+                                                        }" href="{{ route('returns.approve', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Disapprove') }}" class="btn btn-sm btn-danger">
+                                                            <i class="fa fa-times"></i>
+                                                    </button>
+                                                </form>
                                             @endif
                                         @else
                                             @if ($return->isApproved())
@@ -194,15 +231,15 @@
                                     </td>
                                     <td>
                                         @can('return.in_the_way', $return)
-                                            <a href="{{ route('returns.shippingForm', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Shipping') }}" class="btn btn-sm btn-info">
+                                            <a href="{{ route('returns.inTheWayForm', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('In the way') }}" class="btn btn-sm btn-info">
                                                 <i class="fa fa-shipping-fast"></i>
                                             </a>
                                         @endcan
                                             
                                         @can('return.return_denied', $return)
-                                            <form action="{{ route('returns.shipping.returned', $return->id) }}" method="POST" class="form-inline" style="display: inline">
+                                            <form action="{{ route('returns.return.denied', $return->id) }}" method="POST" class="form-inline" style="display: inline">
                                                 @csrf
-                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Shipping returned') }}" class="btn btn-sm btn-danger">
+                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Return denied') }}" class="btn btn-sm btn-danger">
                                                     <i class="fa fa-shipping-fast"></i>
                                                 </button>
                                             </form>

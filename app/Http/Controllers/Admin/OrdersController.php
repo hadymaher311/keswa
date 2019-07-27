@@ -444,7 +444,7 @@ class OrdersController extends Controller
      */
     protected function markUserNotificationAsRead(Order $order)
     {
-        $notification = $order->user->unreadnotifications()->where('type', 'App\Notifications\User\OrderWillBeServedLaterNotification')->where('data->order_id', $order->id)->first();
+        $notification = $order->user->unreadNotifications()->where('type', 'App\Notifications\User\OrderWillBeServedLaterNotification')->where('data->order_id', $order->id)->first();
         if ($notification) {
             $notification->markAsRead();
         }

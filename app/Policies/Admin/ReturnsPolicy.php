@@ -79,7 +79,7 @@ class ReturnsPolicy
      */
     public function in_the_way(Admin $admin, OrderReturn $return)
     {
-        if ($return->isApproved() && !$return->isCanceled() && !$return->isCompleted() && !$return->isReturnDebied()) {
+        if ($return->isApproved() && !$return->isCanceled() && !$return->isCompleted() && !$return->isReturnDenied()) {
             return true;
         }
         return false;
@@ -90,7 +90,7 @@ class ReturnsPolicy
      */
     public function return_denied(Admin $admin, OrderReturn $return)
     {
-        if ($return->isApproved() && !$return->isCanceled() && !$return->isCompleted() && !$return->isReturnDebied() && $return->isInTheWay()) {
+        if ($return->isApproved() && !$return->isCanceled() && !$return->isCompleted() && !$return->isReturnDenied() && $return->isInTheWay()) {
             return true;
         }
         return false;
@@ -101,7 +101,7 @@ class ReturnsPolicy
      */
     public function complete(Admin $admin, OrderReturn $return)
     {
-        if ($return->isApproved() && !$return->isCanceled() && $return->isInTheWay() && !$return->isReturnDebied()) {
+        if ($return->isApproved() && !$return->isCanceled() && $return->isInTheWay() && !$return->isReturnDenied()) {
             return true;
         }
         return false;

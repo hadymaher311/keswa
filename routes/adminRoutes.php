@@ -70,12 +70,11 @@ Route::group([
         Route::delete('/admin/returns', 'ReturnsController@destroy')->name('returns.destroy');
         Route::get('/admin/returns/{return}/invoice', 'ReturnsController@invoice')->name('returns.invoice');
         Route::get('/admin/returns/{return}/invoice/print', 'ReturnsController@invoicePrint')->name('returns.invoice.print');
-        Route::get('/admin/returns/{return}/approve', 'ReturnsController@approveView')->name('returns.approve');
         Route::post('/admin/returns/{return}/approve', 'ReturnsController@approve')->name('returns.approve');
         Route::post('/admin/returns/{return}/disapprove', 'ReturnsController@disapprove')->name('returns.disapprove');
-        Route::get('/admin/returns/{return}/shippingform', 'ReturnsController@shippingForm')->name('returns.shippingForm');
-        Route::post('/admin/returns/{return}/shipping', 'ReturnsController@shipping')->name('returns.shipping');
-        Route::post('/admin/returns/{return}/shipping/returned', 'ReturnsController@shippingReturned')->name('returns.shipping.returned');
+        Route::get('/admin/returns/{return}/inthewayform', 'ReturnsController@inTheWayForm')->name('returns.inTheWayForm');
+        Route::post('/admin/returns/{return}/intheway', 'ReturnsController@intheway')->name('returns.intheway');
+        Route::post('/admin/returns/{return}/return/denied', 'ReturnsController@returnDenied')->name('returns.return.denied');
         Route::post('/admin/returns/{return}/complete', 'ReturnsController@complete')->name('returns.complete');
         /*********************************************** returns CRUD routes *******************************************/
         

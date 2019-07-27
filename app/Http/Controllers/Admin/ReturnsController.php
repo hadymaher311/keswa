@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Models\OrderReturn;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\Admin;
 
 class ReturnsController extends Controller
 {
@@ -256,9 +258,9 @@ class ReturnsController extends Controller
     /**
      * reduce Order product quantities.
      *
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      */
-    protected function reduceQuantities(Order $return) {
+    protected function reduceQuantities(OrderReturn $return) {
         foreach ($return->products as $product) {
             $quantity = WarehouseProduct::where('warehouse_id', $return->warehouse_id)->where('product_id', $product->id)->where('reduced_quantity', '>=', $product->min_sale_quantity)->where('reduced_quantity', '>=', $this->getRealQuantity($product))->first();
             $quantity->reduced_quantity -= $this->getRealQuantity($product);
@@ -271,59 +273,55 @@ class ReturnsController extends Controller
     }
 
     /**
-     * shipping Order form.
+     * in the way Return form.
      *
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function shippingForm(Order $return)
+    public function inTheWayForm(OrderReturn $return)
     {
-        if (auth()->user()->can('order.view', $return)) {
+        if (auth()->user()->can('return.view', $return)) {
             $admins = Admin::active()->role('delivery')->get();
-            return view('admin.orders.shippingForm', compact('order', 'admins'));
+            return view('admin.returns.inTheWayForm', compact('return', 'admins'));
         }
         abort(403);
     }
 
 
     /**
-     * shipping Order.
+     * in the way return.
      *
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function shipping(Request $request, Order $return)
+    public function intheway(Request $request, OrderReturn $return)
     {
         $this->validate($request, [
             'delivery' => 'required|exists:admins,id',
             'comment' => 'nullable|string',
         ]);
-        if (!$return->isShipped()) {
-            $this->reduceQuantities($return);
-        }
         $request['comment'] = str_replace('<', '&lt;', $request->comment);
         $request['comment'] = str_replace('>', '&gt;', $request->comment);
         $request['comment'] = nl2br($request->comment);
         $return->statuses()->create(
             [
-                'name' => 'Shipped',
+                'name' => 'In the way',
                 'description' => $request->comment,
             ]
         );
         $return->delivery_id = $request->delivery;
-        $return->shipping_date = Carbon::now();
         $return->save();
-        return redirect()->route('orders.index', ['state'=>'shipped'])->with(['status' => __('Shipped Successfully')]);
+        return redirect()->route('returns.index', ['state'=>'in_the_way'])->with(['status' => __('Updated Successfully')]);
     }
 
     /**
-     * return Order product quantities.
+     * return Order product quantities {{ will be used later }}.
      *
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      */
-    protected function returnQuantities(Order $return) {
+    protected function returnQuantities(OrderReturn $return) {
         foreach ($return->products as $product) {
             $quantity = WarehouseProduct::where('warehouse_id', $return->warehouse_id)->where('product_id', $product->id)->where('expiry_date', '>=', now())->first();
             if ($quantity) {
@@ -340,11 +338,11 @@ class ReturnsController extends Controller
     /**
      * shipping returned Order.
      *
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function shippingReturned(Request $request, Order $return)
+    public function shippingReturned(Request $request, OrderReturn $return)
     {
         if ($return->isShipped()) {
             $this->returnQuantities($return);
@@ -361,11 +359,11 @@ class ReturnsController extends Controller
     /**
      * complete Order.
      *
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function complete(Request $request, Order $return)
+    public function complete(Request $request, OrderReturn $return)
     {
         $return->user->sendOrderReviewNotification($return);
         $return->statuses()->create(
@@ -379,11 +377,11 @@ class ReturnsController extends Controller
     /**
      * disapprove Order.
      *
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function disapprove(Request $request, Order $return)
+    public function disapprove(Request $request, OrderReturn $return)
     {
         $return->statuses()->create(
             ['name' => 'Disapproved',]
@@ -392,100 +390,50 @@ class ReturnsController extends Controller
             $return->statuses()->approved()->delete();
         }
         $this->markUserNotificationAsRead($return); 
-        return redirect()->route('orders.index')->with(['status' => __('Disapproved Successfully')]);
-    }
-
-    /**
-     * Check if products is available
-     * 
-     * @param  \Illuminate\Http\Request  $request
-     * @param \App\Models\Return $return
-     */
-    protected function isNotAvailable(Request $request, Order $return)
-    {
-        foreach ($return->products as $product) {
-            if (!$product->isAvailableIn(warehouse::find($request->warehouse))) {
-                return $product;
-            }
-        }
-        return null;
+        return redirect()->route('returns.index', ['state' => 'disapproved'])->with(['status' => __('Disapproved Successfully')]);
     }
 
     /**
      * Approve Order.
      *
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function approve(Request $request, Order $return)
-    { 
-        $this->validate($request, [
-            'warehouse' => 'required|exists:warehouses,id',
-            'comment' => 'nullable|string',
-        ]);
-        $product = $this->isNotAvailable($request, $return);
-        if (!$product) {
-            $request['comment'] = str_replace('<', '&lt;', $request->comment);
-            $request['comment'] = str_replace('>', '&gt;', $request->comment);
-            $request['comment'] = nl2br($request->comment);
-            $return->warehouse_id = $request->warehouse;
-            $return->save();
-            if ($return->isDisapproved()) {
-                $return->statuses()->disapproved()->delete();
-            }
-            $return->statuses()->create(
-                [
-                    'name' => 'Approved',
-                    'description' => $request->comment,
-                ]
-            );
-            $this->markUserNotificationAsRead($return); 
-            return redirect()->route('orders.index')->with(['status' => __('Approved Successfully')]);
+    public function approve(Request $request, OrderReturn $return)
+    {
+        if ($return->isDisapproved()) {
+            $return->statuses()->disapproved()->delete();
         }
-        return back()->with(['error' => __('The product') . ' ' . $product->name . ' ' . __('is not available in this warehouse')]);
+        $return->statuses()->create(
+            [
+                'name' => 'Approved',
+            ]
+        );
+        $this->markUserNotificationAsRead($return); 
+        return redirect()->route('returns.index', ['state' => 'approved'])->with(['status' => __('Approved Successfully')]);
     }
 
     /**
      * Mark user notification as read
      * 
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      */
-    protected function markUserNotificationAsRead(Order $return)
+    protected function markUserNotificationAsRead(OrderReturn $return)
     {
-        $notification = $return->user->unreadnotifications()->where('type', 'App\Notifications\User\OrderWillBeServedLaterNotification')->where('data->order_id', $return->id)->first();
+        $notification = $return->user->unreadNotifications()->where('type', 'App\Notifications\User\ReturnWillBeServedLaterNotification')->where('data->return_id', $return->id)->first();
         if ($notification) {
             $notification->markAsRead();
         }
-    }
-    
-
-    /**
-     * Display page for order approving.
-     *
-     * @param  \App\Models\Return  $return
-     * @return \Illuminate\Http\Response
-     */
-    public function approveView(Order $return)
-    {
-        if (auth()->user()->can('order.view', $return)) {
-            if (!$return->isShipped()) {
-                $price_tax = GeneralSetting::priceTax()->first();
-                $warehouses = auth()->user()->warehouses;
-                return view('admin.orders.approve', compact('order', 'price_tax', 'warehouses'));
-            }
-            abort(404);
-        }
-        abort(403);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $return)
+    public function show(OrderReturn $return)
     {
         if (auth()->user()->can('order.view', $return)) {
             $price_tax = GeneralSetting::priceTax()->first();
@@ -497,10 +445,10 @@ class ReturnsController extends Controller
     /**
      * Display order invoice.
      *
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      * @return \Illuminate\Http\Response
      */
-    public function invoice(Order $return)
+    public function invoice(OrderReturn $return)
     {
         if (auth()->user()->can('order.view', $return)) {
             $price_tax = GeneralSetting::priceTax()->first();
@@ -512,10 +460,10 @@ class ReturnsController extends Controller
     /**
      * Print order invoice.
      *
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      * @return \Illuminate\Http\Response
      */
-    public function invoicePrint(Order $return)
+    public function invoicePrint(OrderReturn $return)
     {
         if (auth()->user()->can('order.view', $return)) {
             $price_tax = GeneralSetting::priceTax()->first();
@@ -569,7 +517,7 @@ class ReturnsController extends Controller
      * 
      * @param \App\Models\Return $return
      */
-    protected function addOrderStatus(Order $return)
+    protected function addOrderStatus(OrderReturn $return)
     {
         $return->statuses()->createMany([
             ['name' => 'Waiting for confirmation',],
@@ -582,7 +530,7 @@ class ReturnsController extends Controller
      * 
      * @param \App\Models\Return $return
      */
-    protected function addOrderProducts(Request $request, Order $return)
+    protected function addOrderProducts(Request $request, OrderReturn $return)
     {
         $i = 0;
         foreach ($request->products as $product) {
@@ -687,10 +635,10 @@ class ReturnsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $return)
+    public function edit(OrderReturn $return)
     {
         // return view('admin.orders.edit', compact('Order'));
     }
@@ -699,10 +647,10 @@ class ReturnsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Return  $return
+     * @param  \App\Models\OrderReturn  $return
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $return)
+    public function update(Request $request, OrderReturn $return)
     {
         // $this->validate($request, [
         //     'name' => 'required|string|min:2'

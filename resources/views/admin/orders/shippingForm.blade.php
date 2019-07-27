@@ -4,8 +4,8 @@
 {{ __('Shipping order') }}
 @endsection
 
-@section('css')
-    
+@section('css')    
+<link rel="stylesheet" href="{{ asset('/admin_styles/modules/select2/dist/css/select2.min.css') }}">    
 @endsection
 
 @section('body')
@@ -56,12 +56,9 @@
                                                     <i class="far fa-file-pdf"></i> {{ __('Invoice') }}
                                                 </a>
 
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> {{ __('Shipping') }}</button>
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-shipping-fast"></i> {{ __('Shipping') }}</button>
                                             </div>
                                         </div>
-                                    </form>
-                                    <form id="disapprove-form" action="{{ route('orders.disapprove', $order->id) }}" class="form-inline" method="POST">
-                                        @csrf
                                     </form>
                                 </div>
                             </div>
@@ -78,4 +75,5 @@
 @endsection
 
 @section('js')
+<script src="{{ asset('/admin_styles/modules/select2/dist/js/select2.full.min.js') }}"></script>
 @endsection

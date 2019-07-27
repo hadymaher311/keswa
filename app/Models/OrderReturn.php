@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\User;
 use App\Models\Product;
 use App\Models\ReturnStatus;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User;
 
 class OrderReturn extends Model
 {
@@ -108,11 +108,11 @@ class OrderReturn extends Model
     }
     
     /**
-     * if return has Shipping Returned status
+     * if return has Return denied status
      */
-    public function isShippingReturned()
+    public function isreturnDenied()
     {
-        return $this->statuses->where('name', 'Shipping returned')->isNotEmpty();
+        return $this->statuses->where('name', 'Return denied')->isNotEmpty();
     }
     
     /**
