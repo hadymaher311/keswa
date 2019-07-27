@@ -5,6 +5,7 @@ namespace App;
 use App\Models\Order;
 use App\Models\Review;
 use App\Models\Product;
+use App\Models\OrderReturn;
 use App\Models\UserAddress;
 use App\Models\UserPersonalInfo;
 use Spatie\MediaLibrary\Models\Media;
@@ -15,7 +16,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use App\Notifications\User\OrderReviewNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\User\OrderWillBeServedLaterNotification;
-use App\Models\OrderReturn;
+use App\Notifications\User\ReturnWillBeServedLaterNotification;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
@@ -84,6 +85,14 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function sendOrderWillBeServedLaterNotification(Order $order)
     {
         $this->notify(new OrderWillBeServedLaterNotification($order));
+    }
+
+    /**
+     * make return will be served later notification
+     */
+    public function sendReturnWillBeServedLaterNotification(OrderReturn $return)
+    {
+        $this->notify(new ReturnWillBeServedLaterNotification($return));
     }
     
     /**

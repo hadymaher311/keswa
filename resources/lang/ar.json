@@ -727,6 +727,7 @@
     "is not available in this warehouse": "ليس متاحا في هذا المخزن",
     "You must change your address because warehouse in this address is no active": "يجب تغيير العنوان الحالي لان المخزن المرتبط بهذا العنوان غير نشط حاليا",
     "We are not working in this hour, your order will be served soon": "نحن لا نعمل في هذة الساعة, طلبك سيكون جاهز في اقرب وقت",
+    "We are not working in this hour, your return will be served soon": "نحن لا نعمل في هذة الساعة, المرتجع الخاص بك سيكون جاهز في اقرب وقت",
     "Approve order": "تأكيد الطلب",
     "Disapprove": "رفض",
     "Complete": "انهاء",
@@ -760,5 +761,6 @@
     "Review your order": "تقييم طلبك",
     "Thank you for using our application!": "شكرا لاستخدام تطبيقنا!",
     "Are you sure?": "هل انت متأكد؟",
+    "This return has been placed earlier": "هذا المرتجع تم اضافته سابقا",
     "Check all": "تحديد الكل"
 }
