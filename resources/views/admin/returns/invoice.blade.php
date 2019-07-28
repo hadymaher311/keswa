@@ -10,12 +10,12 @@
 
 @section('body')
     <div class="section-header">
-        <h1>{{ __('Orders') }}</h1>
-        <a target="_blank" href="{{ route('orders.invoice.print', $order->id) }}" class="btn btn-warning btn-icon ml-3 mr-3 icon-left"><i class="fas fa-print"></i> {{ __('Print') }}</a>
+        <h1>{{ __('Returns') }}</h1>
+        <a target="_blank" href="{{ route('returns.invoice.print', $return->id) }}" class="btn btn-warning btn-icon ml-3 mr-3 icon-left"><i class="fas fa-print"></i> {{ __('Print') }}</a>
     </div>
 
     <div class="section-body">
-        @include('admin.components.invoice')
+        @include('admin.components.returnInvoice')
     </div>
 
 @endsection
