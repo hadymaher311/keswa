@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Admin;
 use App\Models\WarehouseProduct;
+use App\Models\GeneralSetting;
 
 class ReturnsController extends Controller
 {
@@ -447,201 +448,41 @@ class ReturnsController extends Controller
      */
     public function show(OrderReturn $return)
     {
-        if (auth()->user()->can('order.view', $return)) {
+        if (auth()->user()->can('return.view', $return)) {
             $price_tax = GeneralSetting::priceTax()->first();
-            return view('admin.orders.show', compact('order', 'price_tax'));
+            return view('admin.returns.show', compact('return', 'price_tax'));
         }
         abort(403);
     }
     
     /**
-     * Display order invoice.
+     * Display return invoice.
      *
      * @param  \App\Models\OrderReturn  $return
      * @return \Illuminate\Http\Response
      */
     public function invoice(OrderReturn $return)
     {
-        if (auth()->user()->can('order.view', $return)) {
+        if (auth()->user()->can('return.view', $return)) {
             $price_tax = GeneralSetting::priceTax()->first();
-            return view('admin.orders.invoice', compact('order', 'price_tax'));
+            return view('admin.returns.invoice', compact('return', 'price_tax'));
         }
         abort(403);
     }
     
     /**
-     * Print order invoice.
+     * Print return invoice.
      *
      * @param  \App\Models\OrderReturn  $return
      * @return \Illuminate\Http\Response
      */
     public function invoicePrint(OrderReturn $return)
     {
-        if (auth()->user()->can('order.view', $return)) {
+        if (auth()->user()->can('return.view', $return)) {
             $price_tax = GeneralSetting::priceTax()->first();
-            return view('admin.orders.invoicePrint', compact('order', 'price_tax'));
+            return view('admin.returns.invoicePrint', compact('return', 'price_tax'));
         }
         abort(403);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $users = User::active()->get();
-        $products = Product::whereHas('warehouses.admins', function($admin) {
-            return $admin->where('admins.id', auth()->id());
-        })->active()->get();
-        return view('admin.orders.create', compact('users', 'products'));
-    }
-
-    /**
-     * get real quantity
-     */
-    protected function getRealQuantityForMinSale(Product $product)
-    {
-        return (mb_strtolower($product->sale_by) == 'gram') ? 1 : $product->min_sale_quantity;
-    }
-
-    /**
-     * Check min sale of produts
-     * 
-     * @param \Illuminate\Http\Request
-     */
-    protected function checkMinSaleOfProducts(Request $request)
-    {
-        $i = 0;
-        foreach ($request->quantity as $quantity) {
-            $product = Product::find($request->products[$i]);
-            if ($quantity < $this->getRealQuantityForMinSale($product)) {
-                return $product;
-            }
-            $i++;
-        }
-        return null;
-    }
-
-    /**
-     * add order status
-     * 
-     * @param \App\Models\Return $return
-     */
-    protected function addOrderStatus(OrderReturn $return)
-    {
-        $return->statuses()->createMany([
-            ['name' => 'Waiting for confirmation',],
-            ['name' => 'Approved',]
-        ]);
-    }    
-    
-    /**
-     * add order products
-     * 
-     * @param \App\Models\Return $return
-     */
-    protected function addOrderProducts(Request $request, OrderReturn $return)
-    {
-        $i = 0;
-        foreach ($request->products as $product) {
-            $return->products()->attach(
-                $product,
-                ['quantity' => $request->quantity[$i],]
-            );
-            $i++;
-        }
-    }
-
-    /**
-     * if all products is free
-     */
-    protected function isAllFree(Request $request)
-    {
-        foreach ($request->products as $pro) {
-            $product = Product::find($pro);
-            if (!$product->free_shipping) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Store order details
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @return \App\Models\Return
-     */
-    protected function storeOrderDetails(Request $request)
-    {
-        $user = User::find($request->user);
-        return $user->orders()->create([
-            'comment' => $request->comment,
-            'user_address_id' => $user->main_location,
-            'total_price' => $this->getTotalPrice($request),
-            'points' => $this->getTotalPoints($request),
-            'warehouse_id' => UserAddress::find(User::find($request->user)->main_location)->warehouse()->id,
-            'shipping_price' => ($this->isAllFree($request)) ? UserAddress::find(User::find($request->user)->main_location)->warehouse()->shipping_price : 0,
-        ]);
-    }
-    
-    /**
-     * get order total price
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @return \App\Models\Return
-     */
-    protected function getTotalPrice(Request $request)
-    {
-        $products = Product::find($request->products);
-        $i = 0;
-        $sum = 0;
-        foreach ($products as $product) {
-            $sum += $product->final_price * $request->quantity[$i];
-            $i++;
-        }
-        return $sum;
-    }
-    
-    /**
-     * get order total Points
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @return \App\Models\Return
-     */
-    protected function getTotalPoints(Request $request)
-    {
-        $products = Product::find($request->products);
-        $i = 0;
-        $sum = 0;
-        foreach ($products as $product) {
-            $sum += $product->points * $request->quantity[$i];
-            $i++;
-        }
-        return $sum;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Admin\Orders\CreateRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(CreateRequest $request)
-    {
-        $request['comment'] = str_replace('<', '&lt;', $request->comment);
-        $request['comment'] = str_replace('>', '&gt;', $request->comment);
-        $request['comment'] = nl2br($request->comment);
-        $product = $this->checkMinSaleOfProducts($request);
-        if (!$product) {
-            $return = $this->storeOrderDetails($request);
-            $this->addOrderStatus($return);
-            $this->addOrderProducts($request, $return);
-            return back()->with(['status' => trans('Added Successfully')]);
-        }
-        return back()->with(['error' => __('You must order at least') . ' ' . $product->min_sale_quantity . ' ' . __('from') . ' ' . $product->name]);
     }
 
     /**
