@@ -127,7 +127,7 @@ Route::group([
         Route::get('/admin/profile/settings', 'ProfileController@showSettings')->name('admin.profile.settings');
         Route::PUT('/admin/profile/edit/language', 'ProfileController@updateLanguage')->name('admin.profile.edit.language');
         /*********************************************** Admin profile pages *******************************************/
-
+        
         /*********************************************** Users CRUD routes *******************************************/
         Route::resource('/admin/users', 'UsersController');
         Route::delete('/admin/users', 'UsersController@destroy')->name('users.destroy');
@@ -142,6 +142,14 @@ Route::group([
         Route::post('/admin/general/settings/working/hours', 'GeneralSettingsController@storeWorkingHours')->name('admin.general.settings.working.hours');
         Route::post('/admin/general/settings/points/value', 'GeneralSettingsController@storePointsValue')->name('admin.general.settings.points.value');
         /*********************************************** General Settings routes *******************************************/
+        
+        /*********************************************** POS Workers CRUD routes *******************************************/
+        Route::resource('/admin/workers', 'POSWorkersController');
+        Route::delete('/admin/workers', 'POSWorkersController@destroy')->name('workers.destroy');
+        Route::get('/admin/workers/{worker}/edit/password', 'POSWorkersController@editPassword')->name('workers.edit.password');
+        Route::PUT('/admin/workers/{worker}/edit/password', 'POSWorkersController@updatePassword')->name('workers.edit.password');
+        Route::PUT('/admin/workers/{worker}/active', 'POSWorkersController@active')->name('workers.active');
+        /*********************************************** POS Workers CRUD routes *******************************************/
 
         /**
          * All Admin Auth Controllers will be in Admin\Auth Folder
