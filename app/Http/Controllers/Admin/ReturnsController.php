@@ -514,12 +514,12 @@ class ReturnsController extends Controller
     }
 
     /**
-     * Can delete all orders
+     * Can delete all returns
      */
-    protected function canDeleteAllOrders($returns)
+    protected function canDeleteAllReturns($returns)
     {
         foreach ($returns as $return) {
-            if (!(!$return->isCanceled() && !$return->isShipped() && !$return->isDisapproved())) {
+            if (!auth()->user()->can('return.delete', $return)) {
                 return false;
             }
         }
@@ -534,17 +534,17 @@ class ReturnsController extends Controller
      */
     public function destroy(Request $request)
     {
-        if (!$request->orders) {
+        if (!$request->returns) {
             return back();
         }
         $this->validate($request, [
-            'orders.*' => 'required|exists:orders,id',
+            'returns.*' => 'required|exists:returns,id',
         ]);
-        $returns = OrderReturn::find($request->orders);
-        if ($this->canDeleteAllOrders($returns)) {
-            OrderReturn::destroy($request->orders);
+        $returns = OrderReturn::find($request->returns);
+        if ($this->canDeleteAllReturns($returns)) {
+            OrderReturn::destroy($request->returns);
             return back()->with('status', trans('Deleted Successfully'));
         }
-        return back()->with(['error' => 'You Can\'t delete these orders']);
+        return back()->with(['error' => 'You Can\'t delete these returns']);
     }
 }
