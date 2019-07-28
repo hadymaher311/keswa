@@ -22,6 +22,10 @@
             <li><a class="nav-link" href="{{ route('orders.index') }}"><i class="fas fa-barcode"></i> <span>{{ __('Orders') }}</span></a></li>
         @endcan
 
+        @if (auth()->user()->can('view pos_workers') || auth()->user()->can('view pos_orders'))
+          @include('admin.layouts.sidenavbar.posmenu')
+        @endif
+
         @if (auth()->user()->can('view products') || auth()->user()->can('view brands') || auth()->user()->can('view categories') || auth()->user()->can('view sub_categories') || auth()->user()->can('view warehouses'))
           @include('admin.layouts.sidenavbar.catalogmenu')
         @endif
