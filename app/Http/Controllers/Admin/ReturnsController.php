@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Admin;
+use App\Models\WarehouseProduct;
 
 class ReturnsController extends Controller
 {
@@ -56,7 +57,7 @@ class ReturnsController extends Controller
             case 'return_denied':
                 return $this->returnDeniedReturns();
             
-            case 'completed_screpped':
+            case 'completed_scrapped':
                 return $this->completedScrappedReturns();
             
             
@@ -298,25 +299,6 @@ class ReturnsController extends Controller
         $return->save();
         return redirect()->route('returns.index', ['state'=>'in_the_way'])->with(['status' => __('Updated Successfully')]);
     }
-
-    /**
-     * return Order product quantities {{ will be used later }}.
-     *
-     * @param  \App\Models\OrderReturn  $return
-     */
-    protected function returnQuantities(OrderReturn $return) {
-        foreach ($return->products as $product) {
-            $quantity = WarehouseProduct::where('warehouse_id', $return->warehouse_id)->where('product_id', $product->id)->where('expiry_date', '>=', now())->first();
-            if ($quantity) {
-                $quantity->reduced_quantity += $this->getRealQuantity($product);
-                $quantity->save();
-            }
-            $product->total_quantity = $product->quantities->sum(function($quantity) {
-                return $quantity->reduced_quantity;
-            });
-            $product->save();
-        }
-    }
     
     /**
      * returnDenied return.
@@ -339,6 +321,23 @@ class ReturnsController extends Controller
     }
     
     /**
+     * return Order product quantities.
+     *
+     * @param  \App\Models\OrderReturn  $return
+     */
+    protected function returnQuantities(OrderReturn $return) {
+        $quantity = WarehouseProduct::where('warehouse_id', $return->warehouse_id)->where('product_id', $return->product->id)->where('expiry_date', '>=', now())->first();
+        if ($quantity) {
+            $quantity->reduced_quantity += $this->getRealQuantity($return->product);
+            $quantity->save();
+        }
+        $return->product->total_quantity = $return->product->quantities->sum(function($quantity) {
+            return $quantity->reduced_quantity;
+        });
+        $return->product->save();
+    }
+    
+    /**
      * complete Order.
      *
      * @param  \App\Models\OrderReturn  $return
@@ -347,13 +346,44 @@ class ReturnsController extends Controller
      */
     public function complete(Request $request, OrderReturn $return)
     {
-        $return->user->sendOrderReviewNotification($return);
+        $this->returnQuantities($return);
         $return->statuses()->create(
             [
                 'name' => 'Completed',
             ]
         );
-        return back()->with(['status' => __('Completed Successfully')]);
+        return redirect()->route('returns.index', ['state' => 'completed'])->with(['status' => __('Completed Successfully')]);
+    }
+    
+    /**
+     * return Order product scrapped quantities.
+     *
+     * @param  \App\Models\OrderReturn  $return
+     */
+    protected function returnScrappedQuantities(OrderReturn $return) {
+        $quantity = WarehouseProduct::where('warehouse_id', $return->warehouse_id)->where('product_id', $return->product->id)->where('expiry_date', '>=', now())->first();
+        if ($quantity) {
+            $quantity->scrapped_quantity += $this->getRealQuantity($return->product);
+            $quantity->save();
+        }
+    }
+    
+    /**
+     * complete scrapped Order.
+     *
+     * @param  \App\Models\OrderReturn  $return
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function completeScrape(Request $request, OrderReturn $return)
+    {
+        $this->returnScrappedQuantities($return);
+        $return->statuses()->create(
+            [
+                'name' => 'Completed scrapped',
+            ]
+        );
+        return redirect()->route('returns.index', ['state' => 'completed_scrapped'])->with(['status' => __('Completed Successfully')]);
     }
     
     /**

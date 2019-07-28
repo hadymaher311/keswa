@@ -76,6 +76,7 @@ Route::group([
         Route::post('/admin/returns/{return}/intheway', 'ReturnsController@intheway')->name('returns.intheway');
         Route::post('/admin/returns/{return}/return/denied', 'ReturnsController@returnDenied')->name('returns.return.denied');
         Route::post('/admin/returns/{return}/complete', 'ReturnsController@complete')->name('returns.complete');
+        Route::post('/admin/returns/{return}/complete/scrape', 'ReturnsController@completeScrape')->name('returns.complete.scrapped');
         /*********************************************** returns CRUD routes *******************************************/
         
         /*********************************************** categories CRUD routes *******************************************/

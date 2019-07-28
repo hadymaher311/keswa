@@ -165,7 +165,7 @@
                                         <a href="{{ route('users.show', $return->user->id) }}">{{ ucfirst($return->user->first_name) . ' ' . ucfirst($return->user->last_name) }}</a>
                                     </td>
                                     <td>{{ $return->created_at }}</td>
-                                    <td style="width: 75px;">
+                                    <td style="min-width: 75px;">
                                         @can('return.approve', $return)
                                             @if ($return->isApproved())
                                                 <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
@@ -229,7 +229,7 @@
                                             @endif
                                         @endcan
                                     </td>
-                                    <td style="width: 85px">
+                                    <td style="min-width: 85px">
                                         @can('return.in_the_way', $return)
                                             <a href="{{ route('returns.inTheWayForm', $return->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('In the way') }}" class="btn btn-sm btn-info">
                                                 <i class="fa fa-shipping-fast"></i>
@@ -249,17 +249,35 @@
                                             </form>
                                         @endcan
                                     </td>
-                                    <td>
+                                    <td style="min-width: 85px">
                                         @can('return.complete', $return)
                                             @if ($return->isCompleted())
                                                 <button data-toggle="tooltip" data-placement="top" title="{{ __('Completed') }}" class="btn btn-sm btn-success">
                                                     <i class="fa fa-check"></i>
                                                 </button>
+                                            @elseif ($return->isCompletedScrapped())
+                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Completed scrapped') }}" class="btn btn-sm btn-dark">
+                                                    <i class="fas fa-prescription-bottle-alt"></i>
+                                                </button>
                                             @else
-                                                <form action="{{ route('returns.complete', $return->id) }}" method="POST">
+                                                <form class="form-inline" style="display: inline" action="{{ route('returns.complete', $return->id) }}" method="POST">
                                                     @csrf
-                                                    <button type="submit" data-toggle="tooltip" data-placement="top" title="{{ __('Complete') }}" class="btn btn-sm btn-warning">
-                                                        <i class="fa fa-check"></i>
+                                                    <button type="submit" onclick="
+                                                        event.preventDefault();
+                                                        if(confirm('{{ __('Are you sure?') }}')) {
+                                                            $(this).parent('form').submit();
+                                                        }" data-toggle="tooltip" data-placement="top" title="{{ __('Complete') }}" class="btn btn-sm btn-warning">
+                                                            <i class="fa fa-check"></i>
+                                                    </button>
+                                                </form>
+                                                <form class="form-inline" style="display: inline" action="{{ route('returns.complete.scrapped', $return->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" onclick="
+                                                        event.preventDefault();
+                                                        if(confirm('{{ __('Are you sure?') }}')) {
+                                                            $(this).parent('form').submit();
+                                                        }" data-toggle="tooltip" data-placement="top" title="{{ __('Complete scrape') }}" class="btn btn-sm btn-dark">
+                                                            <i class="fas fa-prescription-bottle-alt"></i>
                                                     </button>
                                                 </form>
                                             @endif
