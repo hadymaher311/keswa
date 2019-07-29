@@ -136,11 +136,13 @@ class POSWorkersController extends Controller
      */
     protected function updatePersonalInfo(Request $request, POSWorker $worker)
     {
-        $worker->personalInfo()->update([
-            'phone' => $request->phone,
-            'gender' => $request->gender,
-            'birth_date' => $request->birth_date,
-        ]);
+        $worker->personalInfo()->updateOrCreate(
+            ['worker_id' => $worker->id],            
+            [
+                'phone' => $request->phone,
+                'gender' => $request->gender,
+                'birth_date' => $request->birth_date,
+            ]);
     }
     
     /**
@@ -180,7 +182,7 @@ class POSWorkersController extends Controller
         }
         $this->updatePersonalInfo($request, $worker);
         $this->updateAddress($request, $worker);
-        return redirect()->route('pos.workers.index')->with('status', trans('Updated Successfully'));
+        return redirect()->route('workers.index')->with('status', trans('Updated Successfully'));
     }
 
     /**
@@ -239,7 +241,7 @@ class POSWorkersController extends Controller
         ]);
         $worker->password = Hash::make($request->password);
         $worker->save();
-        return redirect()->route('pos.workers.index')->with('status', trans('Updated Successfully'));
+        return redirect()->route('workers.index')->with('status', trans('Updated Successfully'));
     }
     
     /**
@@ -253,7 +255,7 @@ class POSWorkersController extends Controller
     {
         $worker->active = !($worker->active);
         $worker->save();
-        return redirect()->route('pos.workers.index')->with('status', trans('Updated Successfully'));
+        return redirect()->route('workers.index')->with('status', trans('Updated Successfully'));
     }
 
     /**

@@ -154,11 +154,13 @@ class AdminsController extends Controller
      */
     protected function updatePersonalInfo(Request $request, Admin $admin)
     {
-        $admin->personalInfo()->update([
-            'phone' => $request->phone,
-            'gender' => $request->gender,
-            'birth_date' => $request->birth_date,
-        ]);
+        $admin->personalInfo()->updateOrCreate(
+            ['admin_id' => $admin->id],        
+            [
+                'phone' => $request->phone,
+                'gender' => $request->gender,
+                'birth_date' => $request->birth_date,
+            ]);
     }
     
     /**
