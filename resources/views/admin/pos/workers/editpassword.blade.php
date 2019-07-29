@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('title')
-{{ __('Edit admin') }}
+{{ __('Edit worker') }}
 @endsection
 
 @section('css')
@@ -10,7 +10,7 @@
 
 @section('body')
     <div class="section-header">
-        <h1>{{ __('Admins') }}</h1>
+        <h1>{{ __('Workers') }}</h1>
     </div>
 
     <div class="section-body">
@@ -18,17 +18,17 @@
             <div class="col-12">
                 <div class="card">
                 <div class="card-header">
-                    <h4>{{ __('Edit admin') }}</h4> <br>
-                    @can('create admins')
-                        <a href="{{ route('admins.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new admin') }}</a>
+                    <h4>{{ __('Edit worker') }}</h4> <br>
+                    @can('create pos_worker')
+                        <a href="{{ route('workers.create') }}" class="btn btn-success m-3"><i class="fa fa-plus"></i> {{ __('Add new admin') }}</a>
                     @endcan
 
-                    @can('update admins')
-                        <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-warning m-3"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
+                    @can('update pos_worker')
+                        <a href="{{ route('workers.edit', $admin->id) }}" class="btn btn-warning m-3"><i class="fa fa-edit"></i> {{ __('Edit') }}</a>
                     @endcan
 
-                    @can('view admins')
-                        <a href="{{ route('admins.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
+                    @can('view pos_worker')
+                        <a href="{{ route('workers.index') }}" class="btn btn-primary m-3"><i class="fa fa-home"></i> {{ __('Back to all') }}</a>
                     @endcan
                 </div>
                 <div class="card-body">
@@ -42,7 +42,7 @@
                           </div>
                         </div>
                     @endif
-                    <form action="{{ route('admins.edit.password', $admin->id) }}" method="post">
+                    <form action="{{ route('workers.edit.password', $worker->id) }}" method="post">
                         @csrf
                         @method('PUT')
                         
