@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('title')
-{{ __('Add new admin') }}
+{{ __('Add new worker') }}
 @endsection
 
 @section('css')
@@ -11,7 +11,7 @@
 
 @section('body')
     <div class="section-header">
-        <h1>{{ __('Admins') }}</h1>
+        <h1>{{ __('Workers') }}</h1>
     </div>
 
     <div class="section-body">
@@ -19,7 +19,7 @@
             <div class="col-12">
                 <div class="card">
                 <div class="card-header">
-                    <h4>{{ __('Add new admin') }}</h4> <br>
+                    <h4>{{ __('Add new worker') }}</h4> <br>
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -32,7 +32,7 @@
                           </div>
                         </div>
                     @endif
-                    <form action="{{ route('admins.store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('workers.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">{{ __('First Name') }}</label>
@@ -152,45 +152,21 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="warehouses" class="col-sm-3 control-label">{{ __('Warehouses') }}</label>
+                            <label for="warehouse" class="col-sm-3 control-label">{{ __('Warehouses') }}</label>
         
                             <div class="col-sm-9">
-                                <select name="warehouses[]" required id="warehouses" class="form-control select2 @error('warehouses[]') is-invalid @enderror" multiple>
+                                <select name="warehouse" required id="warehouse" class="form-control select2 @error('warehouse') is-invalid @enderror">
+                                    <option value="">{{ __('Choose warehouse') }}</option>
                                     @foreach ($warehouses as $warehouse)
                                         <option 
-                                        @if (old('warehouses'))
-                                            @foreach (old('warehouses') as $ware)
-                                                @if ($warehouse->id == $ware)
-                                                    selected
-                                                @endif 
-                                            @endforeach
-                                        @endif
+                                            @if ($warehouse->id == old('warehouse'))
+                                                selected
+                                            @endif 
                                         value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
                                     @endforeach
                                 </select>
 
-                                @error('warehouses[]')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="inputEmail" class="col-sm-3 control-label">{{ __('Roles') }}</label>
-        
-                            <div class="col-sm-9">
-                                <select name="role" id="role" required class="form-control @error('role') is-invalid @enderror">
-                                    <option value="">{{ __('Choose admin role') }}</option>
-                                    @foreach ($roles as $role)
-                                        <option @if ($role->id == old('role'))
-                                            selected
-                                        @endif value="{{ $role->id }}">{{ $role->name }}</option>
-                                    @endforeach
-                                </select>
-
-                                @error('role')
+                                @error('warehouse')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

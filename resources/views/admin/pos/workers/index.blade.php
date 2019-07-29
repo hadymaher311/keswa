@@ -78,7 +78,9 @@
                                         {{ $worker->name }}
                                     </td>
                                     <td>{{ $worker->email }}</td>
-                                    <td>{{ $worker->warehouse->name }}</td>
+                                    <td>
+                                        <a href="{{ route('warehouses.show', $worker->pos->id) }}">{{ $worker->pos->name }}</a>
+                                    </td>
                                     <td>{{ $worker->created_at->diffForHumans() }}</td>
                                     
                                     <td>

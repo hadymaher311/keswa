@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\warehouse;
 use App\Models\POSWorkerAddress;
 use App\Models\POSWorkerSetting;
 use App\Models\POSWorkerPersonalInfo;
@@ -101,7 +102,7 @@ class POSWorker extends Authenticatable implements HasMedia
      */
     public function personalInfo()
     {
-        return $this->hasOne(POSWorkerPersonalInfo::class);
+        return $this->hasOne(POSWorkerPersonalInfo::class, 'worker_id');
     }
     
     /**
@@ -110,7 +111,16 @@ class POSWorker extends Authenticatable implements HasMedia
      */
     public function address()
     {
-        return $this->hasone(POSWorkerAddress::class);
+        return $this->hasone(POSWorkerAddress::class, 'worker_id');
+    }
+    
+    /**
+     * Get worker warehouse
+     * 
+     */
+    public function pos()
+    {
+        return $this->belongsTo(warehouse::class, 'warehouse_id');
     }
 
     /**
