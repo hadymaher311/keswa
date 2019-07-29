@@ -21,6 +21,19 @@ Route::group([
         Route::get('/pos/home', 'HomeController@index')->name('pos.home');
         /*********************************************** POS home page *******************************************/
 
+        /*********************************************** POS profile pages *******************************************/
+        Route::get('/pos/profile', 'ProfileController@index')->name('pos.profile');
+        Route::get('/pos/profile/edit', 'ProfileController@edit')->name('pos.profile.edit');
+        Route::put('/pos/profile/edit', 'ProfileController@update')->name('pos.profile.edit');
+        Route::get('/pos/profile/edit/address', 'ProfileController@editAddress')->name('pos.profile.address.edit');
+        Route::PUT('/pos/profile/edit/address', 'ProfileController@updateAddress')->name('pos.profile.address.edit');
+        Route::get('/pos/profile/edit/password', 'ProfileController@editPassword')->name('pos.profile.edit.password');
+        Route::PUT('/pos/profile/edit/password', 'ProfileController@updatePassword')->name('pos.profile.edit.password');
+        Route::PUT('/pos/profile/edit/image', 'ProfileController@updateImage')->name('pos.profile.edit.image');
+        Route::get('/pos/profile/settings', 'ProfileController@showSettings')->name('pos.profile.settings');
+        Route::PUT('/pos/profile/edit/language', 'ProfileController@updateLanguage')->name('pos.profile.edit.language');
+        /*********************************************** POS profile pages *******************************************/
+
         /**
          * All POS Auth Controllers will be in POS\Auth Folder
          */

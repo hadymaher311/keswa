@@ -16,7 +16,7 @@ class LocalizationMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check('admin')) {
+        if (Auth::check('admin') || Auth::check('pos')) {
             if (auth()->user()->settings) {
                 app()->setLocale(auth()->user()->settings->language);
             } else {

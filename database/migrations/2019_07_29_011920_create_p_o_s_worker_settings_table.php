@@ -15,6 +15,10 @@ class CreatePOSWorkerSettingsTable extends Migration
     {
         Schema::create('p_o_s_worker_settings', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('language')->default('en');
+            $table->boolean('min_sidebar')->default(0);
+            $table->bigInteger('worker_id')->unsigned();
+            $table->foreign('worker_id')->references('id')->on('p_o_s_workers')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

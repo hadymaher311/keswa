@@ -77,7 +77,7 @@ class POSWorker extends Authenticatable implements HasMedia
      */
     public function settings()
     {
-        return $this->hasOne(POSWorkerSetting::class);
+        return $this->hasOne(POSWorkerSetting::class, 'worker_id');
     }
 
     //Send password reset notification

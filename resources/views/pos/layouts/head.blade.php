@@ -4,7 +4,7 @@
     <title> 
         @auth
           @if ( count(Auth::user()->unreadNotifications) )
-            {{ count(Auth::user()->unreadNotifications) }}
+            ({{ count(Auth::user()->unreadNotifications) }}) 
           @endif
         @endauth
       @yield('title')
