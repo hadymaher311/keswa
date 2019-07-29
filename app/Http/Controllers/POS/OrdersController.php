@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\POSOrder;
 use Illuminate\Http\Request;
 use App\Models\GeneralSetting;
+use App\Models\WarehouseProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\POS\Orders\CreateRequest;
 
@@ -139,7 +140,7 @@ class OrdersController extends Controller
      *
      * @param  \App\Models\POSOrder  $order
      */
-    protected function reduceQuantities(Order $order) {
+    protected function reduceQuantities(POSOrder $order) {
         foreach ($order->products as $product) {
             $quantity = WarehouseProduct::where('warehouse_id', $order->warehouse_id)->where('product_id', $product->id)->where('reduced_quantity', '>=', $product->min_sale_quantity)->where('reduced_quantity', '>=', $this->getRealQuantity($product))->first();
             $quantity->reduced_quantity -= $this->getRealQuantity($product);
@@ -152,42 +153,11 @@ class OrdersController extends Controller
     }
 
     /**
-     * shipping Order.
-     *
-     * @param  \App\Models\POSOrder  $order
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function shipping(Request $request, Order $order)
-    {
-        $this->validate($request, [
-            'delivery' => 'required|exists:admins,id',
-            'comment' => 'nullable|string',
-        ]);
-        if (!$order->isShipped()) {
-            $this->reduceQuantities($order);
-        }
-        $request['comment'] = str_replace('<', '&lt;', $request->comment);
-        $request['comment'] = str_replace('>', '&gt;', $request->comment);
-        $request['comment'] = nl2br($request->comment);
-        $order->statuses()->create(
-            [
-                'name' => 'Shipped',
-                'description' => $request->comment,
-            ]
-        );
-        $order->delivery_id = $request->delivery;
-        $order->shipping_date = Carbon::now();
-        $order->save();
-        return redirect()->route('orders.index', ['state'=>'shipped'])->with(['status' => __('Shipped Successfully')]);
-    }
-
-    /**
      * return Order product quantities.
      *
      * @param  \App\Models\POSOrder  $order
      */
-    protected function returnQuantities(Order $order) {
+    protected function returnQuantities(POSOrder $order) {
         foreach ($order->products as $product) {
             $quantity = WarehouseProduct::where('warehouse_id', $order->warehouse_id)->where('product_id', $product->id)->where('expiry_date', '>=', now())->first();
             if ($quantity) {
@@ -200,44 +170,27 @@ class OrdersController extends Controller
             $product->save();
         }
     }
-    
+
     /**
-     * shipping returned Order.
+     * complete pos_Order.
      *
      * @param  \App\Models\POSOrder  $order
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function shippingReturned(Request $request, Order $order)
+    public function complete(Request $request, POSOrder $order)
     {
-        if ($order->isShipped()) {
-            $this->returnQuantities($order);
-            $order->statuses()->create(
-                [
-                    'name' => 'Shipping returned',
-                ]
-            );
-            return redirect()->route('orders.index', ['state'=>'shipped'])->with(['status' => __('Shipping returned Successfully')]);
-        }
-        abort(404);
-    }
-    
-    /**
-     * complete Order.
-     *
-     * @param  \App\Models\POSOrder  $order
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function complete(Request $request, Order $order)
-    {
-        $order->user->sendOrderReviewNotification($order);
+        $this->reduceQuantities($order);
+        $request['comment'] = str_replace('<', '&lt;', $request->comment);
+        $request['comment'] = str_replace('>', '&gt;', $request->comment);
+        $request['comment'] = nl2br($request->comment);
         $order->statuses()->create(
             [
                 'name' => 'Completed',
+                'description' => $request->comment
             ]
         );
-        return back()->with(['status' => __('Completed Successfully')]);
+        return redirect()->route('pos_orders.invoice', $order->id)->with(['status' => __('Completed Successfully')]);
     }
     
     /**
@@ -257,7 +210,7 @@ class OrdersController extends Controller
     }
 
     /**
-     * Approve Order.
+     * Approve pos_Order.
      *
      * @param  \App\Models\POSOrder  $order
      * @param  \Illuminate\Http\Request  $request
@@ -298,15 +251,11 @@ class OrdersController extends Controller
      * @param  \App\Models\POSOrder  $order
      * @return \Illuminate\Http\Response
      */
-    public function approveView(Order $order)
+    public function approveView(POSOrder $order)
     {
-        if (auth()->user()->can('order.view', $order)) {
-            if (!$order->isShipped()) {
-                $price_tax = GeneralSetting::priceTax()->first();
-                $warehouses = auth()->user()->warehouses;
-                return view('pos.orders.approve', compact('order', 'price_tax', 'warehouses'));
-            }
-            abort(404);
+        if (auth()->user()->can('pos_order.approve', $order)) {
+            $price_tax = GeneralSetting::priceTax()->first();
+            return view('pos.orders.approve', compact('order', 'price_tax', 'warehouses'));
         }
         abort(403);
     }
@@ -319,7 +268,7 @@ class OrdersController extends Controller
      */
     public function show(Order $order)
     {
-        if (auth()->user()->can('order.view', $order)) {
+        if (auth()->user()->can('pos_order.view', $order)) {
             $price_tax = GeneralSetting::priceTax()->first();
             return view('pos.orders.show', compact('order', 'price_tax'));
         }
@@ -332,9 +281,9 @@ class OrdersController extends Controller
      * @param  \App\Models\POSOrder  $order
      * @return \Illuminate\Http\Response
      */
-    public function invoice(Order $order)
+    public function invoice(POSOrder $order)
     {
-        if (auth()->user()->can('order.view', $order)) {
+        if (auth()->user()->can('pos_order.view', $order)) {
             $price_tax = GeneralSetting::priceTax()->first();
             return view('pos.orders.invoice', compact('order', 'price_tax'));
         }
@@ -347,9 +296,9 @@ class OrdersController extends Controller
      * @param  \App\Models\POSOrder  $order
      * @return \Illuminate\Http\Response
      */
-    public function invoicePrint(Order $order)
+    public function invoicePrint(POSOrder $order)
     {
-        if (auth()->user()->can('order.view', $order)) {
+        if (auth()->user()->can('pos_order.view', $order)) {
             $price_tax = GeneralSetting::priceTax()->first();
             return view('pos.orders.invoicePrint', compact('order', 'price_tax'));
         }

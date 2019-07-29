@@ -36,7 +36,7 @@
         </style>
 </head>
 <body onload="window.print()">
-    @include('admin.components.invoice')
+    @include('pos.components.invoice')
     <script src="{{ asset('/admin_styles/modules/jquery.min.js') }}"></script>
     <script src="{{ asset('/admin_styles/modules/popper.js') }}"></script>
     <script src="{{ asset('/admin_styles/modules/tooltip.js') }}"></script>
