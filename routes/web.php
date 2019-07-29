@@ -14,5 +14,8 @@
 // admin routes
 include 'adminRoutes.php';
 
+// pos routes
+include 'posRoutes.php';
+
 // User routes
 include 'userRoutes.php';

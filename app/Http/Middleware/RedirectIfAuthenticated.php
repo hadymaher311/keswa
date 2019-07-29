@@ -22,6 +22,11 @@ class RedirectIfAuthenticated
                 return redirect(app()->getLocale() . '/admin/home');
             }
         }
+        if ($guard == 'pos') {
+            if (Auth::guard($guard)->check()) {
+                return redirect(app()->getLocale() . '/pos/home');
+            }
+        }
         if (Auth::guard($guard)->check()) {
             return redirect(app()->getLocale() . '/home');
         }

@@ -45,6 +45,11 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+        
+        'pos' => [
+            'driver' => 'session',
+            'provider' => 'poses',
+        ],
 
         'api' => [
             'driver' => 'token',
@@ -80,6 +85,11 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
+        
+        'poses' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\POSWorker::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -112,6 +122,12 @@ return [
         'admins' => [
             'provider' => 'admins',
             'table' => 'admins_password_reset',
+            'expire' => 60,
+        ],
+        
+        'poses' => [
+            'provider' => 'poses',
+            'table' => 'p_o_s_workers_password_reset',
             'expire' => 60,
         ],
     ],
