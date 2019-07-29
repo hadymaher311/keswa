@@ -1,7 +1,7 @@
-@extends('admin.layouts.guestapp')
+@extends('pos.layouts.guestapp')
 
 @section('title')
-    {{ __('Admin Send Password Reset Mail') }}
+    {{ __('Worker Send Password Reset Mail') }}
 @endsection
 
 @section('css')
@@ -31,7 +31,7 @@
                     </div>
                   </div>
                 @endif
-              <form action="{{ route('admin.password.email') }}" method="post" class="needs-validation" novalidate="">
+              <form action="{{ route('pos.password.email') }}" method="post" class="needs-validation" novalidate="">
                 @csrf
                 <div class="form-group">
                   <label for="email">{{ __('Email') }}</label>
@@ -50,7 +50,7 @@
                   </button>
                 </div>
               </form>
-              <a href="{{ route('admin.login') }}">{{ __('Login') }}</a>
+              <a href="{{ route('pos.login') }}">{{ __('Login') }}</a>
 
             </div>
           </div>

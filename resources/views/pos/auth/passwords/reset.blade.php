@@ -1,7 +1,7 @@
-@extends('admin.layouts.guestapp')
+@extends('pos.layouts.guestapp')
 
 @section('title')
-    {{ __('Admin Reset Password') }}
+    {{ __('Worker Reset Password') }}
 @endsection
 
 @section('css')
@@ -21,7 +21,7 @@
             <div class="card-header"><h4>{{ __('Reset Password') }}</h4></div>
 
             <div class="card-body">
-              <form action="{{ route('admin.password.request') }}" method="post" class="needs-validation" novalidate="">
+              <form action="{{ route('pos.password.request') }}" method="post" class="needs-validation" novalidate="">
                 @csrf
                 <input type="hidden" name="token" value="{{ $token }}">
                 <div class="form-group">
@@ -57,7 +57,7 @@
                   </button>
                 </div>
               </form>
-              <a href="{{ route('admin.login') }}">{{ __('Login') }}</a>
+              <a href="{{ route('pos.login') }}">{{ __('Login') }}</a>
 
             </div>
           </div>

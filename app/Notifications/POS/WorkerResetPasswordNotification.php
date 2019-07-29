@@ -45,7 +45,7 @@ class WorkerResetPasswordNotification extends Notification
     {
         return (new MailMessage)
         ->line(__('You are receiving this email because we received a password reset request for your account.'))
-        ->action(__('Reset Password'), route('worker.password.reset', $this->token))
+        ->action(__('Reset Password'), route('pos.password.reset', $this->token))
         ->line(__('If you did not request a password reset, no further action is required.'));
     }
 
