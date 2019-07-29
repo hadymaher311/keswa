@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\POSOrder;
 use App\Models\warehouse;
 use App\Models\POSWorkerAddress;
 use App\Models\POSWorkerSetting;
@@ -121,6 +122,15 @@ class POSWorker extends Authenticatable implements HasMedia
     public function pos()
     {
         return $this->belongsTo(warehouse::class, 'warehouse_id');
+    }
+    
+    /**
+     * Get worker orders
+     * 
+     */
+    public function orders()
+    {
+        return $this->hasMany(POSOrder::class, 'worker_id');
     }
 
     /**

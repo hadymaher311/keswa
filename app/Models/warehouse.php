@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Admin;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\POSWorker;
 use App\Models\WarehouseProduct;
 use App\Helpers\LocalizableModel;
 use App\Models\WarehouseRelatedLocation;
@@ -90,5 +91,13 @@ class warehouse extends LocalizableModel
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get warehouse worker
+     */
+    public function worker()
+    {
+        return $this->hasMany(POSWorker::class);
     }
 }

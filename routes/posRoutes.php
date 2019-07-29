@@ -18,8 +18,17 @@ Route::group([
 
 
         /*********************************************** POS home page *******************************************/
-        Route::get('/pos/home', 'HomeController@index')->name('pos.home');
         /*********************************************** POS home page *******************************************/
+        
+        /*********************************************** orders CRUD routes *******************************************/
+        Route::resource('/admin/pos_orders', 'OrdersController');
+        Route::get('/pos/home', 'OrdersController@index')->name('pos.home');
+        Route::delete('/admin/pos_orders', 'OrdersController@destroy')->name('pos_orders.destroy');
+        Route::get('/admin/pos_orders/{order}/invoice', 'OrdersController@invoice')->name('pos_orders.invoice');
+        Route::get('/admin/pos_orders/{order}/invoice/print', 'OrdersController@invoicePrint')->name('pos_orders.invoice.print');
+        Route::get('/admin/pos_orders/{order}/approve', 'OrdersController@approveView')->name('pos_orders.approve');
+        Route::post('/admin/pos_orders/{order}/complete', 'OrdersController@complete')->name('pos_orders.complete');
+        /*********************************************** orders CRUD routes *******************************************/
 
         /*********************************************** POS profile pages *******************************************/
         Route::get('/pos/profile', 'ProfileController@index')->name('pos.profile');
