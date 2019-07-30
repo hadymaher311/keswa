@@ -10,6 +10,7 @@ use App\Models\GeneralSetting;
 use App\Models\WarehouseProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\POS\Orders\CreateRequest;
+use App\Http\Requests\POS\Orders\UpdateRequest;
 
 class OrdersController extends Controller
 {
@@ -145,25 +146,6 @@ class OrdersController extends Controller
             $quantity = WarehouseProduct::where('warehouse_id', $order->warehouse_id)->where('product_id', $product->id)->where('reduced_quantity', '>=', $product->min_sale_quantity)->where('reduced_quantity', '>=', $this->getRealQuantity($product))->first();
             $quantity->reduced_quantity -= $this->getRealQuantity($product);
             $quantity->save();
-            $product->total_quantity = $product->quantities->sum(function($quantity) {
-                return $quantity->reduced_quantity;
-            });
-            $product->save();
-        }
-    }
-
-    /**
-     * return Order product quantities.
-     *
-     * @param  \App\Models\POSOrder  $order
-     */
-    protected function returnQuantities(POSOrder $order) {
-        foreach ($order->products as $product) {
-            $quantity = WarehouseProduct::where('warehouse_id', $order->warehouse_id)->where('product_id', $product->id)->where('expiry_date', '>=', now())->first();
-            if ($quantity) {
-                $quantity->reduced_quantity += $this->getRealQuantity($product);
-                $quantity->save();
-            }
             $product->total_quantity = $product->quantities->sum(function($quantity) {
                 return $quantity->reduced_quantity;
             });
@@ -372,20 +354,6 @@ class OrdersController extends Controller
     }
 
     /**
-     * if all products is free
-     */
-    protected function isAllFree(Request $request)
-    {
-        foreach ($request->products as $pro) {
-            $product = Product::find($pro);
-            if (!$product->free_shipping) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * Store order details
      * 
      * @param \Illuminate\Http\Request $request
@@ -463,26 +431,99 @@ class OrdersController extends Controller
      * @param  \App\Models\POSOrder  $order
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $order)
+    public function edit(POSOrder $order)
     {
-        // return view('pos.orders.edit', compact('Order'));
+        if (auth()->user()->can('pos_order.update', $order)) {
+            $products = auth()->user()->pos->activeProducts;
+            return view('pos.orders.edit', compact('order', 'products'));
+        }
+        abort(403);
+    }
+
+
+    /**
+     * update order details
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\POSOrder $order
+     * @return \App\Models\POSOrder
+     */
+    protected function updateOrderDetails(Request $request, POSOrder $order)
+    {
+        return $order->update([
+            'comment' => $request->comment,
+            'total_price' => $this->getTotalPrice($request),
+        ]);
+    }
+
+    /**
+     * return Order product quantities.
+     *
+     * @param  \App\Models\POSOrder  $order
+     */
+    protected function returnQuantities(POSOrder $order) {
+        foreach ($order->products as $product) {
+            $quantity = WarehouseProduct::where('warehouse_id', $order->warehouse_id)->where('product_id', $product->id)->where('expiry_date', '>=', now())->first();
+            if ($quantity) {
+                $quantity->reduced_quantity += $this->getRealQuantity($product);
+                $quantity->save();
+            }
+            $product->total_quantity = $product->quantities->sum(function($quantity) {
+                return $quantity->reduced_quantity;
+            });
+            $product->save();
+        }
+    }
+
+    /**
+     * update order products
+     * 
+     * @param \App\Models\POSOrder $order
+     */
+    protected function updateOrderProducts(Request $request, POSOrder $order)
+    {
+        if ($order->isCompleted()) {
+            $this->returnQuantities($order);
+        }
+        $order->products()->detach();
+        $i = 0;
+        foreach ($request->products as $product) {
+            $order->products()->attach(
+                $product,
+                ['quantity' => $request->quantity[$i],]
+            );
+            $i++;
+        }
+        if ($order->isCompleted()) {
+            $this->reduceQuantities($order);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\POS\Orders\UpdateRequest  $request
      * @param  \App\Models\POSOrder  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(UpdateRequest $request, POSOrder $order)
     {
-        // $this->validate($request, [
-        //     'name' => 'required|string|min:2'
-        // ]);
-        // $order->name = $request->name;
-        // $order->save();
-        // return redirect()->route('orders.index')->with('status', trans('Updated Successfully'));
+        if (auth()->user()->can('pos_order.update', $order)) {
+            $request['comment'] = str_replace('<', '&lt;', $request->comment);
+            $request['comment'] = str_replace('>', '&gt;', $request->comment);
+            $request['comment'] = nl2br($request->comment);
+            $product = $this->checkMinSaleOfProducts($request);
+            if (!$product) {
+                $this->updateOrderDetails($request, $order);
+                $this->updateOrderProducts($request, $order);
+                if ($order->isCompleted()) {
+                    return redirect()->route('pos_orders.index')->with(['status' => trans('Added Successfully')]);
+                }
+                return redirect()->route('pos_orders.approve', $order->id)->with(['status' => trans('Added Successfully')]);
+            }
+            return back()->with(['error' => __('You must order at least') . ' ' . $product->min_sale_quantity . ' ' . __('from') . ' ' . $product->name]);
+        }
+        abort(403);
     }
 
     /**
@@ -490,11 +531,11 @@ class OrdersController extends Controller
      */
     protected function canDeleteAllOrders($orders)
     {
-        // foreach ($orders as $order) {
-        //     if (!(!$order->isCanceled() && !$order->isShipped() && !$order->isDisapproved())) {
-        //         return false;
-        //     }
-        // }
+        foreach ($orders as $order) {
+            if (!auth()->user()->can('pos_order.delete', $order)) {
+                return false;
+            }
+        }
         return true;
     }
 

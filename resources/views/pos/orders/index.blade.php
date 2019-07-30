@@ -23,13 +23,13 @@
                     <div class="card-body">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('pos_orders.index') }}?state=all">{{ __('All') }} <span class="badge badge-dark">{{ $all_orders_count }}</span></a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('pos_orders.index') }}?state=pending">{{ __('Pending') }} <span class="badge badge-dark">{{ $pending_orders_count }}</span></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('pos_orders.index') }}?state=by_date">{{ __('By date') }} <span class="badge badge-dark"></span></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('pos_orders.index') }}?state=all">{{ __('All') }} <span class="badge badge-dark">{{ $all_orders_count }}</span></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('pos_orders.index') }}?state=completed">{{ __('Completed') }} <span class="badge badge-dark">{{ $completed_orders_count }}</span></a>
