@@ -70,6 +70,14 @@ class warehouse extends LocalizableModel
     }
 
     /**
+     * Get warehouse active products
+     */
+    public function activeProducts()
+    {
+        return $this->belongsToMany(Product::class, 'warehouse_products')->active();
+    }
+
+    /**
      * get warehouse admins
      */
     public function admins()

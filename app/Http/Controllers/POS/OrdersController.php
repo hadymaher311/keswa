@@ -58,7 +58,7 @@ class OrdersController extends Controller
      */
     protected function pendingOrders()
     {
-        return POSOrder::where('worker_id', auth()->id())->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($order) {
+        return POSOrder::where('warehouse_id', auth()->user()->warehouse_id)->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($order) {
             return $order->latestStatus->name == 'Waiting for confirmation';
         });
     }
@@ -70,7 +70,7 @@ class OrdersController extends Controller
      */
     protected function completedOrders()
     {
-        return POSOrder::where('worker_id', auth()->id())->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($order) {
+        return POSOrder::where('warehouse_id', auth()->user()->warehouse_id)->orderBy('id', 'desc')->with('latestStatus')->get()->filter(function ($order) {
             return $order->latestStatus->name == 'Completed';
         });
     }
@@ -82,7 +82,7 @@ class OrdersController extends Controller
      */
     protected function allOrders()
     {
-        return POSOrder::where('worker_id', auth()->id())->orderBy('id', 'desc')->get();
+        return POSOrder::where('warehouse_id', auth()->user()->warehouse_id)->orderBy('id', 'desc')->get();
     }
     
     /**
@@ -102,10 +102,10 @@ class OrdersController extends Controller
                     'to' => 'date|after_or_equal:from',
                     'from' => 'date|before_or_equal:to',
                 ]);
-                return POSOrder::where('worker_id', auth()->id())->orderBy('id', 'desc')->whereBetween('created_at', [$request->from, $request->to])->get();
+                return POSOrder::where('warehouse_id', auth()->user()->warehouse_id)->orderBy('id', 'desc')->whereBetween('created_at', [$request->from, $request->to])->get();
             }
         } else {
-            return POSOrder::where('worker_id', auth()->id())->orderBy('id', 'desc')->whereBetween('created_at', [Carbon::today(), Carbon::tomorrow()])->get();
+            return POSOrder::where('warehouse_id', auth()->user()->warehouse_id)->orderBy('id', 'desc')->whereBetween('created_at', [Carbon::today(), Carbon::tomorrow()])->get();
         }
     }
 
@@ -312,7 +312,7 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        $products = auth()->user()->pos->products;
+        $products = auth()->user()->pos->activeProducts;
         return view('pos.orders.create', compact('products'));
     }
 

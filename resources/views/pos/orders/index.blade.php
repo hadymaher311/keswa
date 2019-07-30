@@ -113,7 +113,6 @@
                             <th>{{ __('Total Price') }}</th>
                             <th>{{ __('Status') }}</th>
                             <th>{{ __('Added from') }}</th>
-                            <th>{{ __('Approve') }}</th>
                             <th>{{ __('Completed') }}</th>
                             <th>{{ __('Controls') }}</th>
                         </tr>
@@ -136,44 +135,17 @@
                                     <td>@include('pos.components.orderStatusColor')</td>
                                     <td>{{ $order->created_at }}</td>
                                     <td>
-                                            @if ($order->isApproved())
-                                                <a href="{{ route('pos_orders.approve', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
-                                                    <i class="fa fa-check"></i>
-                                                </a>
-                                            @elseif ($order->isDisapproved())
-                                                <a href="{{ route('pos_orders.approve', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Disapproved') }}" class="btn btn-sm btn-danger">
-                                                    <i class="fa fa-times"></i>
-                                                </a>
-                                            @else
-                                                <a href="{{ route('pos_orders.approve', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Approve') }}" data-id="{{ $order->id }}" class="btn btn-sm btn-warning model-5">
-                                                    <i class="fa fa-check"></i>
-                                                </a>
-                                            @endif
-                                            @if ($order->isApproved())
-                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Approved') }}" class="btn btn-sm btn-success">
-                                                    <i class="fa fa-check"></i>
-                                                </button>
-                                            @elseif ($order->isDisapproved())
-                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Disapproved') }}" class="btn btn-sm btn-danger">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            @endif
+                                        @if (!$order->isCompleted())
+                                            <a href="{{ route('pos_orders.approve', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Complete') }}" class="btn btn-sm btn-warning">
+                                                <i class="fa fa-check"></i>
+                                            </a>
+                                        @else
+                                            <button data-toggle="tooltip" data-placement="top" title="{{ __('Completed') }}" class="btn btn-sm btn-success">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                        @endif
                                     </td>
 
-                                    <td>
-                                            @if ($order->isCompleted())
-                                                <button data-toggle="tooltip" data-placement="top" title="{{ __('Completed') }}" class="btn btn-sm btn-success">
-                                                    <i class="fa fa-check"></i>
-                                                </button>
-                                            @else
-                                                <form action="{{ route('pos_orders.complete', $order->id) }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" data-toggle="tooltip" data-placement="top" title="{{ __('Complete') }}" class="btn btn-sm btn-warning">
-                                                        <i class="fa fa-check"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
-                                    </td>
                                     <td>
                                         <a href="{{ route('pos_orders.edit', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
                                             <i class="fa fa-edit"></i>

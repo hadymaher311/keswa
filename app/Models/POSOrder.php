@@ -25,7 +25,7 @@ class POSOrder extends Model
      */
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'p_o_s_order_products', 'order_id', 'product_id')->active()->withPivot('quantity')->withTimestamps();
+        return $this->belongsToMany(Product::class, 'p_o_s_order_products', 'order_id', 'product_id')->withPivot('quantity')->withTimestamps();
     }
     
     /**
