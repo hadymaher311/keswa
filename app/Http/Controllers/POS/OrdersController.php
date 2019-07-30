@@ -48,7 +48,7 @@ class OrdersController extends Controller
                 return $this->completedOrders();
             
             default:
-                return $this->pendingOrders();
+                return $this->allOrders();
         }
     }
 
@@ -175,58 +175,6 @@ class OrdersController extends Controller
         return redirect()->route('pos_orders.invoice', $order->id)->with(['status' => __('Completed Successfully')]);
     }
     
-    /**
-     * Check if products is available
-     * 
-     * @param  \Illuminate\Http\Request  $request
-     * @param \App\Models\Order $order
-     */
-    protected function isNotAvailable(Request $request, Order $order)
-    {
-        foreach ($order->products as $product) {
-            if (!$product->isAvailableIn(warehouse::find($request->warehouse))) {
-                return $product;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Approve pos_Order.
-     *
-     * @param  \App\Models\POSOrder  $order
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function approve(Request $request, Order $order)
-    { 
-        $this->validate($request, [
-            'warehouse' => 'required|exists:warehouses,id',
-            'comment' => 'nullable|string',
-        ]);
-        $product = $this->isNotAvailable($request, $order);
-        if (!$product) {
-            $request['comment'] = str_replace('<', '&lt;', $request->comment);
-            $request['comment'] = str_replace('>', '&gt;', $request->comment);
-            $request['comment'] = nl2br($request->comment);
-            $order->warehouse_id = $request->warehouse;
-            $order->save();
-            if ($order->isDisapproved()) {
-                $order->statuses()->disapproved()->delete();
-            }
-            $order->statuses()->create(
-                [
-                    'name' => 'Approved',
-                    'description' => $request->comment,
-                ]
-            );
-            $this->markUserNotificationAsRead($order); 
-            return redirect()->route('orders.index')->with(['status' => __('Approved Successfully')]);
-        }
-        return back()->with(['error' => __('The product') . ' ' . $product->name . ' ' . __('is not available in this warehouse')]);
-    }
-    
-
     /**
      * Display page for order approving.
      *
@@ -381,24 +329,6 @@ class OrdersController extends Controller
         $sum = 0;
         foreach ($products as $product) {
             $sum += $product->final_price * $request->quantity[$i];
-            $i++;
-        }
-        return $sum;
-    }
-    
-    /**
-     * get order total Points
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @return \App\Models\Order
-     */
-    protected function getTotalPoints(Request $request)
-    {
-        $products = Product::find($request->products);
-        $i = 0;
-        $sum = 0;
-        foreach ($products as $product) {
-            $sum += $product->points * $request->quantity[$i];
             $i++;
         }
         return $sum;
