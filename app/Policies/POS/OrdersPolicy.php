@@ -35,4 +35,20 @@ class OrdersPolicy
     {
         return $order->worker_id == $worker->id;
     }
+
+    /**
+     * delete order for only some workers
+     */
+    public function delete(POSWorker $worker, POSOrder $order)
+    {
+        return ($order->worker_id == $worker->id && !$order->isCompleted());
+    }
+
+    /**
+     * update order for only some workers
+     */
+    public function update(POSWorker $worker, POSOrder $order)
+    {
+        return $order->worker_id == $worker->id;
+    }
 }

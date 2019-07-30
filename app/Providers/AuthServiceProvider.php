@@ -51,6 +51,8 @@ class AuthServiceProvider extends ServiceProvider
          */
         Gate::define('pos_order.approve', 'App\Policies\POS\OrdersPolicy@approve');
         Gate::define('pos_order.view', 'App\Policies\POS\OrdersPolicy@view');
+        Gate::define('pos_order.delete', 'App\Policies\POS\OrdersPolicy@delete');
+        Gate::define('pos_order.update', 'App\Policies\POS\OrdersPolicy@update');
         
         Gate::define('warehouse.view', 'App\Policies\Admin\WarehousesPolicy@view');        
     }

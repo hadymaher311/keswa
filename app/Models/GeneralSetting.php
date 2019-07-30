@@ -47,4 +47,12 @@ class GeneralSetting extends Model
     {
         return $this->where('name', 'points_value');
     }
+    
+    /**
+     * Get Update pos orders to scope
+     */
+    public function ScopeUpdatePOSOrders()
+    {
+        return $this->where('name', 'update_pos_orders');
+    }
 }

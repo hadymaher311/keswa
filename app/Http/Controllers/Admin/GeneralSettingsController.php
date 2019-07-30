@@ -31,7 +31,8 @@ class GeneralSettingsController extends Controller
         $working_hours_from = GeneralSetting::workingHoursFrom()->first();
         $working_hours_to = GeneralSetting::workingHoursTo()->first();
         $points_value = GeneralSetting::pointsValue()->first();
-        return view('admin.settings.general', compact('price_tax', 'working_hours_from', 'working_hours_to', 'points_value'));
+        $update_pos_orders = GeneralSetting::updatePOSOrders()->first();
+        return view('admin.settings.general', compact('price_tax', 'working_hours_from', 'working_hours_to', 'points_value', 'update_pos_orders'));
     }
 
     /**
@@ -92,6 +93,25 @@ class GeneralSettingsController extends Controller
         GeneralSetting::updateOrCreate(
             ['name' => 'working_hours_to'],
             ['value' => $request->working_hours_to->format('h:i A')]
+        );
+        return back()->with(['status' => trans('Updated Successfully')]);
+    }
+
+
+    /**
+     * Store update POS Orders in database
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeUpdatePOSOrders(Request $request)
+    {
+        $this->validate($request, [
+            'active' => 'sometimes|accepted',
+        ]);
+        GeneralSetting::updateOrCreate(
+            ['name' => 'update_pos_orders'],
+            ['value' => ($request->active == 'on') ? 1 : 0]
         );
         return back()->with(['status' => trans('Updated Successfully')]);
     }

@@ -95,6 +95,36 @@
                         </div>
                     </form>
 
+                    <form action="{{ route('admin.general.settings.update.pos.orders') }}" method="post">
+                        @csrf
+                        <div class="form-group row">
+                            <label class="col-sm-3 mt-3 col-form-label">{{ __('Enable update orders in POS') }}</label>
+                            <div class="col-sm-6 mt-3">
+                                <label class="custom-switch mt-2" data-toggle="tooltip" data-placement="top" title="@if (isset($update_pos_orders) && $update_pos_orders->value == 1)
+                                    {{ __('Active') }}
+                                    @else
+                                    {{ __('Not Active') }}
+                                    @endif">
+                                    <input name="active" type="checkbox" @if (isset($update_pos_orders) && $update_pos_orders->value == 1)
+                                    checked
+                                    @endif class="custom-switch-input" onchange="
+                                        $(this).parent('form'),submit();
+                                    ">
+                                    <span class="custom-switch-indicator"></span>
+                                </label>
+                                
+                                @error('points_value')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-sm-3 mt-3">
+                                <button type="submit" class="btn btn-warning btn-block">{{ __('Submit') }}</button>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>

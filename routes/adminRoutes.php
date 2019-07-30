@@ -141,6 +141,7 @@ Route::group([
         Route::post('/admin/general/settings/price/tax', 'GeneralSettingsController@storePriceTax')->name('admin.general.settings.price.tax');
         Route::post('/admin/general/settings/working/hours', 'GeneralSettingsController@storeWorkingHours')->name('admin.general.settings.working.hours');
         Route::post('/admin/general/settings/points/value', 'GeneralSettingsController@storePointsValue')->name('admin.general.settings.points.value');
+        Route::post('/admin/general/settings/update/pos/orders', 'GeneralSettingsController@storeUpdatePOSOrders')->name('admin.general.settings.update.pos.orders');
         /*********************************************** General Settings routes *******************************************/
         
         /*********************************************** POS Workers CRUD routes *******************************************/
