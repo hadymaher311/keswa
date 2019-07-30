@@ -45,7 +45,7 @@
                         @php
                             $order_status = $status->name;
                         @endphp
-                        @include('pos.components.orderStatusColor')
+                        @include('admin.components.orderStatusColor')
                     </td>
                     <td>{!! $status->description !!}</td>
                 </tr>
@@ -58,10 +58,10 @@
         <h4>{{ __('Worker') }}</h4>
         <div class="row">
             <div class="col-sm-2">
-                <img src="{{ ($order->worker->image) ? $order->worker->image->getUrl('card') : asset(config('default_avatar')) }}" alt="{{ $order->worker->name }}" class="img-fluid img-circle img-thumbnail">
+                <a href="{{ route('workers.show', $order->worker->id) }}"><img src="{{ ($order->worker->image) ? $order->worker->image->getUrl('card') : asset(config('default_avatar')) }}" alt="{{ $order->worker->name }}" class="img-fluid img-circle img-thumbnail"></a>
             </div>
             <div class="col-sm-10">
-                <h5>{{ $order->worker->name }}</h5>
+                <h5><a href="{{ route('workers.show', $order->worker->id) }}">{{ $order->worker->name }}</a></h5>
                 <div><a href="mailto://{{ $order->worker->email }}">{{ $order->worker->email }}</a></div>
                 <div>{{ ($order->worker->personalInfo) ? $order->worker->personalInfo->phone : '' }}</div>
                 <div>{{ ($order->worker->personalInfo) ? __(ucfirst($order->worker->personalInfo->gender)) : '' }}</div>
@@ -87,8 +87,8 @@
                 <tbody>
                     @foreach ($order->products as $product)
                         <tr>
-                            <td class="text-center"><a href="{{ route('pos_products.show', $product->id) }}"><img width="70px" src="{{ $product->images->first()->getUrl('thumb') }}" alt="{{ $product->name }}" title="{{ $product->name }}" class="img-thumbnail" /></a></td>
-                            <td class=""><a href="{{ route('pos_products.show', $product->id) }}">{{ $product->name }}</a><br />
+                            <td class="text-center"><a href="{{ route('products.show', $product->id) }}"><img width="70px" src="{{ $product->images->first()->getUrl('thumb') }}" alt="{{ $product->name }}" title="{{ $product->name }}" class="img-thumbnail" /></a></td>
+                            <td class=""><a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a><br />
                                 </td>
                             <td class="" width="200px">{{ $product->pivot->quantity }}</td>
                             <td class="price">
@@ -96,7 +96,7 @@
                                     $activeDiscount = $product->activeDiscount;
                                     $price = $product->price;
                                 @endphp
-                                @include('pos.components.pricing')
+                                @include('admin.components.pricing')
                             </td>
                             <td class="">{{ $product->pivot->quantity * $product->final_price }} {{ __('LE') }}</td>
                         </tr>

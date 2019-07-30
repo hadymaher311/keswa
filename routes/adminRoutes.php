@@ -151,6 +151,13 @@ Route::group([
         Route::PUT('/admin/workers/{worker}/edit/password', 'POSWorkersController@updatePassword')->name('workers.edit.password');
         Route::PUT('/admin/workers/{worker}/active', 'POSWorkersController@active')->name('workers.active');
         /*********************************************** POS Workers CRUD routes *******************************************/
+        
+        /*********************************************** POS Orders routes *******************************************/
+        Route::get('/admin/pos_orders', 'POSOrdersController@index')->name('admin.pos_orders.index');
+        Route::get('/admin/pos_orders/{order}/show', 'POSOrdersController@show')->name('admin.pos_orders.show');
+        Route::get('/admin/pos_orders/{order}/invoice', 'POSOrdersController@invoice')->name('admin.pos_orders.invoice');
+        Route::get('/admin/pos_orders/{order}/invoice/print', 'POSOrdersController@invoicePrint')->name('admin.pos_orders.invoice.print');
+        /*********************************************** POS Orders routes *******************************************/
 
         /**
          * All Admin Auth Controllers will be in Admin\Auth Folder

@@ -52,7 +52,7 @@
                                 <tr>
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>{{ $product->name }}</td>
-                                    <td>{{ $product->total_quantity }} {{ __(ucfirst($product->sale_by)) }}</td>
+                                    <td>{{ $product->getWarehouseQuantity(auth()->user()->warehouse_id) }} {{ __(ucfirst($product->sale_by)) }}</td>
                                     <td>
                                         @if ($product->activeDiscount)
                                             <div class="col-9">

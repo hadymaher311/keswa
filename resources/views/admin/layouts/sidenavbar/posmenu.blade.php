@@ -15,7 +15,7 @@
         @endcan
 
         @can('view pos_orders')
-            <li><a class="nav-link" href="{{ route('orders.index') }}"><i class="fas fa-barcode"></i> <span>{{ __('Orders') }}</span></a></li>
+            <li><a class="nav-link" href="{{ route('admin.pos_orders.index') }}"><i class="fas fa-barcode"></i> <span>{{ __('Orders') }}</span></a></li>
         @endcan
 
     </ul>

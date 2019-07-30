@@ -36,6 +36,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('order.shipping_return', 'App\Policies\Admin\OrdersPolicy@shipping_return');
         Gate::define('order.complete', 'App\Policies\Admin\OrdersPolicy@complete');
         /**
+         * admin POS Order policies
+         */
+        Gate::define('admin.pos_order.view', 'App\Policies\Admin\POSOrdersPolicy@view');
+        /**
          * admin return policies
          */
         Gate::define('return.view', 'App\Policies\Admin\ReturnsPolicy@view');
