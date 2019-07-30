@@ -187,6 +187,24 @@ class DatabaseSeeder extends Seeder
                 'value' => '10'
             ]
         );
+        GeneralSetting::create(
+            [
+                'name' => 'working_hours_from',
+                'value' => '01:03 AM'
+            ]
+        );
+        GeneralSetting::create(
+            [
+                'name' => 'working_hours_to',
+                'value' => '01:03 PM'
+            ]
+        );
+        GeneralSetting::create(
+            [
+                'name' => 'update_pos_orders',
+                'value' => '1'
+            ]
+        );
 
         error_log('Orders start ...');
         factory(Order::class, 50)->create();
