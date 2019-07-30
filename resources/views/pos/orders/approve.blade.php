@@ -55,6 +55,7 @@
                                     </form>
                                     <form id="cancel-form" action="{{ route('pos_orders.destroy') }}" class="form-inline" method="POST">
                                         @csrf
+                                        {{ method_field('DELETE') }}
                                         <input type="hidden" name="orders[]" value="{{ $order->id }}">
                                     </form>
                                 </div>

@@ -490,11 +490,11 @@ class OrdersController extends Controller
      */
     protected function canDeleteAllOrders($orders)
     {
-        foreach ($orders as $order) {
-            if (!(!$order->isCanceled() && !$order->isShipped() && !$order->isDisapproved())) {
-                return false;
-            }
-        }
+        // foreach ($orders as $order) {
+        //     if (!(!$order->isCanceled() && !$order->isShipped() && !$order->isDisapproved())) {
+        //         return false;
+        //     }
+        // }
         return true;
     }
 
@@ -510,7 +510,7 @@ class OrdersController extends Controller
             return back();
         }
         $this->validate($request, [
-            'orders.*' => 'required|exists:orders,id',
+            'orders.*' => 'required|exists:p_o_s_orders,id',
         ]);
         $orders = POSOrder::find($request->orders);
         if ($this->canDeleteAllOrders($orders)) {
