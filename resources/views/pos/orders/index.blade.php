@@ -149,9 +149,11 @@
                                     </td>
 
                                     <td>
-                                        <a href="{{ route('pos_orders.edit', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
+                                        @can('pos_order.update', $order)
+                                            <a href="{{ route('pos_orders.edit', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Edit') }}" class="btn btn-sm btn-warning">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        @endcan
 
                                         <a href="{{ route('pos_orders.invoice', $order->id) }}" data-toggle="tooltip" data-placement="top" title="{{ __('Invoice') }}" class="btn btn-sm btn-info">
                                             <i class="fa fa-file-pdf"></i>

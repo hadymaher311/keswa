@@ -2,9 +2,10 @@
 
 namespace App\Policies\POS;
 
-use App\Models\POSWorker;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use App\Models\POSOrder;
+use App\Models\POSWorker;
+use App\Models\GeneralSetting;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class OrdersPolicy
 {
@@ -49,6 +50,7 @@ class OrdersPolicy
      */
     public function update(POSWorker $worker, POSOrder $order)
     {
-        return $order->worker_id == $worker->id;
+        $update_pos_orders = GeneralSetting::updatePOSOrders()->first();
+        return ($order->worker_id == $worker->id && $update_pos_orders->value == 1);
     }
 }
