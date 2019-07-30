@@ -782,5 +782,9 @@
     "Back to edit": "العودة للتعديل",
     "Worker": "العامل",
     "Enable update orders in POS": "تفعيل تعديل الطلبات في نقطة البيع",
+    "Has points": "لديه نقاط",
+    "Has discount": "لديه خصم",
+    "No free shipping": "لا يوجد شحن مجاني",
+    "Has no points": "لا يوجد نقاط",
     "Check all": "تحديد الكل"
 }

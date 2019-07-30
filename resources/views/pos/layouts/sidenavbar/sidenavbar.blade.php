@@ -8,6 +8,7 @@
       </div>
       <ul class="sidebar-menu">
         <li><a class="nav-link" href="{{ route('pos.home') }}"><i class="fas fa-barcode"></i> <span>{{ __('Orders') }}</span></a></li>
+        <li><a class="nav-link" href="{{ route('pos_products.index') }}"><i class="fab fa-product-hunt"></i> <span>{{ __('Products') }}</span></a></li>
       </ul>
     </aside>
   </div>

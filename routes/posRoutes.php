@@ -16,10 +16,6 @@ Route::group([
      */
     Route::group(['namespace' => 'POS'],function(){
 
-
-        /*********************************************** POS home page *******************************************/
-        /*********************************************** POS home page *******************************************/
-        
         /*********************************************** orders CRUD routes *******************************************/
         Route::get('/pos/pos_orders', 'OrdersController@index')->name('pos_orders.index');
         Route::get('/pos/pos_orders/create', 'OrdersController@create')->name('pos_orders.create');
@@ -34,6 +30,11 @@ Route::group([
         Route::get('/pos/pos_orders/{order}/approve', 'OrdersController@approveView')->name('pos_orders.approve');
         Route::post('/pos/pos_orders/{order}/complete', 'OrdersController@complete')->name('pos_orders.complete');
         /*********************************************** orders CRUD routes *******************************************/
+        
+        /*********************************************** products routes *******************************************/
+        Route::get('/pos/pos_products', 'ProductsController@index')->name('pos_products.index');
+        Route::get('/pos/pos_products/{product}/show', 'ProductsController@show')->name('pos_products.show');
+        /*********************************************** products routes *******************************************/
 
         /*********************************************** POS profile pages *******************************************/
         Route::get('/pos/profile', 'ProfileController@index')->name('pos.profile');

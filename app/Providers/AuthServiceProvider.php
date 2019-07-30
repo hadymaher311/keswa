@@ -53,6 +53,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('pos_order.view', 'App\Policies\POS\OrdersPolicy@view');
         Gate::define('pos_order.delete', 'App\Policies\POS\OrdersPolicy@delete');
         Gate::define('pos_order.update', 'App\Policies\POS\OrdersPolicy@update');
+        /**
+         * Worker product policies
+         */
+        Gate::define('pos.product.view', 'App\Policies\POS\ProductsPolicy@view');
         
         Gate::define('warehouse.view', 'App\Policies\Admin\WarehousesPolicy@view');        
     }
