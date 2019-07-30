@@ -21,13 +21,18 @@ Route::group([
         /*********************************************** POS home page *******************************************/
         
         /*********************************************** orders CRUD routes *******************************************/
-        Route::resource('/admin/pos_orders', 'OrdersController');
+        Route::get('/pos/pos_orders', 'OrdersController@index')->name('pos_orders.index');
+        Route::get('/pos/pos_orders/create', 'OrdersController@create')->name('pos_orders.create');
+        Route::get('/pos/pos_orders/{order}/show', 'OrdersController@show')->name('pos_orders.show');
+        Route::get('/pos/pos_orders/{order}/edit', 'OrdersController@edit')->name('pos_orders.edit');
+        Route::post('/pos/pos_orders', 'OrdersController@store')->name('pos_orders.store');
+        Route::PUT('/pos/pos_orders/{order}/update', 'OrdersController@update')->name('pos_orders.update');
         Route::get('/pos/home', 'OrdersController@index')->name('pos.home');
-        Route::delete('/admin/pos_orders', 'OrdersController@destroy')->name('pos_orders.destroy');
-        Route::get('/admin/pos_orders/{order}/invoice', 'OrdersController@invoice')->name('pos_orders.invoice');
-        Route::get('/admin/pos_orders/{order}/invoice/print', 'OrdersController@invoicePrint')->name('pos_orders.invoice.print');
-        Route::get('/admin/pos_orders/{order}/approve', 'OrdersController@approveView')->name('pos_orders.approve');
-        Route::post('/admin/pos_orders/{order}/complete', 'OrdersController@complete')->name('pos_orders.complete');
+        Route::delete('/pos/pos_orders', 'OrdersController@destroy')->name('pos_orders.destroy');
+        Route::get('/pos/pos_orders/{order}/invoice', 'OrdersController@invoice')->name('pos_orders.invoice');
+        Route::get('/pos/pos_orders/{order}/invoice/print', 'OrdersController@invoicePrint')->name('pos_orders.invoice.print');
+        Route::get('/pos/pos_orders/{order}/approve', 'OrdersController@approveView')->name('pos_orders.approve');
+        Route::post('/pos/pos_orders/{order}/complete', 'OrdersController@complete')->name('pos_orders.complete');
         /*********************************************** orders CRUD routes *******************************************/
 
         /*********************************************** POS profile pages *******************************************/

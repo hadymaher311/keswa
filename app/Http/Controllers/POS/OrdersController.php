@@ -266,7 +266,7 @@ class OrdersController extends Controller
      * @param  \App\Models\POSOrder  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show(POSOrder $order)
     {
         if (auth()->user()->can('pos_order.view', $order)) {
             $price_tax = GeneralSetting::priceTax()->first();

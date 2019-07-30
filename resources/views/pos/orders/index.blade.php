@@ -111,6 +111,7 @@
                             <th>{{ __('#') }}</th>
                             <th>{{ __('Order ID') }}</th>
                             <th>{{ __('Total Price') }}</th>
+                            <th>{{ __('Worker') }}</th>
                             <th>{{ __('Status') }}</th>
                             <th>{{ __('Added from') }}</th>
                             <th>{{ __('Completed') }}</th>
@@ -129,6 +130,7 @@
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>#{{ $order->id }}</td>
                                     <td>{{ $order->total_price }}</td>
+                                    <td>{{ $order->worker->name }}</td>
                                     @php
                                         $order_status = $order->statuses->last()->name;
                                     @endphp
